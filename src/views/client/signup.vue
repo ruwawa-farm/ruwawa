@@ -2,7 +2,7 @@
         <div id="signup">
             <div class="uk-child-width-expand@s uk-text-center" uk-grid>
                 <div>
-                    <img src="../../assets/logo.png" alt="logo">
+                    <img src="../../assets/images/ruwawa-logo.png" alt="logo" width="50%" height="50%">
                     <h3>Create an account to start using our services. <br>Are you a farmer? Join us through <router-link to="/farmer">here</router-link> instead</h3>
                 </div>
                 <div>
@@ -95,12 +95,7 @@ export default {
 
 <style scoped>
     #signup{
-        margin: 0;
-        position: absolute;
-        top: 50%;
-        -ms-transform: translateY(-50%);
-        transform: translateY(-50%);
-        width: 100vw;
+        margin-top: 5em;
     }
     .err{
         display: none;
