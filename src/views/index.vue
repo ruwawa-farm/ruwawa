@@ -58,7 +58,11 @@ export default {
                 this.error = true;
             }
             else {
-                console.log('ready for auth');
+                this.$toasted.show("All fields are filled! Thanks :)", {
+                    theme: "outline",
+                    position: "top-center",
+                    duration : 2000
+                });
                 this.btn = "Login";
             }
         },

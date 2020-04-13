@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VuePageTransition from 'vue-page-transition'
 import VueTelInput from 'vue-tel-input'
+import Toasted from 'vue-toasted';
 
 //views
 import index from '../views/index.vue'
@@ -13,6 +14,7 @@ import farmer from  '../views/farmer/signup.vue'
 Vue.use(VueRouter);
 Vue.use(VuePageTransition);
 Vue.use(VueTelInput, {required: true});
+Vue.use(Toasted);
 
 
   const routes = [

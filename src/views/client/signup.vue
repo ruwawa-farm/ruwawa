@@ -26,7 +26,7 @@
                                     <input class="uk-input" type="password" placeholder="Enter your password" v-model="password" required>
                                 </div>
                                 <div class="uk-margin">
-                                    <input class="uk-input" type="password" placeholder="Confirm your password" v-model="password_rpt" required>
+                                    <input class="uk-input" type="password" placeholder="Confirm your password" v-bind:disabled="confirm" v-model="password_rpt" required>
                                 </div>
                                 <div class="uk-alert-danger" v-bind:class="{err: !error}" uk-alert>
                                     <p id="err_msg">{{error_message}} <span uk-icon="close" v-on:click="close"></span></p>
@@ -52,7 +52,9 @@ export default {
             password: '',
             password_rpt: '',
             btn: 'Signup',
-            error: false
+            error_message: '',
+            error: false,
+            confirm: true
         }
     },
     methods:{
@@ -60,13 +62,31 @@ export default {
             this.error = false
         },
         registerUser(){
-
+            this.$toasted.show("All fields are filled! Thanks :)", {
+                theme: "outline",
+                position: "top-center",
+                duration : 2000
+            });
         }
     },
     watch :{
         password(){
             if (this.password.length < 8){
-                this.error = true
+                this.error = true;
+                this.error_message = "password is too short! At least 8 characters."
+            }
+            else{
+                this.confirm = false;
+                this.error = false;
+            }
+        },
+        password_rpt(){
+            if (this.password !== this.password_rpt){
+                this.error = true;
+                this.error_message = 'passwords do not match'
+            }
+            else {
+                this.error = false
             }
         }
     }
