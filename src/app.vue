@@ -1,6 +1,8 @@
 <template>
   <div id="app" class="uk-height-1-1">
-    <router-view/>
+    <vue-page-transition name="fade">
+      <router-view/>
+    </vue-page-transition>
   </div>
 </template>
 
@@ -8,15 +10,15 @@
     import Uikit from 'uikit'
     import Icons from 'uikit/dist/js/uikit-icons'
 
-    Uikit.use(Icons)
+    Uikit.use(Icons);
     export default {
 
     }
 </script>
 
 <style lang='less'>
-    @import '../node_modules/uikit/src/less/uikit.less';
-    @import '/assets/css/styles.css';
+    @import "../node_modules/uikit/src/less/uikit.less";
+    @import "./assets/less/theme.less";
     body,
     #app {
         min-height: 100vh;

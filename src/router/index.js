@@ -1,13 +1,19 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import VuePageTransition from 'vue-page-transition'
+import VueTelInput from 'vue-tel-input'
 
 //views
 import index from '../views/index.vue'
-import signup from '../views/signup.vue'
+import signup from '../views/client/signup.vue'
+import farmer from  '../views/farmer/signup.vue'
 
 //components
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
+Vue.use(VuePageTransition);
+Vue.use(VueTelInput, {required: true});
+
 
   const routes = [
   {
@@ -19,13 +25,18 @@ Vue.use(VueRouter)
     path: '/signup',
     name: 'signup',
     component: signup
-  }
-]
+  },
+    {
+      path: '/farmer',
+      name: 'farmer',
+      component: farmer
+    }
+];
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
-})
+});
 
 export default router
