@@ -58,12 +58,38 @@ export default {
                 this.error = true;
             }
             else {
-                this.$toasted.show("All fields are filled! Thanks :)", {
-                    theme: "outline",
-                    position: "top-center",
-                    duration : 2000
-                });
-                this.btn = "Login";
+                this.$http.get(`https://ruwawa-db.herokuapp.com/auth/${this.email}/${this.password}`)
+                    .then(res => {
+                        this.btn = "Login";
+                        if (res.status === 200) {
+                            this.$toasted.show("Credentials are correct :)", {
+                                theme: "outline",
+                                position: "top-center",
+                                duration: 2000
+                            });
+                        }
+                        else {
+                            this.error_message = "something went wrong! Try again later :(";
+                            this.error = true;
+                        }
+                    })
+                    .catch(err => {
+                        this.btn = "Login";
+                        switch (err.status) {
+                            case 403:
+                                this.error_message = err.body.reason;
+                                this.error = true;
+                                break;
+                            case 404:
+                                this.error_message = err.body.reason;
+                                this.error = true;
+                                break;
+                            default:
+                                this.error_message = "something went wrong! Try again later :(";
+                                this.error = true;
+                                break;
+                        }
+                    })
             }
         },
         close(){
