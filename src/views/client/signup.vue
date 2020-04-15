@@ -62,6 +62,41 @@ export default {
             this.error = false
         },
         registerUser(){
+            this.btn = 'Loading...';
+            let formData = new FormData();
+            formData.append('name', this.name);
+            formData.append('email', this.email);
+            formData.append('phone', this.phone);
+            formData.append('password', this.password);
+            formData.append('type', 'customer');
+            for (let value of formData.values()) {
+                console.log(value);
+            }
+            this.$http.post('http://localhost:2400/auth/signup', formData)
+                .then(res => {
+                    this.btn = 'Signup';
+                    if (res.response.status === 200) {
+                        this.$toasted.show('user created, check your email...', {
+                            theme: "outline",
+                            position: "top-center",
+                            duration: 2000
+                        });
+                    }
+                    else {
+                        this.error_message = "something went wrong! Try again later :(";
+                        this.error = true;
+                    }
+                })
+                .catch(err => {
+                    this.btn = "Signup";
+                    if (err.response.status === 403) {
+                        this.error_message = err.response.data.reason;
+                        this.error = true;
+                    } else {
+                        this.error_message = "something went wrong! Try again later :(";
+                        this.error = true;
+                    }
+                });
             this.$toasted.show("All fields are filled! Thanks :)", {
                 theme: "outline",
                 position: "top-center",

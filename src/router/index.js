@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VuePageTransition from 'vue-page-transition'
 import VueTelInput from 'vue-tel-input'
-import VueResource from 'vue-resource'
+import Axios from "axios";
 import Toasted from 'vue-toasted';
 
 //views
@@ -15,9 +15,9 @@ import farmer from  '../views/farmer/signup.vue'
 Vue.use(VueRouter);
 Vue.use(VuePageTransition);
 Vue.use(VueTelInput, {required: true});
-Vue.use(VueResource);
 Vue.use(Toasted);
 
+Vue.prototype.$http = Axios;
 
   const routes = [
   {

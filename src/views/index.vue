@@ -60,8 +60,9 @@ export default {
             else {
                 this.$http.get(`https://ruwawa-db.herokuapp.com/auth/${this.email}/${this.password}`)
                     .then(res => {
+                        console.log(res.status);
                         this.btn = "Login";
-                        if (res.status === 200) {
+                        if (res.response.status === 200) {
                             this.$toasted.show("Credentials are correct :)", {
                                 theme: "outline",
                                 position: "top-center",
@@ -74,14 +75,15 @@ export default {
                         }
                     })
                     .catch(err => {
+                        console.log(err.response);
                         this.btn = "Login";
-                        switch (err.status) {
+                        switch (err.response.status) {
                             case 403:
-                                this.error_message = err.body.reason;
+                                this.error_message = err.response.data.reason;
                                 this.error = true;
                                 break;
                             case 404:
-                                this.error_message = err.body.reason;
+                                this.error_message = err.response.data.reason;
                                 this.error = true;
                                 break;
                             default:
