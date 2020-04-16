@@ -66,15 +66,14 @@ export default {
             const data = {
                 name : this.name,
                 email: this.email,
-                phone: this.phone,
+                phone: parseInt(this.phone.replace(/\s/g,'')),
                 password: this.password,
                 type: 'customer'
             };
             this.axios.post('https://ruwawa-db.herokuapp.com/auth/signup', data)
                 .then(res => {
-                    console.log(res);
                     this.btn = 'Signup';
-                    if (res.response.status === 200) {
+                    if (res.status === 200) {
                         this.$toasted.show('user created, check your email...', {
                             theme: "outline",
                             position: "top-center",
@@ -87,7 +86,6 @@ export default {
                     }
                 })
                 .catch(err => {
-                    console.log(err.response);
                     this.btn = "Signup";
                     if (err.response.status === 403) {
                         this.error_message = err.response.data.reason;
@@ -97,11 +95,6 @@ export default {
                         this.error = true;
                     }
                 });
-            this.$toasted.show("All fields are filled! Thanks :)", {
-                theme: "outline",
-                position: "top-center",
-                duration : 2000
-            });
         }
     },
     watch :{

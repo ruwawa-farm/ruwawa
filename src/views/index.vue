@@ -60,9 +60,8 @@ export default {
             else {
                 this.axios.get(`https://ruwawa-db.herokuapp.com/auth/${this.email}/${this.password}`)
                     .then(res => {
-                        console.log(res.status);
                         this.btn = "Login";
-                        if (res.response.status === 200) {
+                        if (res.status === 200) {
                             this.$toasted.show("Credentials are correct :)", {
                                 theme: "outline",
                                 position: "top-center",
@@ -75,7 +74,6 @@ export default {
                         }
                     })
                     .catch(err => {
-                        console.log(err.response);
                         this.btn = "Login";
                         switch (err.response.status) {
                             case 403:
