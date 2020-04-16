@@ -58,7 +58,7 @@ export default {
                 this.error = true;
             }
             else {
-                this.$http.get(`https://ruwawa-db.herokuapp.com/auth/${this.email}/${this.password}`)
+                this.axios.get(`https://ruwawa-db.herokuapp.com/auth/${this.email}/${this.password}`)
                     .then(res => {
                         console.log(res.status);
                         this.btn = "Login";

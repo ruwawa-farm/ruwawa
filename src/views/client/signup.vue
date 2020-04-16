@@ -63,17 +63,16 @@ export default {
         },
         registerUser(){
             this.btn = 'Loading...';
-            let formData = new FormData();
-            formData.append('name', this.name);
-            formData.append('email', this.email);
-            formData.append('phone', this.phone);
-            formData.append('password', this.password);
-            formData.append('type', 'customer');
-            for (let value of formData.values()) {
-                console.log(value);
-            }
-            this.$http.post('http://localhost:2400/auth/signup', formData)
+            const data = {
+                name : this.name,
+                email: this.email,
+                phone: this.phone,
+                password: this.password,
+                type: 'customer'
+            };
+            this.axios.post('https://ruwawa-db.herokuapp.com/auth/signup', data)
                 .then(res => {
+                    console.log(res);
                     this.btn = 'Signup';
                     if (res.response.status === 200) {
                         this.$toasted.show('user created, check your email...', {
@@ -88,6 +87,7 @@ export default {
                     }
                 })
                 .catch(err => {
+                    console.log(err.response);
                     this.btn = "Signup";
                     if (err.response.status === 403) {
                         this.error_message = err.response.data.reason;

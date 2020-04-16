@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import VuePageTransition from 'vue-page-transition'
 import VueTelInput from 'vue-tel-input'
 import Axios from "axios";
+import VueAxios from "vue-axios";
 import Toasted from 'vue-toasted';
 
 //views
@@ -16,8 +17,7 @@ Vue.use(VueRouter);
 Vue.use(VuePageTransition);
 Vue.use(VueTelInput, {required: true});
 Vue.use(Toasted);
-
-Vue.prototype.$http = Axios;
+Vue.use(VueAxios, Axios);
 
   const routes = [
   {
