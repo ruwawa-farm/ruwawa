@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "deploy": "node scripts/deploy.js"
   },
   "dependencies": {
     "axios": "^0.19.2",
