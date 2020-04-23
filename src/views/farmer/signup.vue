@@ -16,11 +16,11 @@
                     </div>
                     <div class="uk-card-body">
                         <div id="steps">
-                            <span class="uk-margin-left uk-margin-right step-active">Personal details</span>
-                            <span class="uk-margin-left uk-margin-right">Farm details</span>
+                            <span class="uk-margin-left uk-margin-right" v-bind:class="{stepActive: !stepOneDone}">Personal details</span>
+                            <span class="uk-margin-left uk-margin-right" v-bind:class="{stepActive: stepOneDone}">Farm details</span>
                         </div>
-                        <div id="step-one" class="uk-margin">
-                            <form v-on:submit.prevent="storePersonal">
+                        <div id="step-one" class="uk-margin" v-bind:class="{hidden: stepOneDone}">
+                            <form v-on:submit.prevent="moveNext">
                                 <div class="uk-margin">
                                     <input class="uk-input" type="text" placeholder="Enter your full names" v-model="name" required>
                                 </div>
@@ -39,11 +39,11 @@
                                 <div class="uk-alert-danger" v-bind:class="{err: !error}" uk-alert>
                                     <p id="err_msg">{{error_message}} <span uk-icon="close" v-on:click="close"></span></p>
                                 </div>
-                                <button class="uk-button uk-button-default uk-align-right" @click="submit">Next</button>
+                                <button class="uk-button uk-button-default uk-align-right" type="submit">Next</button>
                             </form>
                         </div>
-                        <div id="step-two" v-bind:class="{hidden: !stepOneDone}">
-                            <button class="uk-button uk-button-default uk-align-left">Back</button>
+                        <div id="step-two" class="uk-margin" v-bind:class="{hidden: !stepOneDone}">
+                            <button class="uk-button uk-button-default uk-align-left" @click="goBack">Back</button>
                         </div>
                     </div>
                 </div>
@@ -56,7 +56,47 @@
     export default {
         data(){
             return {
+                name: '',
+                email: '',
+                phone: '',
+                password: '',
+                password_rpt: '',
+                error_message: '',
+                error: false,
+                confirm: true,
                 stepOneDone: false,
+            }
+        },
+        methods: {
+            close(){
+                this.error = false
+            },
+            moveNext(){
+                this.stepOneDone = true
+            },
+            goBack(){
+                this.stepOneDone = false
+            }
+        },
+        watch :{
+            password(){
+                if (this.password.length < 8){
+                    this.error = true;
+                    this.error_message = "password is too short! At least 8 characters."
+                }
+                else{
+                    this.confirm = false;
+                    this.error = false;
+                }
+            },
+            password_rpt(){
+                if (this.password !== this.password_rpt){
+                    this.error = true;
+                    this.error_message = 'passwords do not match'
+                }
+                else {
+                    this.error = false
+                }
             }
         }
     }
@@ -92,7 +132,7 @@
         margin-right: auto;
     }
 
-    .step-active{
+    .stepActive{
         color: #0b6623;
         font-weight: bolder;
         text-decoration: underline;
