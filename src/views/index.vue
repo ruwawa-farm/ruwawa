@@ -6,11 +6,15 @@
                 <h3>Welcome to Ruwawa. <br> First log into your account or create a new one.</h3>
             </div>
             <div>
-                <div class="uk-card uk-card-body uk-card-default uk-card-small uk-card-hover uk-width-1-2@m">
+                <div class="uk-card uk-card-default uk-card-hover uk-width-1-2@m">
                     <div class="uk-card-header">
-                        <h3 class="uk-card-title">Login</h3>
+                        <div class="uk-grid-small uk-flex-middle" uk-grid>
+                            <div class="uk-width-expand">
+                                <h3 class="uk-card-title uk-margin-remove-bottom">Signup</h3>
+                            </div>
+                        </div>
                     </div>
-                    <div>
+                    <div class="uk-card-body">
                         <p>Enter the correct details to login</p>
                         <form v-on:submit.prevent="getAuth">
                             <div class="uk-margin">
