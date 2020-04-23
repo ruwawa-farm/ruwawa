@@ -6,11 +6,11 @@
                     <h3>Create an account to start using our services. <br>Are you a farmer? Join us through <router-link to="/farmer">here</router-link> instead</h3>
                 </div>
                 <div>
-                    <div class="uk-card uk-card-default uk-card-hover uk-width-1-2@m">
+                    <div class="uk-card uk-card-body uk-card-small uk-card-default uk-card-hover uk-width-1-2@m">
                         <div class="uk-card-header">
                             <h3 class="uk-card-title">Signup</h3>
                         </div>
-                        <div class="uk-card-body">
+                        <div>
                             <p>Fill in the details below.</p>
                             <form v-on:submit.prevent="registerUser">
                                 <div class="uk-margin">
