@@ -31,7 +31,7 @@
                                     <vue-tel-input v-model="phone"></vue-tel-input>
                                 </div>
                                 <div class="uk-margin">
-                                    <input class="uk-input" type="password" placeholder="Enter your password" v-model="password" required>
+                                    <input class="uk-input" type="password" placeholded er="Enter your password" v-model="password" required>
                                 </div>
                                 <div class="uk-margin">
                                     <input class="uk-input" type="password" placeholder="Confirm your password" v-bind:disabled="confirm" v-model="password_rpt" required>
@@ -43,6 +43,20 @@
                             </form>
                         </div>
                         <div id="step-two" class="uk-margin" v-bind:class="{hidden: !stepOneDone}">
+                            <form>
+                                <div class="uk-margin">
+                                    <input class="uk-input" type="text" placeholder="Enter your farm name" v-model="farmName" required>
+                                </div>
+                                <div class="products">
+                                    <p>Select the products available in your farm below</p>
+                                    <div class="uk-margin">
+                                        <md-chip md-deletable v-for="(product, index) in products" :key="product" @delete="removeProduct(index)">{{product}}</md-chip>
+                                    </div>
+                                    <div class="uk-margin">
+                                        <md-chip md-clickable v-for="(product, index) in options" :key="product" @click="addProduct(index)">{{product}}</md-chip>
+                                    </div>
+                                </div>
+                            </form>
                             <button class="uk-button uk-button-default uk-align-left" @click="goBack">Back</button>
                         </div>
                     </div>
@@ -62,6 +76,13 @@
                 password: '',
                 password_rpt: '',
                 error_message: '',
+                currentLat: '',
+                currentLong: '',
+                lat: '',
+                lng: '',
+                farmName: '',
+                products: [],
+                options: ['Coffee', 'Macadamia', 'Mangoes', 'Oranges', 'Apples', 'Tea', 'Pawpaws'],
                 error: false,
                 confirm: true,
                 stepOneDone: false,
@@ -76,6 +97,19 @@
             },
             goBack(){
                 this.stepOneDone = false
+            },
+            getCurrentLocation(){
+                this.$getLocation()
+                    .then(coordinates => {
+                        this.currentLat = coordinates.lat;
+                        this.currentLong = coordinates.lng;
+                    });
+            },
+            addProduct(index){
+                this.products.push(this.options[index]);
+            },
+            removeProduct(index){
+                this.options.push(this.products[index]);
             }
         },
         watch :{
@@ -98,6 +132,13 @@
                     this.error = false
                 }
             }
+        },
+        mounted() {
+            this.$getLocation()
+                .then(coordinates => {
+                    this.currentLat = coordinates.lat;
+                    this.currentLong = coordinates.lng;
+                });
         }
     }
 </script>
@@ -145,5 +186,11 @@
 
     .hidden{
         display: none;
+    }
+    .pill{
+        padding: 15px;
+    }
+    .md-chip{
+        margin: 5px !important;
     }
 </style>
