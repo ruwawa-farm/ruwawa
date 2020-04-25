@@ -16,8 +16,8 @@
                     </div>
                     <div class="uk-card-body">
                         <div id="steps">
-                            <span class="uk-margin-left uk-margin-right" v-bind:class="{stepActive: !stepOneDone}">Personal details</span>
-                            <span class="uk-margin-left uk-margin-right" v-bind:class="{stepActive: stepOneDone}">Farm details</span>
+                            <span class="uk-margin-left uk-margin-right" v-bind:class="{stepActive: !stepOneDone}">Personal</span>
+                            <span class="uk-margin-left uk-margin-right" v-bind:class="{stepActive: stepOneDone}">Farm</span>
                         </div>
                         <div id="step-one" class="uk-margin" v-bind:class="{hidden: stepOneDone}">
                             <form v-on:submit.prevent="moveNext">
@@ -31,33 +31,46 @@
                                     <vue-tel-input v-model="phone"></vue-tel-input>
                                 </div>
                                 <div class="uk-margin">
-                                    <input class="uk-input" type="password" placeholded er="Enter your password" v-model="password" required>
+                                    <input class="uk-input" type="password" placeholder="Enter your password" v-model="password" required>
                                 </div>
                                 <div class="uk-margin">
                                     <input class="uk-input" type="password" placeholder="Confirm your password" v-bind:disabled="confirm" v-model="password_rpt" required>
                                 </div>
                                 <div class="uk-alert-danger" v-bind:class="{err: !error}" uk-alert>
-                                    <p id="err_msg">{{error_message}} <span uk-icon="close" v-on:click="close"></span></p>
+                                    <p class="err_msg">{{error_message}} <span uk-icon="close" v-on:click="close"></span></p>
                                 </div>
                                 <button class="uk-button uk-button-default uk-align-right" type="submit">Next</button>
                             </form>
                         </div>
                         <div id="step-two" class="uk-margin" v-bind:class="{hidden: !stepOneDone}">
-                            <form>
+                            <form v-on:submit.prevent="register">
                                 <div class="uk-margin">
                                     <input class="uk-input" type="text" placeholder="Enter your farm name" v-model="farmName" required>
                                 </div>
                                 <div class="products">
-                                    <p>Select the products available in your farm below</p>
+                                    <p>Products available in your farm</p>
                                     <div class="uk-margin">
-                                        <md-chip md-deletable v-for="(product, index) in products" :key="product" @delete="removeProduct(index)">{{product}}</md-chip>
+                                        <md-chip class="product" md-deletable v-for="(product, index) in products" :key="product" @click="removeProduct(index)">{{product}}</md-chip>
                                     </div>
+                                    <p>Select below</p>
                                     <div class="uk-margin">
                                         <md-chip md-clickable v-for="(product, index) in options" :key="product" @click="addProduct(index)">{{product}}</md-chip>
                                     </div>
                                 </div>
+                                <div class="uk-alert-danger" v-bind:class="{err: !error}" uk-alert>
+                                    <p class="err_msg">{{error_message}} <span uk-icon="close" v-on:click="close"></span></p>
+                                </div>
+                                <div class="uk-margin">
+                                    <div class="uk-flex uk-flex-around">
+                                        <div>
+                                            <button class="uk-button uk-button-default" @click="goBack">Back</button>
+                                        </div>
+                                        <div>
+                                            <button class="uk-button uk-button-default" type="submit">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
-                            <button class="uk-button uk-button-default uk-align-left" @click="goBack">Back</button>
                         </div>
                     </div>
                 </div>
@@ -107,9 +120,17 @@
             },
             addProduct(index){
                 this.products.push(this.options[index]);
+                this.options.splice(index, 1)
             },
             removeProduct(index){
                 this.options.push(this.products[index]);
+                this.products.splice(index, 1)
+            },
+            register(){
+                if (this.products.length < 1){
+                    this.error = true;
+                    this.error_message = "Add at least one product"
+                }
             }
         },
         watch :{
@@ -150,7 +171,7 @@
     .err{
         display: none;
     }
-    #err_msg{
+    .err_msg{
         margin: 0 0 0 0 !important;
     }
     span:hover{
@@ -187,9 +208,11 @@
     .hidden{
         display: none;
     }
-    .pill{
-        padding: 15px;
+    .product{
+        background-color: #0b6623;
+        color: white !important;
     }
+
     .md-chip{
         margin: 5px !important;
     }
