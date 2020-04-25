@@ -47,6 +47,10 @@
                                 <div class="uk-margin">
                                     <input class="uk-input" type="text" placeholder="Enter your farm name" v-model="farmName" required>
                                 </div>
+                                <div class="uk-margin">
+                                    <input class="uk-input" type="text" :value="farmAddress" disabled required>
+                                    <div style="position:absolute; left:0; right:0; top:0; bottom:0; cursor: pointer;" @click="pickLocation()"></div>
+                                </div>
                                 <div class="products">
                                     <p>Products available in your farm</p>
                                     <div class="uk-margin">
@@ -94,6 +98,7 @@
                 lat: '',
                 lng: '',
                 farmName: '',
+                farmAddress: 'Select your farm location',
                 products: [],
                 options: ['Coffee', 'Macadamia', 'Mangoes', 'Oranges', 'Apples', 'Tea', 'Pawpaws'],
                 error: false,
@@ -125,6 +130,9 @@
             removeProduct(index){
                 this.options.push(this.products[index]);
                 this.products.splice(index, 1)
+            },
+            pickLocation(){
+                console.log('Ready to pick location')
             },
             register(){
                 if (this.products.length < 1){
