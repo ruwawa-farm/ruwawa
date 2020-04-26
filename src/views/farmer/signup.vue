@@ -51,6 +51,7 @@
                                     <input class="uk-input" type="text" :value="farmAddress" disabled required>
                                     <div style="position:absolute; left:0; right:0; top:0; bottom:0; cursor: pointer;" @click="pickLocation()"></div>
                                 </div>
+                                <MglMap :accessToken="accessToken" :mapStyle="mapStyle"></MglMap>
                                 <div class="products">
                                     <p>Products available in your farm</p>
                                     <div class="uk-margin">
@@ -60,6 +61,7 @@
                                     <div class="uk-margin">
                                         <md-chip md-clickable v-for="(product, index) in options" :key="product" @click="addProduct(index)">{{product}}</md-chip>
                                     </div>
+                                    <p>None of the above? You can update later.</p>
                                 </div>
                                 <div class="uk-alert-danger" v-bind:class="{err: !error}" uk-alert>
                                     <p class="err_msg">{{error_message}} <span uk-icon="close" v-on:click="close"></span></p>
@@ -100,7 +102,7 @@
                 farmName: '',
                 farmAddress: 'Select your farm location',
                 products: [],
-                options: ['Coffee', 'Macadamia', 'Mangoes', 'Oranges', 'Apples', 'Tea', 'Pawpaws'],
+                options: ['Mangoes', 'Oranges', 'Pawpaws', 'Apples', 'Pears', 'Coffee', 'Tea', 'Wheat', 'Cotton', 'Sugar Cane', 'Maize', 'Beans', 'Cow Peas', 'Potatoes', 'Tomatoes', 'Macadamia', 'Ground nuts', 'Cashew', 'Walnuts', 'Almonds'],
                 error: false,
                 confirm: true,
                 stepOneDone: false,
@@ -135,10 +137,6 @@
                 console.log('Ready to pick location')
             },
             register(){
-                if (this.products.length < 1){
-                    this.error = true;
-                    this.error_message = "Add at least one product"
-                }
             }
         },
         watch :{

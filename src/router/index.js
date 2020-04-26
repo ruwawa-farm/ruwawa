@@ -6,7 +6,7 @@ import Axios from "axios";
 import VueAxios from "vue-axios";
 import Toasted from 'vue-toasted';
 import VueGeolocation from "vue-browser-geolocation/src";
-import mdChips from "vue-material/dist/components/MdChips"
+import mdChips from "vue-material/dist/components/MdChips";
 
 //Styles
 import 'vue-material/dist/vue-material.min.css'
