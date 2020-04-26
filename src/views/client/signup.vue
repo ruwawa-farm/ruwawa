@@ -6,7 +6,7 @@
                     <h3>Create an account to start using our services. <br>Are you a farmer? Join us through <router-link to="/farmer">here</router-link> instead</h3>
                 </div>
                 <div>
-                    <div class="uk-card uk-card-default uk-card-hover uk-width-1-2@m">
+                    <div class="uk-card uk-card-small uk-card-default uk-card-hover uk-width-1-2@m">
                         <div class="uk-card-header">
                             <div class="uk-grid-small uk-flex-middle" uk-grid>
                                 <div class="uk-width-expand">

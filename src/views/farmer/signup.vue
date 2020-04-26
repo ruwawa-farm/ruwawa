@@ -51,7 +51,6 @@
                                     <input class="uk-input" type="text" :value="farmAddress" disabled required>
                                     <div style="position:absolute; left:0; right:0; top:0; bottom:0; cursor: pointer;" @click="pickLocation()"></div>
                                 </div>
-                                <MglMap :accessToken="accessToken" :mapStyle="mapStyle"></MglMap>
                                 <div class="products">
                                     <p>Products available in your farm</p>
                                     <div class="uk-margin">
