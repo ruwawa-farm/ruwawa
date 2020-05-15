@@ -128,6 +128,7 @@ export default {
 <style scoped>
     #signup{
         margin-top: 5em;
+        background-color: white;
     }
     .err{
         display: none;

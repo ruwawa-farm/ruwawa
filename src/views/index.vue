@@ -110,6 +110,7 @@ export default {
         top: 50%;
         -ms-transform: translateY(-50%);
         transform: translateY(-50%);
+        background-color: white;
         width: 100vw;
     }
     .err{

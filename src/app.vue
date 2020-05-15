@@ -20,7 +20,8 @@
     @import "./assets/less/theme.less";
     body,
     #app {
-        min-height: 100vh;
+      min-height: 100vh;
+      background-color: white;
     }
     html {
         height: 100%;
