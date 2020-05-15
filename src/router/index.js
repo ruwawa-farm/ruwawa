@@ -18,6 +18,7 @@ import index from '../views/index.vue'
 import signup from '../views/client/signup.vue'
 import farmer from  '../views/farmer/signup.vue'
 
+
 //components
 
 Vue.use(VueRouter);
@@ -27,7 +28,6 @@ Vue.use(Toasted);
 Vue.use(VueAxios, Axios);
 Vue.use(VueGeolocation);
 Vue.use(mdChips);
-
   const routes = [
   {
     path: '/',

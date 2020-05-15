@@ -12,7 +12,6 @@
 
     Uikit.use(Icons);
     export default {
-
     }
 </script>
 

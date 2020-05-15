@@ -47,9 +47,18 @@
                                 <div class="uk-margin">
                                     <input class="uk-input" type="text" placeholder="Enter your farm name" v-model="farmName" required>
                                 </div>
-                                <div class="uk-margin">
-                                    <input class="uk-input" type="text" :value="farmAddress" disabled required>
-                                    <div style="position:absolute; left:0; right:0; top:0; bottom:0; cursor: pointer;" @click="pickLocation()"></div>
+                                <div class="uk-margin" uk-toggle="target: #my-id" @click="getCurrentLocation">
+                                    <input class="uk-input" type="text" :value="farmAddress"  disabled required>
+                                </div>
+                                <div id="my-id" uk-modal>
+                                    <div class="uk-modal-dialog uk-modal-body uk-text-center">
+                                        <h2 class="uk-modal-title">Select the Farm location</h2>
+                                        <h3>Drag the map to place the pointer</h3>
+                                        <map-location-selector :latitude="currentLat" :longitude="currentLong" @locationUpdated="locationUpdated" :key="refresh" class="uk-width-1-1"></map-location-selector>
+                                        <div class="uk-margin">
+                                            <button class="uk-button uk-modal-close" type="button">Select</button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="products">
                                     <p>Products available in your farm</p>
@@ -85,7 +94,12 @@
 </template>
 
 <script>
+    import mapLocationSelector from 'vue-google-maps-location-selector'
+
     export default {
+        components: {
+            mapLocationSelector
+        },
         data(){
             return {
                 name: '',
@@ -94,11 +108,12 @@
                 password: '',
                 password_rpt: '',
                 error_message: '',
-                currentLat: '',
-                currentLong: '',
+                currentLat: 0.0,
+                currentLong: 0.0,
                 lat: '',
                 lng: '',
                 farmName: '',
+                refresh: 0,
                 farmAddress: 'Select your farm location',
                 products: [],
                 options: ['Mangoes', 'Oranges', 'Pawpaws', 'Apples', 'Pears', 'Coffee', 'Tea', 'Wheat', 'Cotton', 'Sugar Cane', 'Maize', 'Beans', 'Cow Peas', 'Potatoes', 'Tomatoes', 'Macadamia', 'Ground nuts', 'Cashew', 'Walnuts', 'Almonds'],
@@ -119,10 +134,16 @@
             },
             getCurrentLocation(){
                 this.$getLocation()
-                    .then(coordinates => {
+                    .then((coordinates) => {
                         this.currentLat = coordinates.lat;
                         this.currentLong = coordinates.lng;
+                        this.refresh += 1;
                     });
+            },
+            locationUpdated(latlng) {
+                console.log(latlng);
+                this.lat = latlng.lat;
+                this.lng = latlng.lng;
             },
             addProduct(index){
                 this.products.push(this.options[index]);
@@ -131,9 +152,6 @@
             removeProduct(index){
                 this.options.push(this.products[index]);
                 this.products.splice(index, 1)
-            },
-            pickLocation(){
-                console.log('Ready to pick location')
             },
             register(){
             }
@@ -158,13 +176,6 @@
                     this.error = false
                 }
             }
-        },
-        mounted() {
-            this.$getLocation()
-                .then(coordinates => {
-                    this.currentLat = coordinates.lat;
-                    this.currentLong = coordinates.lng;
-                });
         }
     }
 </script>
@@ -197,6 +208,12 @@
     .steps{
         margin-left: auto;
         margin-right: auto;
+    }
+    .map-container{
+        position: inherit !important;
+        height: 400px;
+        margin-left: auto !important;
+        margin-right: auto !important;
     }
 
     .stepActive{
