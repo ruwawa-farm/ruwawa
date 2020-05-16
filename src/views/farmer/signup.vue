@@ -55,6 +55,10 @@
                                         <h2 class="uk-modal-title">Select the Farm location</h2>
                                         <h3>Drag the map to place the pointer</h3>
                                         <map-location-selector :latitude="currentLat" :longitude="currentLong" @locationUpdated="locationUpdated" :key="refresh" class="uk-width-1-1"></map-location-selector>
+                                        <div>
+                                            <p>You location coordinates</p>
+                                            <p> <span>Latitude : {{lat}}</span> <span>Longitude : {{lng}}</span></p>
+                                        </div>
                                         <div class="uk-margin">
                                             <button class="uk-button uk-modal-close" type="button">Select</button>
                                         </div>
