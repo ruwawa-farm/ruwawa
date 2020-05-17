@@ -56,11 +56,11 @@
                                         <h3>Drag the map to place the pointer</h3>
                                         <map-location-selector :latitude="currentLat" :longitude="currentLong" @locationUpdated="locationUpdated" :key="refresh" class="uk-width-1-1"></map-location-selector>
                                         <div>
-                                            <p>You location coordinates</p>
+                                            <p>Your location coordinates</p>
                                             <p> <span>Latitude : {{lat}}</span> <span>Longitude : {{lng}}</span></p>
                                         </div>
                                         <div class="uk-margin">
-                                            <button class="uk-button uk-modal-close" type="button">Select</button>
+                                            <button class="uk-button uk-modal-close" type="button" @click="changeMap">Select</button>
                                         </div>
                                     </div>
                                 </div>
@@ -141,13 +141,20 @@
                     .then((coordinates) => {
                         this.currentLat = coordinates.lat;
                         this.currentLong = coordinates.lng;
+                        this.lat = coordinates.lat;
+                        this.lng = coordinates.lng;
                         this.refresh += 1;
                     });
             },
             locationUpdated(latlng) {
-                console.log(latlng);
                 this.lat = latlng.lat;
                 this.lng = latlng.lng;
+            },
+            changeMap(){
+                this.currentLat = this.lat;
+                this.currentLong = this.long;
+                this.farmAddress = "Location selected. Click to change it";
+                this.refresh += 1;
             },
             addProduct(index){
                 this.products.push(this.options[index]);
