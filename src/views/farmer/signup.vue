@@ -104,6 +104,27 @@
         components: {
             mapLocationSelector
         },
+        mounted(){
+            this.axios.get("https://ruwawa-db.herokuapp.com/products")
+                .then(response => {
+                    response.data.products.forEach((item) => {
+                        switch (item.type) {
+                            case "nuts":
+                                this.nuts.unshift(item);
+                                break;
+                            case "food crop":
+                                this.foodCrops.unshift(item);
+                                break;
+                            case "fruit":
+                                this.fruits.unshift(item);
+                                break;
+                            case "cash crop":
+                                this.cashCrops.unshift(item);
+                                break;
+                        }
+                    });
+                })
+        },
         data(){
             return {
                 name: '',
@@ -120,7 +141,10 @@
                 refresh: 0,
                 farmAddress: 'Select your farm location',
                 products: [],
-                options: ['Mangoes', 'Oranges', 'Pawpaws', 'Apples', 'Pears', 'Coffee', 'Tea', 'Wheat', 'Cotton', 'Sugar Cane', 'Maize', 'Beans', 'Cow Peas', 'Potatoes', 'Tomatoes', 'Macadamia', 'Ground nuts', 'Cashew', 'Walnuts', 'Almonds'],
+                fruits: [],
+                nuts: [],
+                cashCrops: [],
+                foodCrops: [],
                 error: false,
                 confirm: true,
                 stepOneDone: false,
