@@ -62,7 +62,7 @@ export default {
                 this.error = true;
             }
             else {
-                this.axios.get(`https://ruwawa-db.herokuapp.com/auth/${this.email}/${this.password}`)
+                this.axios.get(`https://ruwawa-db.herokuapp.com/auth/login`)
                     .then(res => {
                         this.btn = "Login";
                         if (res.status === 200) {

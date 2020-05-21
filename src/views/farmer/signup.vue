@@ -71,7 +71,32 @@
                                     </div>
                                     <p>Select below</p>
                                     <div class="uk-margin">
-                                        <md-chip md-clickable v-for="(product, index) in options" :key="product" @click="addProduct(index)">{{product}}</md-chip>
+                                        <badger-accordion>
+                                            <badger-accordion-item>
+                                                <div class="accordion_header" slot="header">Cash Crops</div>
+                                                <div slot="content">
+                                                    <md-chip md-clickable v-for="(cashCrop, index) in cashCrops" :key="cashCrop" @click="addProduct(index)">{{cashCrop}}</md-chip>
+                                                </div>
+                                            </badger-accordion-item>
+                                        <badger-accordion-item>
+                                            <div class="accordion_header" slot="header">Food Crops</div>
+                                            <div slot="content">
+                                                <md-chip md-clickable v-for="(foodCrop, index) in foodCrops" :key="foodCrop" @click="addProduct(index)">{{foodCrop}}</md-chip>
+                                            </div>
+                                        </badger-accordion-item>
+                                        <badger-accordion-item>
+                                            <div class="accordion_header" slot="header">Fruits</div>
+                                            <div slot="content">
+                                                <md-chip md-clickable v-for="(fruit, index) in fruits" :key="fruit" @click="addProduct(index)">{{fruit}}</md-chip>
+                                            </div>
+                                        </badger-accordion-item>
+                                        <badger-accordion-item>
+                                            <div class="accordion_header" slot="header">Nuts</div>
+                                            <div slot="content">
+                                                <md-chip md-clickable v-for="(nut, index) in nuts" :key="nut" @click="addProduct(index)">{{nut}}</md-chip>
+                                            </div>
+                                        </badger-accordion-item>
+                                        </badger-accordion>
                                     </div>
                                     <p>None of the above? You can update later.</p>
                                 </div>
@@ -79,7 +104,7 @@
                                     <p class="err_msg">{{error_message}} <span uk-icon="close" v-on:click="close"></span></p>
                                 </div>
                                 <div class="uk-margin">
-                                    <div class="uk-flex uk-flex-around">
+                                      <div class="uk-flex uk-flex-around">
                                         <div>
                                             <button class="uk-button uk-button-default" @click="goBack">Back</button>
                                         </div>
@@ -99,10 +124,13 @@
 
 <script>
     import mapLocationSelector from 'vue-google-maps-location-selector'
+    import {BadgerAccordion, BadgerAccordionItem} from 'vue-badger-accordion'
 
     export default {
         components: {
-            mapLocationSelector
+            mapLocationSelector,
+            BadgerAccordion,
+            BadgerAccordionItem
         },
         mounted(){
             this.axios.get("https://ruwawa-db.herokuapp.com/products")
@@ -143,7 +171,7 @@
                 products: [],
                 fruits: [],
                 nuts: [],
-                cashCrops: [],
+                cashCrops: ["crop1", "crop2"],
                 foodCrops: [],
                 error: false,
                 confirm: true,
@@ -181,8 +209,8 @@
                 this.refresh += 1;
             },
             addProduct(index){
-                this.products.push(this.options[index]);
-                this.options.splice(index, 1)
+                this.products.push(this.cropType[index]);
+                this.cropType.splice(index, 1)
             },
             removeProduct(index){
                 this.options.push(this.products[index]);

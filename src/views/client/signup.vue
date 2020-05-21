@@ -74,7 +74,7 @@ export default {
                 password: this.password,
                 type: 'customer'
             };
-            this.axios.post('https://ruwawa-db.herokuapp.com/auth/signup', data)
+            this.axios.post('https://ruwawa-db.herokuapp.com/auth/customer/new', data)
                 .then(res => {
                     this.btn = 'Signup';
                     if (res.status === 200) {
