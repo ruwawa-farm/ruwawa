@@ -75,25 +75,25 @@
                                             <badger-accordion-item>
                                                 <div class="accordion_header" slot="header">Cash Crops</div>
                                                 <div slot="content">
-                                                    <md-chip md-clickable v-for="(cashCrop, index) in cashCrops" :key="cashCrop" @click="addProduct(index)">{{cashCrop}}</md-chip>
+                                                    <md-chip md-clickable v-for="(cashCrop, index) in cashCrops" :key="cashCrop" @click="addProduct(index, cashCrops)">{{cashCrop}}</md-chip>
                                                 </div>
                                             </badger-accordion-item>
                                         <badger-accordion-item>
                                             <div class="accordion_header" slot="header">Food Crops</div>
                                             <div slot="content">
-                                                <md-chip md-clickable v-for="(foodCrop, index) in foodCrops" :key="foodCrop" @click="addProduct(index)">{{foodCrop}}</md-chip>
+                                                <md-chip md-clickable v-for="(foodCrop, index) in foodCrops" :key="foodCrop" @click="addProduct(index, foodCrops)">{{foodCrop}}</md-chip>
                                             </div>
                                         </badger-accordion-item>
                                         <badger-accordion-item>
                                             <div class="accordion_header" slot="header">Fruits</div>
                                             <div slot="content">
-                                                <md-chip md-clickable v-for="(fruit, index) in fruits" :key="fruit" @click="addProduct(index)">{{fruit}}</md-chip>
+                                                <md-chip md-clickable v-for="(fruit, index) in fruits" :key="fruit" @click="addProduct(index, fruits)">{{fruit}}</md-chip>
                                             </div>
                                         </badger-accordion-item>
                                         <badger-accordion-item>
                                             <div class="accordion_header" slot="header">Nuts</div>
                                             <div slot="content">
-                                                <md-chip md-clickable v-for="(nut, index) in nuts" :key="nut" @click="addProduct(index)">{{nut}}</md-chip>
+                                                <md-chip md-clickable v-for="(nut, index) in nuts" :key="nut" @click="addProduct(index, nuts)">{{nut}}</md-chip>
                                             </div>
                                         </badger-accordion-item>
                                         </badger-accordion>
@@ -172,7 +172,7 @@
                 fruits: [],
                 nuts: [],
                 cashCrops: ["crop1", "crop2"],
-                foodCrops: [],
+                foodCrops: ["Maize"],
                 error: false,
                 confirm: true,
                 stepOneDone: false,
@@ -208,12 +208,11 @@
                 this.farmAddress = "Location selected. Click to change it";
                 this.refresh += 1;
             },
-            addProduct(index){
-                this.products.push(this.cropType[index]);
-                this.cropType.splice(index, 1)
+            addProduct(index, cropType){
+                if(!this.products.includes(cropType[index]))
+                this.products.push(cropType[index]);
             },
             removeProduct(index){
-                this.options.push(this.products[index]);
                 this.products.splice(index, 1)
             },
             register(){
