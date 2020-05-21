@@ -73,25 +73,25 @@
                                     <div class="uk-margin">
                                         <badger-accordion>
                                             <badger-accordion-item>
-                                                <div class="accordion_header" slot="header">Cash Crops</div>
+                                                <div slot="header">Cash Crops</div>
                                                 <div slot="content">
                                                     <md-chip md-clickable v-for="(cashCrop, index) in cashCrops" :key="cashCrop" @click="addProduct(index, cashCrops)">{{cashCrop}}</md-chip>
                                                 </div>
                                             </badger-accordion-item>
                                         <badger-accordion-item>
-                                            <div class="accordion_header" slot="header">Food Crops</div>
+                                            <div slot="header">Food Crops</div>
                                             <div slot="content">
                                                 <md-chip md-clickable v-for="(foodCrop, index) in foodCrops" :key="foodCrop" @click="addProduct(index, foodCrops)">{{foodCrop}}</md-chip>
                                             </div>
                                         </badger-accordion-item>
                                         <badger-accordion-item>
-                                            <div class="accordion_header" slot="header">Fruits</div>
+                                            <div slot="header">Fruits</div>
                                             <div slot="content">
                                                 <md-chip md-clickable v-for="(fruit, index) in fruits" :key="fruit" @click="addProduct(index, fruits)">{{fruit}}</md-chip>
                                             </div>
                                         </badger-accordion-item>
                                         <badger-accordion-item>
-                                            <div class="accordion_header" slot="header">Nuts</div>
+                                            <div slot="header">Nuts</div>
                                             <div slot="content">
                                                 <md-chip md-clickable v-for="(nut, index) in nuts" :key="nut" @click="addProduct(index, nuts)">{{nut}}</md-chip>
                                             </div>
