@@ -55,10 +55,6 @@
                                         <h2 class="uk-modal-title">Select the Farm location</h2>
                                         <h3>Drag the map to place the pointer</h3>
                                         <map-location-selector :latitude="currentLat" :longitude="currentLong" @locationUpdated="locationUpdated" :key="refresh" class="uk-width-1-1"></map-location-selector>
-                                        <div>
-                                            <p>Your location coordinates</p>
-                                            <p> <span>Latitude : {{lat}}</span> <span>Longitude : {{lng}}</span></p>
-                                        </div>
                                         <div class="uk-margin">
                                             <button class="uk-button uk-modal-close" type="button" @click="changeMap">Select</button>
                                         </div>
@@ -71,32 +67,32 @@
                                     </div>
                                     <p>Select below</p>
                                     <div class="uk-margin">
-                                        <badger-accordion>
-                                            <badger-accordion-item>
-                                                <div slot="header">Cash Crops</div>
-                                                <div slot="content">
+                                        <ul uk-accordion>
+                                            <li class="uk-open">
+                                                <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Cash crops</h4></div>
+                                                <div class="uk-accordion-content">
                                                     <md-chip md-clickable v-for="(cashCrop, index) in cashCrops" :key="cashCrop._id" @click="addProduct(index, cashCrops)">{{cashCrop.name}}</md-chip>
                                                 </div>
-                                            </badger-accordion-item>
-                                        <badger-accordion-item>
-                                            <div slot="header">Food Crops</div>
-                                            <div slot="content">
-                                                <md-chip md-clickable v-for="(foodCrop, index) in foodCrops" :key="foodCrop._id" @click="addProduct(index, foodCrops)">{{foodCrop.name}}</md-chip>
-                                            </div>
-                                        </badger-accordion-item>
-                                        <badger-accordion-item>
-                                            <div slot="header">Fruits</div>
-                                            <div slot="content">
-                                                <md-chip md-clickable v-for="(fruit, index) in fruits" :key="fruit._id" @click="addProduct(index, fruits)">{{fruit.name}}</md-chip>
-                                            </div>
-                                        </badger-accordion-item>
-                                        <badger-accordion-item>
-                                            <div slot="header">Nuts</div>
-                                            <div slot="content">
-                                                <md-chip md-clickable v-for="(nut, index) in nuts" :key="nut._id" @click="addProduct(index, nuts)">{{nut.name}}</md-chip>
-                                            </div>
-                                        </badger-accordion-item>
-                                        </badger-accordion>
+                                            </li>
+                                            <li>
+                                                <div class="uk-accordion-title" ><h4 class="accordion-title uk-align-left">Food Crops</h4></div>
+                                                <div class="uk-accordion-content">
+                                                    <md-chip md-clickable v-for="(foodCrop, index) in foodCrops" :key="foodCrop._id" @click="addProduct(index, foodCrops)">{{foodCrop.name}}</md-chip>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Fruits</h4></div>
+                                                <div class="uk-accordion-content">
+                                                    <md-chip md-clickable v-for="(fruit, index) in fruits" :key="fruit._id" @click="addProduct(index, fruits)">{{fruit.name}}</md-chip>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Nuts</h4></div>
+                                                <div class="uk-accordion-content">
+                                                    <md-chip md-clickable v-for="(nut, index) in nuts" :key="nut._id" @click="addProduct(index, nuts)">{{nut.name}}</md-chip>
+                                                </div>
+                                            </li>
+                                        </ul>
                                     </div>
                                     <p>None of the above? You can update later.</p>
                                 </div>
@@ -263,6 +259,7 @@
         color: white;
     }
     .uk-card-title{
+        width: 100% !important;
         color: white;
     }
     .steps{
@@ -294,6 +291,15 @@
         background-color: #0b6623;
         color: white !important;
     }
+
+     .accordion-title{
+         margin: 0 0 0 20px !important;
+     }
+
+     dd{
+         max-height: 75px !important;
+     }
+
 
     .md-chip{
         margin: 5px !important;
