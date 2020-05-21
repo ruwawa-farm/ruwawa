@@ -67,7 +67,7 @@
                                 <div class="products">
                                     <p>Products available in your farm</p>
                                     <div class="uk-margin">
-                                        <md-chip class="product" md-deletable v-for="(product, index) in products" :key="product" @click="removeProduct(index)">{{product}}</md-chip>
+                                        <md-chip class="product" md-deletable v-for="(product, index) in products" :key="product._id" @click="removeProduct(index)">{{product.name}}</md-chip>
                                     </div>
                                     <p>Select below</p>
                                     <div class="uk-margin">
@@ -75,25 +75,25 @@
                                             <badger-accordion-item>
                                                 <div slot="header">Cash Crops</div>
                                                 <div slot="content">
-                                                    <md-chip md-clickable v-for="(cashCrop, index) in cashCrops" :key="cashCrop" @click="addProduct(index, cashCrops)">{{cashCrop}}</md-chip>
+                                                    <md-chip md-clickable v-for="(cashCrop, index) in cashCrops" :key="cashCrop._id" @click="addProduct(index, cashCrops)">{{cashCrop.name}}</md-chip>
                                                 </div>
                                             </badger-accordion-item>
                                         <badger-accordion-item>
                                             <div slot="header">Food Crops</div>
                                             <div slot="content">
-                                                <md-chip md-clickable v-for="(foodCrop, index) in foodCrops" :key="foodCrop" @click="addProduct(index, foodCrops)">{{foodCrop}}</md-chip>
+                                                <md-chip md-clickable v-for="(foodCrop, index) in foodCrops" :key="foodCrop._id" @click="addProduct(index, foodCrops)">{{foodCrop.name}}</md-chip>
                                             </div>
                                         </badger-accordion-item>
                                         <badger-accordion-item>
                                             <div slot="header">Fruits</div>
                                             <div slot="content">
-                                                <md-chip md-clickable v-for="(fruit, index) in fruits" :key="fruit" @click="addProduct(index, fruits)">{{fruit}}</md-chip>
+                                                <md-chip md-clickable v-for="(fruit, index) in fruits" :key="fruit._id" @click="addProduct(index, fruits)">{{fruit.name}}</md-chip>
                                             </div>
                                         </badger-accordion-item>
                                         <badger-accordion-item>
                                             <div slot="header">Nuts</div>
                                             <div slot="content">
-                                                <md-chip md-clickable v-for="(nut, index) in nuts" :key="nut" @click="addProduct(index, nuts)">{{nut}}</md-chip>
+                                                <md-chip md-clickable v-for="(nut, index) in nuts" :key="nut._id" @click="addProduct(index, nuts)">{{nut.name}}</md-chip>
                                             </div>
                                         </badger-accordion-item>
                                         </badger-accordion>
@@ -124,13 +124,10 @@
 
 <script>
     import mapLocationSelector from 'vue-google-maps-location-selector'
-    import {BadgerAccordion, BadgerAccordionItem} from 'vue-badger-accordion'
 
     export default {
         components: {
-            mapLocationSelector,
-            BadgerAccordion,
-            BadgerAccordionItem
+            mapLocationSelector
         },
         mounted(){
             this.axios.get("https://ruwawa-db.herokuapp.com/products")

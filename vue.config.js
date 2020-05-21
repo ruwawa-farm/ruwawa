@@ -1,4 +1,5 @@
 // vue.config.js
 module.exports = {
-    publicPath: '/vue-ruwawa/'
+    publicPath: '/vue-ruwawa/',
+    runtimeCompiler: true
 };
