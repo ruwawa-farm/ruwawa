@@ -67,7 +67,7 @@ export default {
                     email: this.email,
                     password: this.password,
                 };
-                this.axios.get('https://ruwawa-db.herokuapp.com/auth/login', data)
+                this.axios.post('https://ruwawa-db.herokuapp.com/auth/login', data)
                     .then(res => {
                         Uikit.notification({message: 'success', timeout: 5000});
                         this.btn = "Login";
