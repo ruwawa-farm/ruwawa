@@ -72,7 +72,6 @@ export default {
                 email: this.email,
                 phone: parseInt(this.phone.replace(/\s/g,'')),
                 password: this.password,
-                type: 'customer'
             };
             this.axios.post('https://ruwawa-db.herokuapp.com/auth/customer/new', data)
                 .then(res => {

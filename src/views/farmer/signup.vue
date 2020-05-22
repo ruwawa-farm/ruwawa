@@ -221,7 +221,7 @@
                     farmLng: this.lng,
                     products: this.products
                 };
-                this.axios.get('https://ruwawa-db.herokuapp.com/farmer/new', data)
+                this.axios.post('https://ruwawa-db.herokuapp.com/auth/farmer/new', data)
                     .then(response => {
                         console.log(response)})
                     .catch(error => {
