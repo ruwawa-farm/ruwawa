@@ -47,6 +47,8 @@
 </template>
 
 <script>
+    import Uikit from 'uikit';
+
 export default {
     data(){
         return {
@@ -77,11 +79,7 @@ export default {
                 .then(res => {
                     this.btn = 'Signup';
                     if (res.status === 200) {
-                        this.$toasted.show('user created, check your email...', {
-                            theme: "outline",
-                            position: "top-center",
-                            duration: 2000
-                        });
+                        Uikit.notification({message: 'success', timeout: 5000});
                     }
                     else {
                         this.error_message = "something went wrong! Try again later :(";

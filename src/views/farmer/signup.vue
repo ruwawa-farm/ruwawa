@@ -119,7 +119,8 @@
 </template>
 
 <script>
-    import mapLocationSelector from 'vue-google-maps-location-selector'
+    import mapLocationSelector from 'vue-google-maps-location-selector';
+    import Uikit from 'uikit';
 
     export default {
         components: {
@@ -161,7 +162,7 @@
                 lng: '',
                 farmName: '',
                 refresh: 0,
-                farmAddress: 'Select your farm location',
+                farmAddress: 'Click to select your farm location',
                 products: [],
                 fruits: [],
                 nuts: [],
@@ -223,9 +224,15 @@
                 };
                 this.axios.post('https://ruwawa-db.herokuapp.com/auth/farmer/new', data)
                     .then(response => {
-                        console.log(response)})
+                        this.btn = 'Submit';
+                        Uikit.notification({message: response.data.message, timeout: 5000});
+                        console.log(response)
+                    })
                     .catch(error => {
-                        console.log(error)});
+                        this.btn = 'Submit';
+                        console.log(error);
+                        Uikit.notification({message: 'Something went wrong. Try again later', timeout: 5000});
+                    });
             }
         },
         watch :{
@@ -311,6 +318,10 @@
 
      .accordion-title{
          margin: 0 0 0 20px !important;
+     }
+
+     .uk-accordion-title:hover{
+         cursor: pointer;
      }
 
      dd{

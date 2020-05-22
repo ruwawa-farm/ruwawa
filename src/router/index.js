@@ -7,7 +7,7 @@ import VueAxios from "vue-axios";
 import Toasted from 'vue-toasted';
 import VueGeolocation from "vue-browser-geolocation/src";
 import mdChips from "vue-material/dist/components/MdChips";
-import {BadgerAccordion, BadgerAccordionItem} from 'vue-badger-accordion'
+import {BadgerAccordion, BadgerAccordionItem} from 'vue-badger-accordion';
 
 //Styles
 import 'vue-material/dist/vue-material.min.css'
@@ -21,8 +21,8 @@ import farmer from  '../views/farmer/signup.vue'
 
 
 //components
-Vue.component('BadgerAccordion', BadgerAccordion)
-Vue.component('BadgerAccordionItem', BadgerAccordionItem)
+Vue.component('BadgerAccordion', BadgerAccordion);
+Vue.component('BadgerAccordionItem', BadgerAccordionItem);
 
 Vue.use(VueRouter);
 Vue.use(VuePageTransition);
@@ -31,6 +31,7 @@ Vue.use(Toasted);
 Vue.use(VueAxios, Axios);
 Vue.use(VueGeolocation);
 Vue.use(mdChips);
+
   const routes = [
   {
     path: '/',

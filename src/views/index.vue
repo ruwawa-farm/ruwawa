@@ -43,6 +43,7 @@
 </template>
 
 <script>
+    import Uikit from 'uikit';
 export default {
     data (){
         return {
@@ -64,6 +65,7 @@ export default {
             else {
                 this.axios.get(`https://ruwawa-db.herokuapp.com/auth/login`)
                     .then(res => {
+                        Uikit.notification({message: 'success', timeout: 5000});
                         this.btn = "Login";
                         if (res.status === 200) {
                             this.$toasted.show("Credentials are correct :)", {
