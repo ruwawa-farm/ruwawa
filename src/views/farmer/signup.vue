@@ -105,7 +105,7 @@
                                             <button class="uk-button uk-button-default" @click="goBack">Back</button>
                                         </div>
                                         <div>
-                                            <button class="uk-button uk-button-default" type="submit">Submit</button>
+                                            <button class="uk-button uk-button-default" type="submit">{{btn}}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -153,6 +153,7 @@
                 phone: '',
                 password: '',
                 password_rpt: '',
+                btn: 'Submit',
                 error_message: '',
                 currentLat: 0.0,
                 currentLong: 0.0,
@@ -209,6 +210,22 @@
                 this.products.splice(index, 1)
             },
             register(){
+                this.btn = 'Loading...';
+                const data = {
+                    name : this.name,
+                    email: this.email,
+                    phone: parseInt(this.phone.replace(/\s/g,'')),
+                    password: this.password,
+                    farmName: this.farmName,
+                    farmLat: this.lat,
+                    farmLng: this.lng,
+                    products: this.products
+                };
+                this.axios.get('https://ruwawa-db.herokuapp.com/farmer/new', data)
+                    .then(response => {
+                        console.log(response)})
+                    .catch(error => {
+                        console.log(error)});
             }
         },
         watch :{
