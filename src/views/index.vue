@@ -69,14 +69,9 @@ export default {
                 };
                 this.axios.post('https://ruwawa-db.herokuapp.com/auth/login', data)
                     .then(res => {
-                        Uikit.notification({message: 'success', timeout: 5000});
                         this.btn = "Login";
                         if (res.status === 200) {
-                            this.$toasted.show("Credentials are correct :)", {
-                                theme: "outline",
-                                position: "top-center",
-                                duration: 2000
-                            });
+                            Uikit.notification({message: 'success', timeout: 5000});
                         }
                         else {
                             this.error_message = "something went wrong! Try again later :(";
