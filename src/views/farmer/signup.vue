@@ -224,9 +224,14 @@
                 };
                 this.axios.post('https://ruwawa-db.herokuapp.com/auth/farmer/new', data)
                     .then(response => {
-                        this.btn = 'Submit';
-                        Uikit.notification({message: response.data.message, timeout: 5000});
-                        console.log(response)
+                        this.btn = "Login";
+                        if (response.status === 200) {
+                            this.$router.push('/client/home')
+                        }
+                        else {
+                            this.error_message = "something went wrong! Try again later :(";
+                            this.error = true;
+                        }
                     })
                     .catch(error => {
                         this.btn = 'Submit';
@@ -327,8 +332,6 @@
      dd{
          max-height: 75px !important;
      }
-
-
     .md-chip{
         margin: 5px !important;
     }

@@ -43,7 +43,6 @@
 </template>
 
 <script>
-    import Uikit from 'uikit';
 export default {
     data (){
         return {
@@ -71,7 +70,7 @@ export default {
                     .then(res => {
                         this.btn = "Login";
                         if (res.status === 200) {
-                            Uikit.notification({message: 'success', timeout: 5000});
+                            this.$router.push('/client/home')
                         }
                         else {
                             this.error_message = "something went wrong! Try again later :(";
