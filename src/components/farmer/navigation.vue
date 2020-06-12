@@ -22,7 +22,7 @@
         },
         data() {
             return {
-                view: 'Home',
+                view: 'home',
                 navbarOptions: {
                     mobileBreakpoint: 992,
                     tooltipAnimationType: 'shift-away',
@@ -37,14 +37,14 @@
                         },
                         {
                             type: 'button',
-                            text: 'Products',
+                            text: 'products',
                             path: '',
                             isLinkAction: true,
                             class: 'nav-button'
                         },
                         {
                             type: 'button',
-                            text: 'Orders',
+                            text: 'orders',
                             path: '',
                             isLinkAction: true,
                             class: 'nav-button'

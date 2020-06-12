@@ -18,11 +18,11 @@
             'home': homeComponent,
             'products': productsComponent,
             'farmers': farmersComponent,
-            'orders': ordersComponent
+            'my orders': ordersComponent
         },
         data() {
             return {
-                view: 'Home',
+                view: 'home',
                 navbarOptions: {
                     mobileBreakpoint: 992,
                     tooltipAnimationType: 'shift-away',

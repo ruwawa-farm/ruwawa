@@ -23,7 +23,7 @@ import contacts from '../views/contacts'
 import clientSignup from '../components/client/signup.vue'
 import farmerSignup from '../components/farmer/signup.vue'
 import clientHome from '../components/client/navigation.vue'
-import farmerHome from ''
+import farmerHome from '../components/farmer/navigation'
 
 
 //Components
