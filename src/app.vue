@@ -18,6 +18,7 @@
 <style lang='less'>
     @import "../node_modules/uikit/src/less/uikit.less";
     @import "./assets/less/theme.less";
+    @import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
     body,
     #app {
       min-height: 100vh;

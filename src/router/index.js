@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+// noinspection ES6CheckImport
 import VuePageTransition from 'vue-page-transition'
 import VueTelInput from 'vue-tel-input'
 import Axios from "axios";
@@ -15,31 +16,19 @@ import 'vue-material/dist/theme/default.css'
 import "vue-navigation-bar/dist/vue-navigation-bar.css";
 
 
+
 //views
 import index from '../views/index.vue'
-import signup from '../views/client/signup.vue'
-import farmer from  '../views/farmer/signup.vue'
-import clientNavigation from '../views/client/navigation.vue'
-
-//component views
 import contacts from '../views/contacts'
+import clientSignup from '../components/client/signup.vue'
+import farmerSignup from '../components/farmer/signup.vue'
+import clientHome from '../components/client/navigation.vue'
+import farmerHome from ''
 
-  //client components
-import clientProducts from '../views/client/products'
-import clientHome from '../views/client/home'
-import clientFarmers from '../views/client/farmers'
-import clientOrders from '../views/client/orders'
-
-  //farmers components
 
 //Components
 Vue.component("vue-navigation-bar", VueNavigationBar);
 Vue.component('Contacts', contacts)
-
-Vue.component("Home", clientHome)
-Vue.component("Products", clientProducts)
-Vue.component('Farmers', clientFarmers)
-Vue.component('Orders', clientOrders)
 
 
 Vue.use(VueRouter);
@@ -57,19 +46,24 @@ Vue.use(mdChips);
     component: index
   },
   {
-    path: '/signup',
+    path: '/client/signup',
     name: 'signup',
-    component: signup
+    component: clientSignup
   },
   {
-    path: '/farmer',
+    path: '/farmer/signup',
     name: 'farmer',
-    component: farmer
+    component: farmerSignup
   },
   {
     path: '/client/home',
     name: 'clientHome',
-    component: clientNavigation
+    component: clientHome
+  },
+  {
+    path: '/farmer/home',
+    name: 'farmerHome',
+    component: farmerHome
   }
 ];
 

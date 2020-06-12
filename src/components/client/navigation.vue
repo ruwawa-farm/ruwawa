@@ -15,36 +15,42 @@
                 navbarOptions: {
                     mobileBreakpoint: 992,
                     tooltipAnimationType: 'shift-away',
+                    collapseButtonImageOpen: require('../../assets/images/collapse-menu-light.png'),
                     menuOptionsRight: [
                         {
-                            type: 'link',
+                            type: 'button',
                             text: 'Home',
                             path: '',
-                            isLinkAction: true
+                            isLinkAction: true,
+                            class: 'nav-button'
                         },
                         {
-                            type: 'link',
+                            type: 'button',
                             text: 'Products',
                             path: '',
-                            isLinkAction: true
+                            isLinkAction: true,
+                            class: 'nav-button'
                         },
                         {
-                            type: 'link',
+                            type: 'button',
                             text: 'Farmers',
                             path: '',
-                            isLinkAction: true
+                            isLinkAction: true,
+                            class: 'nav-button'
                         },
                         {
-                            type: 'link',
+                            type: 'button',
                             text: 'My orders',
                             path: '',
-                            isLinkAction: true
+                            isLinkAction: true,
+                            class: 'nav-button'
                         },
                         {
-                            type: 'link',
+                            type: 'button',
                             text: 'Contacts',
                             path: '',
-                            isLinkAction: true
+                            isLinkAction: true,
+                            class: 'nav-button'
                         }
                     ]
                 }
@@ -58,6 +64,19 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss">
+    .vnb {
+        background: #0b6623;
+        .nav-button{
+            background: none;
 
+            &:hover {
+                background: darken(#0b6623, 10%);
+                cursor: pointer;
+            }
+        }
+        .vnb__collapse-button{
+            color: white;
+        }
+    }
 </style>
