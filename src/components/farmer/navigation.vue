@@ -10,15 +10,15 @@
 <script>
     import homeComponent from './home.vue'
     import productsComponent from './products.vue'
-    import farmersComponent from './farmers.vue'
     import ordersComponent from './orders.vue'
+    import profileComponent from './profile.vue'
 
     export default {
         components: {
             'home': homeComponent,
             'products': productsComponent,
-            'farmers': farmersComponent,
-            'orders': ordersComponent
+            'orders': ordersComponent,
+            'profile': profileComponent
         },
         data() {
             return {
@@ -44,14 +44,14 @@
                         },
                         {
                             type: 'button',
-                            text: 'Farmers',
+                            text: 'Orders',
                             path: '',
                             isLinkAction: true,
                             class: 'nav-button'
                         },
                         {
                             type: 'button',
-                            text: 'My orders',
+                            text: 'Profile',
                             path: '',
                             isLinkAction: true,
                             class: 'nav-button'
