@@ -1,6 +1,8 @@
 <template>
-    <div>
-        <vue-navigation-bar :options="navbarOptions"  @vnb-item-clicked="vnbItemClicked"/>
+    <div id="navigation">
+        <div uk-sticky>
+            <vue-navigation-bar :options="navbarOptions"  @vnb-item-clicked="vnbItemClicked"/>
+        </div>
         <div>
             <component v-bind:is = "view"></component>
         </div>

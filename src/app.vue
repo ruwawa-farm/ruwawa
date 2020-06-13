@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="uk-height-1-1">
-    <vue-page-transition name="fade">
+    <vue-page-transition>
       <router-view/>
     </vue-page-transition>
   </div>
@@ -19,11 +19,12 @@
     @import "../node_modules/uikit/src/less/uikit.less";
     @import "./assets/less/theme.less";
     @import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
-    body,
-    #app {
-      min-height: 100vh;
+
+    .uk-height-1-1 {
+      min-height: 100vh !important;
       background-color: white;
     }
+
     html {
         height: 100%;
     }
