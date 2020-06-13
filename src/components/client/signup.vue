@@ -74,10 +74,11 @@
                 phone: parseInt(this.phone.replace(/\s/g,'')),
                 password: this.password,
             };
-            this.axios.post('https://ruwawa-db.herokuapp.com/auth/customer/new', data)
+            this.axios.post('auth/customer/new', data)
                 .then(res => {
                     this.btn = 'Signup';
                     if (res.status === 200) {
+                        localStorage.setItem("token", res.data.token)
                         this.$router.push('/client/home')
                     }
                     else {

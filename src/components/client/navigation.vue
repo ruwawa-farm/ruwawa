@@ -20,7 +20,7 @@
             'home': homeComponent,
             'products': productsComponent,
             'farmers': farmersComponent,
-            'my orders': ordersComponent
+            'orders': ordersComponent
         },
         data() {
             return {
@@ -53,7 +53,7 @@
                         },
                         {
                             type: 'button',
-                            text: 'My orders',
+                            text: 'Orders',
                             path: '',
                             isLinkAction: true,
                             class: 'nav-button'

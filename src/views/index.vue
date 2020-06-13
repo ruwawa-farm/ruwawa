@@ -66,11 +66,17 @@ export default {
                     email: this.email,
                     password: this.password,
                 };
-                this.axios.post('https://ruwawa-db.herokuapp.com/auth/login', data)
+                this.axios.post('auth/login', data)
                     .then(res => {
                         this.btn = "Login";
                         if (res.status === 200) {
-                            this.$router.push('/client/home')
+                            localStorage.setItem("token", res.data.token)
+                            if(res.data.type === "client"){
+                                this.$router.push("/client/home")
+                            }
+                            else {
+                                this.$router.push("/farmer/home")
+                            }
                         }
                         else {
                             this.error_message = "something went wrong! Try again later :(";

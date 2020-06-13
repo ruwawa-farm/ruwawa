@@ -222,10 +222,11 @@
                     farmLng: this.lng,
                     products: this.products
                 };
-                this.axios.post('https://ruwawa-db.herokuapp.com/auth/farmer/new', data)
-                    .then(response => {
+                this.axios.post('auth/farmer/new', data)
+                    .then(res => {
                         this.btn = "Login";
-                        if (response.status === 200) {
+                        if (res.status === 200) {
+                            localStorage.setItem("token", res.data.token)
                             this.$router.push('/client/home')
                         }
                         else {

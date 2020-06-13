@@ -10,6 +10,11 @@ import mdChips from "vue-material/dist/components/MdChips";
 import VueNavigationBar from "vue-navigation-bar";
 import AOS from 'aos'
 
+const axios = Axios.create({
+  baseURL: "https://ruwawa-db.herokuapp.com/",
+  timeout: 1000
+})
+
 //Styles
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
@@ -36,12 +41,12 @@ Vue.use(VueRouter);
 Vue.use(VuePageTransition);
 Vue.use(VueTelInput, {required: true});
 Vue.use(Toasted);
-Vue.use(VueAxios, Axios);
+Vue.use(VueAxios, axios);
 Vue.use(VueGeolocation);
 Vue.use(mdChips);
 Vue.use(AOS.init())
 
-  const routes = [
+const routes = [
   {
     path: '/',
     name: 'index',
