@@ -47,9 +47,8 @@
 </template>
 
 <script>
-    import Uikit from 'uikit';
 
-export default {
+    export default {
     data(){
         return {
             name: '',

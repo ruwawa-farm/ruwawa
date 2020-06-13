@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// noinspection ES6CheckImport
 import VuePageTransition from 'vue-page-transition'
 import VueTelInput from 'vue-tel-input'
 import Axios from "axios";
@@ -9,11 +8,13 @@ import Toasted from 'vue-toasted';
 import VueGeolocation from "vue-browser-geolocation/src";
 import mdChips from "vue-material/dist/components/MdChips";
 import VueNavigationBar from "vue-navigation-bar";
+import AOS from 'aos'
 
 //Styles
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
 import "vue-navigation-bar/dist/vue-navigation-bar.css";
+import 'aos/dist/aos.css'
 
 
 
@@ -38,6 +39,7 @@ Vue.use(Toasted);
 Vue.use(VueAxios, Axios);
 Vue.use(VueGeolocation);
 Vue.use(mdChips);
+Vue.use(AOS.init())
 
   const routes = [
   {

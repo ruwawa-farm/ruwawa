@@ -9,6 +9,7 @@
     "deploy": "node scripts/deploy.js"
   },
   "dependencies": {
+    "aos": "^2.3.4",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "less": "^3.11.1",
