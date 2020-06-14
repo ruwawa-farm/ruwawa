@@ -68,7 +68,6 @@ export default {
                 };
                 this.axios.post('auth/login', data)
                     .then(res => {
-                        console.log(res)
                         this.btn = "Login";
                         if (res.status === 200) {
                             localStorage.setItem("token", res.data.token)
@@ -86,6 +85,7 @@ export default {
                     })
                     .catch(err => {
                         this.btn = "Login";
+                        console.log(err.response)
                         switch (err.response.status) {
                             case 403:
                                 this.error_message = err.response.data.reason;
