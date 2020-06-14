@@ -68,6 +68,7 @@ export default {
                 };
                 this.axios.post('auth/login', data)
                     .then(res => {
+                        console.log(res)
                         this.btn = "Login";
                         if (res.status === 200) {
                             localStorage.setItem("token", res.data.token)
