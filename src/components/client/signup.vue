@@ -74,7 +74,7 @@
                 phone: parseInt(this.phone.replace(/\s/g,'')),
                 password: this.password,
             };
-            this.axios.post('auth/customer/new', data)
+            this.axios.post('auth/client/new', data)
                 .then(res => {
                     this.btn = 'Signup';
                     if (res.status === 200) {
