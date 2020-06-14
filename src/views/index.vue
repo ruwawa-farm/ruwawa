@@ -31,7 +31,7 @@
                                     <button class="uk-button" type="submit">{{btn}}</button>
                                 </div>
                                 <div>
-                                    <router-link to="/signup"><button class="uk-button">Sign up</button></router-link>
+                                    <router-link to="/client/signup"><button class="uk-button">Sign up</button></router-link>
                                 </div>
                             </div>
                         </form>
