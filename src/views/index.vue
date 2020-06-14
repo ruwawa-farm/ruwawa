@@ -88,11 +88,11 @@ export default {
                         console.log(err.response)
                         switch (err.response.status) {
                             case 403:
-                                this.error_message = err.response.data.reason;
+                                this.error_message = err.response.data.error;
                                 this.error = true;
                                 break;
                             case 404:
-                                this.error_message = err.response.data.reason;
+                                this.error_message = err.response.data.error;
                                 this.error = true;
                                 break;
                             default:
