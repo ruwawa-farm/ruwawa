@@ -44,7 +44,7 @@
         </div>
 
         <!-- Our services section -->
-        <div class="uk-container ruwawa-services uk-background-cover center-vertical uk-width-1-1@m uk-margin-top">
+        <div class="uk-container ruwawa-services center-vertical uk-width-1-1@m uk-margin-top">
             <div class="uk-width-3-4@m ruwawa-service-section uk-text-center">
                 <h2 class="white-text bold-text uk-margin">Our Services</h2>
                 <div class="uk-child-width-expand@m uk-margin" uk-grid>
@@ -89,8 +89,7 @@
     }
 
     .ruwawa-goals,
-    .ruwawa-about,
-    .ruwawa-services{
+    .ruwawa-about{
         min-height: 50vh !important;
     }
 
@@ -101,7 +100,7 @@
     }
     /* Intro section styling */
     .ruwawa-intro {
-        background:url("../../assets/images/landing.jpg") center center rgba(4, 8, 29, 0.5);
+        background:url("../../assets/images/landing.jpg") rgba(4, 8, 29, 0.5);
         background-size: cover;
         background-blend-mode: multiply;
     }
@@ -150,8 +149,8 @@
 
     /* Services section styling*/
     .ruwawa-services {
-        background: url("../../assets/images/farm.jpg") center center rgba(4, 8, 29, 0.7);
         background-size: cover;
+        background: rgba(4, 8, 29, 0.7) url("../../assets/images/farm.jpg") no-repeat;
         background-blend-mode: multiply;
     }
 
