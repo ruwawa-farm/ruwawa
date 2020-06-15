@@ -1,6 +1,6 @@
 <template>
     <div id="signup">
-        <div class="uk-child-width-expand@s uk-text-center" uk-grid>
+        <div class="uk-child-width-expand@s uk-text-center uk-padding" uk-grid>
             <div>
                 <img src="../../assets/images/ruwawa-logo.png" alt="logo" width="50%" height="50%">
                 <h3>Create an account and register your farm so that you can start selling</h3>
@@ -120,14 +120,13 @@
 
 <script>
     import mapLocationSelector from 'vue-google-maps-location-selector';
-    import Uikit from 'uikit';
 
     export default {
         components: {
             mapLocationSelector
         },
         mounted(){
-            this.axios.get("https://ruwawa-db.herokuapp.com/products")
+            this.axios.get("products")
                 .then(response => {
                     response.data.products.forEach((item) => {
                         switch (item.type) {

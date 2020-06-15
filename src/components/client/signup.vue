@@ -1,6 +1,6 @@
 <template>
         <div id="signup">
-            <div class="uk-child-width-expand@s uk-text-center" uk-grid>
+            <div class="uk-child-width-expand@s uk-text-center uk-padding" uk-grid>
                 <div>
                     <img src="../../assets/images/ruwawa-logo.png" alt="logo" width="50%" height="50%">
                     <h3>Create an account to start using our services. <br>Are you a farmer? Join us through <router-link to="/farmer/signup">here</router-link> instead</h3>
