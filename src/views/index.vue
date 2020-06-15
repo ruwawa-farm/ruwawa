@@ -85,21 +85,8 @@ export default {
                     })
                     .catch(err => {
                         this.btn = "Login";
-                        console.log(err.response)
-                        switch (err.response.status) {
-                            case 403:
-                                this.error_message = err.response.data.error;
-                                this.error = true;
-                                break;
-                            case 404:
-                                this.error_message = err.response.data.error;
-                                this.error = true;
-                                break;
-                            default:
-                                this.error_message = "something went wrong! Try again later :(";
-                                this.error = true;
-                                break;
-                        }
+                        this.error_message = err.response.data.error;
+                        this.error = true;
                     })
             }
         },

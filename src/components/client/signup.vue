@@ -88,13 +88,8 @@
                 })
                 .catch(err => {
                     this.btn = "Signup";
-                    if (err.response.status === 403) {
-                        this.error_message = err.response.data.reason;
-                        this.error = true;
-                    } else {
-                        this.error_message = "something went wrong! Try again later :(";
-                        this.error = true;
-                    }
+                    this.error_message = err.response.data.reason;
+                    this.error = true;
                 });
         }
     },

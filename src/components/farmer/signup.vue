@@ -234,10 +234,10 @@
                             this.error = true;
                         }
                     })
-                    .catch(error => {
+                    .catch(err => {
                         this.btn = 'Submit';
-                        console.log(error);
-                        Uikit.notification({message: 'Something went wrong. Try again later', timeout: 5000});
+                        this.error_message = err.response.data.reason;
+                        this.error = true;
                     });
             }
         },
