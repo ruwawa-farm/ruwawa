@@ -4,6 +4,19 @@
         <div>
             <component v-bind:is = "view"></component>
         </div>
+        <footer class="social-footer">
+            <div class="social-footer-left">
+                <h1 class="bold-text">Ruwawa</h1>
+            </div>
+            <div class="social-footer-icons">
+                <ul class="uk-iconnav">
+                    <li><a href="#" uk-icon="icon: facebook; ratio: 2"></a></li>
+                    <li><a href="#" uk-icon="icon: instagram; ratio: 2"></a></li>
+                    <li><a href="#" uk-icon="icon: twitter; ratio: 2"></a></li>
+                    <li><a href="#" uk-icon="icon: whatsapp; ratio: 2"></a></li>
+                </ul>
+            </div>
+        </footer>
     </div>
 </template>
 
@@ -111,6 +124,17 @@
         }
         .vnb__collapse-button{
             color: white;
+        }
+    }
+    .social-footer {
+        padding: 0 1rem 0 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #0b6623;
+
+        h1 {
+            margin: 0 0 0 0 !important;
         }
     }
 </style>

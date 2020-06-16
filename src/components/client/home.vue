@@ -82,12 +82,6 @@
         padding-top: 30px;
     }
 
-    .bold-text {
-        color: white !important;
-        font-weight: 500;
-        line-height: 1.25;
-    }
-
     .ruwawa-goals,
     .ruwawa-about{
         min-height: 50vh !important;

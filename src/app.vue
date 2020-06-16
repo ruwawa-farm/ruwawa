@@ -25,7 +25,25 @@
       background-color: white;
     }
 
+    .bold-text {
+      color: white !important;
+      font-weight: 500;
+      line-height: 1.25;
+    }
+
     html {
         height: 100%;
+    }
+
+    /* Responsive footer section*/
+    @media only screen and (max-width: 720px) {
+      .social-footer {
+        padding-top: 1rem !important;
+      }
+    }
+
+    .uk-icon {
+      margin: 1em;
+      color: white !important;
     }
 </style>

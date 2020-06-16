@@ -6,6 +6,19 @@
         <div>
             <component v-bind:is = "view"></component>
         </div>
+        <footer class="social-footer" uk-grid>
+            <div class="social-footer-left  ">
+                <h1 class="bold-text">Ruwawa</h1>
+            </div>
+            <div class="social-footer-icons">
+                <ul class="uk-iconnav">
+                    <li><a href="#" uk-icon="icon: facebook; ratio: 1.5"></a></li>
+                    <li><a href="#" uk-icon="icon: instagram; ratio: 1.5"></a></li>
+                    <li><a href="#" uk-icon="icon: twitter; ratio: 1.5"></a></li>
+                    <li><a href="#" uk-icon="icon: whatsapp; ratio: 1.5"></a></li>
+                </ul>
+            </div>
+        </footer>
     </div>
 </template>
 
@@ -116,4 +129,17 @@
             color: white;
         }
     }
+
+    .social-footer {
+        padding: 0 0.5rem 0 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #0b6623;
+
+        h1 {
+            margin: 0 0 0 0 !important;
+        }
+    }
+
 </style>
