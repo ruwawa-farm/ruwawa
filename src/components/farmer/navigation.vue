@@ -12,6 +12,7 @@
     import productsComponent from './products.vue'
     import ordersComponent from './orders.vue'
     import profileComponent from './profile.vue'
+    import UIkit from "uikit";
 
     export default {
         components: {
@@ -19,6 +20,9 @@
             'products': productsComponent,
             'orders': ordersComponent,
             'profile': profileComponent
+        },
+        created() {
+            this.checkConfirmed()
         },
         data() {
             return {
@@ -70,6 +74,25 @@
         methods :{
             vnbItemClicked(text) {
                 this.view = text.toLocaleLowerCase()
+            },
+            checkConfirmed(){
+                if (this.$jwt.hasToken()){
+                    let token = this.$jwt.getToken()
+                    this.axios.get('/auth/farmer/confirmed', {headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    })
+                        .then(res => {
+                            if (res.status === 200)
+                                return;
+                        })
+                        .catch(err => {
+                            UIkit.notification({message: err.response.data.error, status: 'danger'})
+                        })
+                }
+                else {
+                    this.$router.push('/')
+                }
             }
         }
     }

@@ -8,11 +8,12 @@ import Toasted from 'vue-toasted';
 import VueGeolocation from "vue-browser-geolocation/src";
 import mdChips from "vue-material/dist/components/MdChips";
 import VueNavigationBar from "vue-navigation-bar";
+import jwt from 'vuejs-jwt'
 import AOS from 'aos'
 
 const axios = Axios.create({
   baseURL: "https://ruwawa-db.herokuapp.com/",
-  timeout: 5000
+  timeout: 10000
 })
 
 //Styles
@@ -45,6 +46,7 @@ Vue.use(VueAxios, axios);
 Vue.use(VueGeolocation);
 Vue.use(mdChips);
 Vue.use(AOS.init())
+Vue.use(jwt)
 
 const routes = [
   {

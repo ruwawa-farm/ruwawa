@@ -225,7 +225,7 @@
                     .then(res => {
                         this.btn = "Login";
                         if (res.status === 200) {
-                            localStorage.setItem("token", res.data.token)
+                            localStorage.setItem("auth_token", res.data.token)
                             this.$router.push('/client/home')
                         }
                         else {

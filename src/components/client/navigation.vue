@@ -15,12 +15,17 @@
     import farmersComponent from './farmers.vue'
     import ordersComponent from './orders.vue'
 
+    import UIkit from 'uikit'
+
     export default {
         components: {
             'home': homeComponent,
             'products': productsComponent,
             'farmers': farmersComponent,
             'orders': ordersComponent
+        },
+        created() {
+            this.checkConfirmed()
         },
         data() {
             return {
@@ -72,6 +77,25 @@
         methods :{
             vnbItemClicked(text) {
                 this.view = text.toLocaleLowerCase()
+            },
+            checkConfirmed(){
+                if (this.$jwt.hasToken()){
+                    let token = this.$jwt.getToken()
+                    this.axios.get('/auth/client/confirmed', {headers: {
+                        Authorization: `Bearer ${token}`
+                        }
+                    })
+                    .then(res => {
+                        if (res.status === 200)
+                            return;
+                    })
+                    .catch(err => {
+                        UIkit.notification({message: err.response.data.error, status: 'danger'})
+                    })
+                }
+                else {
+                    this.$router.push('/')
+                }
             }
         }
     }

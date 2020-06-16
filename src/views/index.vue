@@ -70,7 +70,7 @@ export default {
                     .then(res => {
                         this.btn = "Login";
                         if (res.status === 200) {
-                            localStorage.setItem("token", res.data.token)
+                            localStorage.setItem("auth_token", res.data.token)
                             if(res.data.type === "client"){
                                 this.$router.push("/client/home")
                             }
@@ -84,6 +84,7 @@ export default {
                         }
                     })
                     .catch(err => {
+                        console.log(err)
                         this.btn = "Login";
                         this.error_message = err.response.data.error;
                         this.error = true;
