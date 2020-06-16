@@ -18,7 +18,6 @@
 <style lang='less'>
     @import "../node_modules/uikit/src/less/uikit.less";
     @import "./assets/less/theme.less";
-    @import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
 
     .uk-height-1-1 {
       min-height: 100vh !important;
