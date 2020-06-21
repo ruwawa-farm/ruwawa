@@ -161,7 +161,7 @@
     /* Responsive */
     @media only screen and (min-width: 720px) {
         .ruwawa-services {
-            background: url("../../assets/images/farm.jpg") center center rgba(4, 8, 29, 0.7);
+            background: url("../../assets/images/tomatoes.jpg") center center rgba(4, 8, 29, 0.7);
             background-size: cover;
             background-blend-mode: multiply;
             min-height: 50vh;
