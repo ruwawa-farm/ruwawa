@@ -4,7 +4,7 @@
             <vue-navigation-bar :options="navbarOptions"  @vnb-item-clicked="vnbItemClicked"/>
         </div>
         <div>
-            <component v-bind:is = "view" @contacts-active="changeFooter"></component>
+            <component v-bind:is = "view" @contacts-active="changeFooter" :profile="this.profile"></component>
         </div>
         <footer class="social-footer">
             <div class="social-footer-left">
@@ -24,7 +24,6 @@
 
 <script>
     import homeComponent from './home.vue'
-    import productsComponent from './products.vue'
     import ordersComponent from './orders.vue'
     import profileComponent from './profile.vue'
     import UIkit from "uikit";
@@ -32,17 +31,23 @@
     export default {
         components: {
             'home': homeComponent,
-            'products': productsComponent,
             'orders': ordersComponent,
             'profile': profileComponent
         },
         created() {
             this.checkConfirmed()
+            this.getProfile()
         },
         data() {
             return {
                 view: 'home',
                 isContacts: false,
+                config: {
+                    headers: {
+                        Authorization: `Bearer ${this.$jwt.getToken()}`
+                    }
+                },
+                profile: {},
                 navbarOptions: {
                     mobileBreakpoint: 992,
                     tooltipAnimationType: 'shift-away',
@@ -51,13 +56,6 @@
                         {
                             type: 'button',
                             text: 'Home',
-                            path: '',
-                            isLinkAction: true,
-                            class: 'nav-button'
-                        },
-                        {
-                            type: 'button',
-                            text: 'products',
                             path: '',
                             isLinkAction: true,
                             class: 'nav-button'
@@ -96,11 +94,7 @@
             },
             checkConfirmed(){
                 if (this.$jwt.hasToken()){
-                    let token = this.$jwt.getToken()
-                    this.axios.get('/auth/farmer/confirmed', {headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    })
+                    this.axios.get('/auth/farmer/confirmed', this.config)
                         .then(res => {
                             if (res.status === 200)
                                 return;
@@ -110,6 +104,13 @@
                 else {
                     this.$router.push('/')
                 }
+            },
+            getProfile(){
+                this.axios.get('/farmers/profile', this.config)
+                    .then(res => {
+                        this.profile = res.data.farmer
+                    })
+                    .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
             }
         }
     }
