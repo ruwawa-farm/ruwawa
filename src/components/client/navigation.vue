@@ -44,6 +44,11 @@
             return {
                 isContacts: false,
                 view: 'home',
+                config: {
+                    headers: {
+                        Authorization: `Bearer ${this.$jwt.getToken()}`
+                    }
+                },
                 navbarOptions: {
                     mobileBreakpoint: 992,
                     tooltipAnimationType: 'shift-away',
@@ -97,11 +102,7 @@
             },
             checkConfirmed(){
                 if (this.$jwt.hasToken()){
-                    let token = this.$jwt.getToken()
-                    this.axios.get('/auth/client/confirmed', {headers: {
-                        Authorization: `Bearer ${token}`
-                        }
-                    })
+                    this.axios.get('/auth/client/confirmed', this.config)
                     .then(res => {
                         if (res.status === 200)
                             return;

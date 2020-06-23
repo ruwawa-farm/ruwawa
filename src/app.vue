@@ -45,4 +45,15 @@
       margin: 1em;
       color: white !important;
     }
+
+    .center-vertical {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+  .center-horizontal {
+      margin-left: auto;
+      margin-right: auto;
+  }
 </style>

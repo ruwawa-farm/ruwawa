@@ -1,8 +1,10 @@
 <template>
-    <div>
-        <vue-navigation-bar :options="navbarOptions"  @vnb-item-clicked="vnbItemClicked"/>
+    <div id="navigation" class="uk-height-1-1" :class="{bottom_footer: isContacts}">
+        <div uk-sticky>
+            <vue-navigation-bar :options="navbarOptions"  @vnb-item-clicked="vnbItemClicked"/>
+        </div>
         <div>
-            <component v-bind:is = "view"></component>
+            <component v-bind:is = "view" @contacts-active="changeFooter" :profile="this.profile"></component>
         </div>
         <footer class="social-footer">
             <div class="social-footer-left">
@@ -22,7 +24,6 @@
 
 <script>
     import homeComponent from './home.vue'
-    import productsComponent from './products.vue'
     import ordersComponent from './orders.vue'
     import profileComponent from './profile.vue'
     import UIkit from "uikit";
@@ -30,16 +31,23 @@
     export default {
         components: {
             'home': homeComponent,
-            'products': productsComponent,
             'orders': ordersComponent,
             'profile': profileComponent
         },
         created() {
             this.checkConfirmed()
+            this.getProfile()
         },
         data() {
             return {
                 view: 'home',
+                isContacts: false,
+                config: {
+                    headers: {
+                        Authorization: `Bearer ${this.$jwt.getToken()}`
+                    }
+                },
+                profile: {},
                 navbarOptions: {
                     mobileBreakpoint: 992,
                     tooltipAnimationType: 'shift-away',
@@ -48,13 +56,6 @@
                         {
                             type: 'button',
                             text: 'Home',
-                            path: '',
-                            isLinkAction: true,
-                            class: 'nav-button'
-                        },
-                        {
-                            type: 'button',
-                            text: 'products',
                             path: '',
                             isLinkAction: true,
                             class: 'nav-button'
@@ -88,24 +89,28 @@
             vnbItemClicked(text) {
                 this.view = text.toLocaleLowerCase()
             },
+            changeFooter(value){
+                this.isContacts = value
+            },
             checkConfirmed(){
                 if (this.$jwt.hasToken()){
-                    let token = this.$jwt.getToken()
-                    this.axios.get('/auth/farmer/confirmed', {headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    })
+                    this.axios.get('/auth/farmer/confirmed', this.config)
                         .then(res => {
                             if (res.status === 200)
                                 return;
                         })
-                        .catch(err => {
-                            UIkit.notification({message: err.response.data.error, status: 'danger'})
-                        })
+                        .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
                 }
                 else {
                     this.$router.push('/')
                 }
+            },
+            getProfile(){
+                this.axios.get('/farmers/profile', this.config)
+                    .then(res => {
+                        this.profile = res.data.farmer
+                    })
+                    .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
             }
         }
     }
@@ -126,8 +131,15 @@
             color: white;
         }
     }
+
+    .bottom_footer {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
     .social-footer {
-        padding: 0 1rem 0 1rem;
+        padding: 0 0.5rem 0 0.5rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -137,4 +149,5 @@
             margin: 0 0 0 0 !important;
         }
     }
+
 </style>

@@ -87,11 +87,6 @@
         min-height: 50vh !important;
     }
 
-    .center-vertical {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
     /* Intro section styling */
     .ruwawa-intro {
         background:url("../../assets/images/landing.jpg") rgba(4, 8, 29, 0.5);
