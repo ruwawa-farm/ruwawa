@@ -100,7 +100,7 @@
     }
     /* Intro section styling */
     .ruwawa-intro {
-        background:url("../../assets/images/farm.jpg") rgba(4, 8, 29, 0.5);
+        background:url("../../assets/images/farm-landing.jpg") rgba(4, 8, 29, 0.5);
         background-size: cover;
         background-blend-mode: multiply;
     }

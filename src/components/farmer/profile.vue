@@ -7,7 +7,7 @@
                     <img v-bind:src="image" class="profile-image" alt="profile" @click="uploadImage">
                     <input type="file" style="display: none" @change="onFileChange" id="upload">
                 </div>
-                <div class="uk-padding">
+                <div class="uk-padding uk-margin uk-margin-auto-left@m uk-margin-auto-right@m">
                     <h4>Name : {{this.profile.name}}</h4>
                     <h4>Email : {{this.profile.email}}</h4>
                     <h4>Farm : {{this.profile.farmName}}</h4>
@@ -20,7 +20,7 @@
                 <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
                     <button class="uk-modal-close-default icon-black" type="button" uk-close></button>
                     <div class="uk-margin uk-padding uk-text-center">
-                        <form v-on:submit.prevent="registerUser">
+                        <form v-on:submit.prevent="submitEdit">
                             <div class="uk-margin">
                                 <input class="uk-input" placeholder="Enter your full names" type="text" v-model="name" required>
                             </div>
