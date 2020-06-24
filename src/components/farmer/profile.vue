@@ -12,15 +12,15 @@
                     <h4>Email : {{this.profile.email}}</h4>
                     <h4>Farm : {{this.profile.farmName}}</h4>
                     <h4>Phone : {{this.profile.phone}}</h4>
-                    <a class="uk-button uk-button-default" href="#modal-center" uk-toggle>Edit</a>
+                    <a class="uk-button uk-button-default" href="#modal-edit" uk-toggle>Edit</a>
                 </div>
             </div>
 
-            <div id="modal-center" class="uk-flex-top" uk-modal>
+            <div id="modal-edit" class="uk-flex-top" uk-modal>
                 <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
                     <button class="uk-modal-close-default icon-black" type="button" uk-close></button>
                     <div class="uk-margin uk-padding uk-text-center">
-                        <form v-on:submit.prevent="submitEdit">
+                        <form v-on:submit.prevent="submitProfileEdit">
                             <div class="uk-margin">
                                 <input class="uk-input" placeholder="Enter your full names" type="text" v-model="name" required>
                             </div>
@@ -41,6 +41,7 @@
                 </div>
             </div>
         </div>
+
     <!-- Products section -->
         <div class="center-horizontal uk-padding-large">
             <h2 class="uk-padding-large uk-text-center">My Products</h2>
@@ -54,10 +55,32 @@
                             <p>Price: {{product.price}} per {{product.unit}}</p>
                         </div>
                         <div class="uk-card-footer">
-                            <span uk-icon="icon: pencil" class="icon-black"></span>
-                            <span uk-icon="icon: trash" class="icon-black"></span>
+                            <a href="#modal-product" uk-toggle><span uk-icon="icon: pencil" class="icon-black"></span></a>
+                            <span uk-icon="icon: trash" class="icon-black" @click="removeProduct(index)"></span>
                         </div>
                     </div>
+            </div>
+
+            <div id="modal-product" class="uk-flex-top" uk-modal>
+                <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+                    <button class="uk-modal-close-default icon-black" type="button" uk-close></button>
+                    <div class="uk-margin uk-padding uk-text-center">
+                        <form v-on:submit.prevent="submitProductEdit">
+                                <div class="uk-margin">
+                                    <input class="uk-input" placeholder="Enter your price" type="Number" v-model="price" required>
+                                </div>
+                            <div class="uk-margin">
+                                <select class="uk-select" required>
+                                    <option>In stock</option>
+                                    <option>Out of stock</option>
+                                </select>
+                            </div>
+                            <div>
+                                <button class="uk-button uk-modal-close-full uk-close-large" type="submit">{{btn}}</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -102,6 +125,9 @@
                 };
                 reader.readAsDataURL(file);
             },
+            removeProduct(index){
+                this.profile.products.splice(index, 1)
+            },
         }
     }
 </script>
@@ -117,6 +143,10 @@
         height: 50vw;
     }
 
+    .profile-image:hover {
+        cursor: pointer;
+    }
+
     a {
         color: black !important;
     }
@@ -124,6 +154,12 @@
     a:hover {
         color: black;
         text-decoration: none;
+    }
+
+    .uk-modal-close-full {
+        position: relative !important;
+        border: 1px solid black;
+        padding: 0 20px;
     }
 
     /* Responsive */
