@@ -12,11 +12,11 @@
                     <h4>Email : {{this.profile.email}}</h4>
                     <h4>Farm : {{this.profile.farmName}}</h4>
                     <h4>Phone : {{this.profile.phone}}</h4>
-                    <a class="uk-button uk-button-default" href="#modal-edit" uk-toggle>Edit</a>
+                    <a class="uk-button uk-button-default" href="#modal-profile" uk-toggle>Edit</a>
                 </div>
             </div>
 
-            <div id="modal-edit" class="uk-flex-top" uk-modal>
+            <div id="modal-profile" class="uk-flex-top" uk-modal>
                 <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
                     <button class="uk-modal-close-default icon-black" type="button" uk-close></button>
                     <div class="uk-margin uk-padding uk-text-center">
@@ -46,7 +46,7 @@
         <div class="center-horizontal uk-padding-large">
             <h2 class="uk-padding-large uk-text-center">My Products</h2>
             <div uk-grid>
-                    <div class="uk-card uk-card-default uk-width-1-6@m uk-margin-left uk-margin-right" v-for="product in profile.products" :key="product._id">
+                    <div class="uk-card uk-card-default uk-width-1-6@m uk-margin-left uk-margin-right" v-for="product in products" :key="product._id">
                         <div class="uk-card-media-top">
                             <img src="https://res.cloudinary.com/ddotnl9jq/image/upload/v1592141549/Ruwawa%20Products/coffee-beans_dosu2o.jpg" alt="">
                         </div>
@@ -76,7 +76,7 @@
                                 </select>
                             </div>
                             <div>
-                                <button class="uk-button uk-modal-close-full uk-close-large" type="submit">{{btn}}</button>
+                                <button class="uk-button" type="submit">{{btn}}</button>
                             </div>
                         </form>
                     </div>
@@ -87,6 +87,8 @@
 </template>
 
 <script>
+    import UIkit from 'uikit'
+
     export default {
         props: {
             profile: {
@@ -102,6 +104,7 @@
                 farmName: this.profile.farmName,
                 email: this.profile.email,
                 phone: this.profile.phone,
+                products: this.profile.products,
                 btn: 'Submit',
                 image: require('../../assets/images/profile.png')
             }
@@ -125,8 +128,14 @@
                 };
                 reader.readAsDataURL(file);
             },
+            submitProfileEdit(){
+                UIkit.modal('#modal-profile').hide()
+            },
+            submitProductEdit(){
+                UIkit.modal('#modal-product').hide()
+            },
             removeProduct(index){
-                this.profile.products.splice(index, 1)
+                this.products.splice(index, 1)
             },
         }
     }
