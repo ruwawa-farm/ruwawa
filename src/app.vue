@@ -46,6 +46,11 @@
       color: white !important;
     }
 
+    .icon-black {
+      margin: 1em;
+      color: black !important;
+    }
+
     .center-vertical {
       display: flex;
       align-items: center;
