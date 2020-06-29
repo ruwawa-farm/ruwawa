@@ -4,14 +4,14 @@
         <div class="uk-width-1-2 center-horizontal">
             <div uk-grid>
                 <div class="uk-padding-large uk-text-center">
-                    <img v-bind:src="image" class="profile-image" alt="profile" @click="uploadImage">
+                    <img v-bind:src="profilePicture" class="profile-image" alt="profile" @click="uploadImage">
                     <input type="file" style="display: none" @change="onFileChange" id="upload">
                 </div>
                 <div class="uk-padding uk-margin uk-margin-auto-left@m uk-margin-auto-right@m">
-                    <h4>Name : {{this.profile.name}}</h4>
-                    <h4>Email : {{this.profile.email}}</h4>
-                    <h4>Farm : {{this.profile.farmName}}</h4>
-                    <h4>Phone : {{this.profile.phone}}</h4>
+                    <h4>Name : {{this.name}}</h4>
+                    <h4>Email : {{this.email}}</h4>
+                    <h4>Farm : {{this.farmName}}</h4>
+                    <h4>Phone : {{this.phone}}</h4>
                     <a class="uk-button uk-button-default" href="#modal-profile" uk-toggle>Edit</a>
                 </div>
             </div>
@@ -46,16 +46,17 @@
         <div class="center-horizontal uk-padding-large">
             <h2 class="uk-padding-large uk-text-center">My Products</h2>
             <div uk-grid>
-                    <div class="uk-card uk-card-default uk-width-1-6@m uk-margin-left uk-margin-right" v-for="product in products" :key="product._id">
+                    <div class="uk-card uk-card-default uk-width-1-6@m uk-margin-left uk-margin-right" v-for="(product, index) in products" :key="product._id">
                         <div class="uk-card-media-top">
-                            <img src="https://res.cloudinary.com/ddotnl9jq/image/upload/v1592141549/Ruwawa%20Products/coffee-beans_dosu2o.jpg" alt="">
+                            <div class="uk-card-badge uk-label" v-bind:class="[product.inStock? 'uk-label-success' : 'uk-label-danger']">{{product.inStock? "In stock" : "Out of Stock"}}</div>
+                            <img v-bind:src="product.image_url" alt="product" height="auto">
                         </div>
                         <div class="uk-card-body">
                             <p>Name: {{product.name}}</p>
                             <p>Price: {{product.price}} per {{product.unit}}</p>
                         </div>
                         <div class="uk-card-footer">
-                            <a href="#modal-product" uk-toggle><span uk-icon="icon: pencil" class="icon-black"></span></a>
+                            <a href="#modal-product" uk-toggle @click="editProductIndex(index)"><span uk-icon="icon: pencil" class="icon-black"></span></a>
                             <span uk-icon="icon: trash" class="icon-black" @click="removeProduct(index)"></span>
                         </div>
                     </div>
@@ -67,12 +68,12 @@
                     <div class="uk-margin uk-padding uk-text-center">
                         <form v-on:submit.prevent="submitProductEdit">
                                 <div class="uk-margin">
-                                    <input class="uk-input" placeholder="Enter your price" type="Number" v-model="price" required>
+                                    <input class="uk-input" placeholder="Enter your price" type="Number" v-model="productPrice" required>
                                 </div>
                             <div class="uk-margin">
-                                <select class="uk-select" required>
-                                    <option>In stock</option>
-                                    <option>Out of stock</option>
+                                <select class="uk-select" required v-model="productInStock">
+                                    <option v-bind:value="true">In stock</option>
+                                    <option v-bind:value="false">Out of stock</option>
                                 </select>
                             </div>
                             <div>
@@ -90,48 +91,108 @@
     import UIkit from 'uikit'
 
     export default {
-        props: {
-            profile: {
-                type: Object
-            }
-        },
         created() {
-            console.log(this.profile)
+            this.getProfile()
         },
         data(){
             return {
-                name: this.profile.name,
-                farmName: this.profile.farmName,
-                email: this.profile.email,
-                phone: this.profile.phone,
-                products: this.profile.products,
+                profile: {},
+                name: '',
+                farmName: '',
+                email: '',
+                phone: '',
+                products: '',
+                productIndex: "",
+                productPrice: "",
+                productInStock: false,
                 btn: 'Submit',
-                image: require('../../assets/images/profile.png')
+                profilePicture: require('../../assets/images/profile.png'),
+                loadingPicture: require('../../assets/images/loading.gif'),
+                config: {
+                    headers: {
+                        Authorization: `Bearer ${this.$jwt.getToken()}`
+                    }
+                },
             }
         },
         methods : {
+            getProfile(){
+                console.log(this.config.headers)
+                this.axios.get('/farmers/profile', this.config)
+                    .then(res => {
+                        let profile = res.data.farmer
+                        this.profile = profile
+                        this.name = profile.name
+                        this.farmName = profile.farmName
+                        this.email = profile.email
+                        this.phone = "0"+profile.phone
+                        this.products = profile.products
+                        this.profilePicture = profile.profilePicture
+                    })
+                    .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
+            },
             uploadImage(){
                 document.getElementById("upload").click()
             },
             onFileChange(e) {
                 const files = e.target.files || e.dataTransfer.files;
-                if (!files.length)
-                    return;
-                this.createImage(files[0]);
+                if (!files.length) return;
+
+                this.profilePicture = this.loadingPicture
+
+                let data = new FormData()
+                data.append('profile', files[0])
+
+                this.axios.post('/farmers/profile/picture/upload', data, this.config)
+                .then(res => {
+                    if (res.status === 200)
+                        this.createImage(files[0]);
+                })
+                .catch(err => {
+                    this.profilePicture = this.profile.profilePicture
+                    UIkit.notification({message: err.response.data.error, status: 'danger'})
+                })
             },
             createImage(file) {
                 const reader = new FileReader();
-                const vm = this;
-
                 reader.onload = (e) => {
-                    vm.image = e.target.result;
+                    this.profilePicture = e.target.result;
                 };
                 reader.readAsDataURL(file);
             },
+            editProductIndex(index){
+                this.productIndex = index
+            },
             submitProfileEdit(){
+                const data = {
+                    name: this.name,
+                    email: this.email,
+                    phone: parseInt(this.phone.replace(/\s/g,'')),
+                    farmName: this.farmName
+                }
+                this.axios.post("/farmers/profile/edit", data, this.config)
+                .then(res => {
+                    if (res.status === 200)
+                        UIkit.notification({message: "Updated profile successfully", status: 'success'})
+                })
+                .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
                 UIkit.modal('#modal-profile').hide()
             },
             submitProductEdit(){
+                let data = {
+                    product_id: this.products[this.productIndex]._id,
+                    price: this.productPrice,
+                    inStock: this.productInStock
+                }
+                this.axios.post("/farmers/product/edit", data, this.config)
+                .then(res => {
+                    if (res.status === 200)
+                        UIkit.notification({message: "Updated product successfully", status: 'success'})
+                })
+                .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
+
+                this.products[this.productIndex].price = this.productPrice
+                this.products[this.productIndex].inStock = this.productInStock
                 UIkit.modal('#modal-product').hide()
             },
             removeProduct(index){

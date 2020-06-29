@@ -39,6 +39,7 @@
         },
         created() {
             this.checkConfirmed()
+            new Audio(require('../../assets/audio/ruwawa.mp3')).play()
         },
         data() {
             return {

@@ -4,7 +4,8 @@
             <vue-navigation-bar :options="navbarOptions"  @vnb-item-clicked="vnbItemClicked"/>
         </div>
         <div>
-            <component v-bind:is = "view" @contacts-active="changeFooter" :profile="this.profile"></component>
+            <div class="sticky-mic"></div>
+            <component v-bind:is = "view" @contacts-active="changeFooter"></component>
         </div>
         <footer class="social-footer">
             <div class="social-footer-left">
@@ -36,7 +37,9 @@
         },
         created() {
             this.checkConfirmed()
-            this.getProfile()
+            let audio = new Audio(require('../../assets/audio/ruwawa.mp3'))
+            audio.play()
+            audio.loop = true
         },
         data() {
             return {
@@ -104,13 +107,6 @@
                 else {
                     this.$router.push('/')
                 }
-            },
-            getProfile(){
-                this.axios.get('/farmers/profile', this.config)
-                    .then(res => {
-                        this.profile = res.data.farmer
-                    })
-                    .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
             }
         }
     }

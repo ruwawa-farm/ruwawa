@@ -12,6 +12,7 @@
     "aos": "^2.3.4",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
+    "howler": "^2.2.0",
     "less": "^3.11.1",
     "less-loader": "^5.0.0",
     "node-sass": "^4.14.1",
@@ -38,6 +39,7 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
+    "url-loader": "^4.1.0",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {

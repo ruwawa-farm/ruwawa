@@ -69,15 +69,15 @@
                                     <div class="uk-margin">
                                         <ul uk-accordion>
                                             <li class="uk-open">
-                                                <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Cash crops</h4></div>
+                                                <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Cereals</h4></div>
                                                 <div class="uk-accordion-content">
-                                                    <md-chip md-clickable v-for="(cashCrop, index) in cashCrops" :key="cashCrop._id" @click="addProduct(index, cashCrops)">{{cashCrop.name}}</md-chip>
+                                                    <md-chip md-clickable v-for="(crop, index) in cereals" :key="crop._id" @click="addProduct(index, cereals)">{{crop.name}}</md-chip>
                                                 </div>
                                             </li>
                                             <li>
-                                                <div class="uk-accordion-title" ><h4 class="accordion-title uk-align-left">Food Crops</h4></div>
+                                                <div class="uk-accordion-title" ><h4 class="accordion-title uk-align-left">Legumes</h4></div>
                                                 <div class="uk-accordion-content">
-                                                    <md-chip md-clickable v-for="(foodCrop, index) in foodCrops" :key="foodCrop._id" @click="addProduct(index, foodCrops)">{{foodCrop.name}}</md-chip>
+                                                    <md-chip md-clickable v-for="(crop, index) in legumes" :key="crop._id" @click="addProduct(index, legumes)">{{crop.name}}</md-chip>
                                                 </div>
                                             </li>
                                             <li>
@@ -130,17 +130,17 @@
                 .then(response => {
                     response.data.products.forEach((item) => {
                         switch (item.type) {
-                            case "nuts":
+                            case "nut":
                                 this.nuts.unshift(item);
-                                break;
-                            case "food crop":
-                                this.foodCrops.unshift(item);
                                 break;
                             case "fruit":
                                 this.fruits.unshift(item);
                                 break;
-                            case "cash crop":
-                                this.cashCrops.unshift(item);
+                            case "legume":
+                                this.legumes.unshift(item);
+                                break;
+                            case "cereal":
+                                this.cereals.unshift(item);
                                 break;
                         }
                     });
@@ -165,8 +165,8 @@
                 products: [],
                 fruits: [],
                 nuts: [],
-                cashCrops: [],
-                foodCrops: [],
+                cereals: [],
+                legumes: [],
                 error: false,
                 confirm: true,
                 stepOneDone: false,
@@ -204,7 +204,7 @@
             },
             addProduct(index, cropType){
                 if(!this.products.includes(cropType[index]))
-                this.products.push(cropType[index]);
+                    this.products.push(cropType[index]);
             },
             removeProduct(index){
                 this.products.splice(index, 1)
