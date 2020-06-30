@@ -120,6 +120,7 @@
 
 <script>
     import mapLocationSelector from 'vue-google-maps-location-selector';
+    import UIkit from 'uikit'
 
     export default {
         components: {
@@ -145,6 +146,7 @@
                         }
                     });
                 })
+                .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
         },
         data(){
             return {

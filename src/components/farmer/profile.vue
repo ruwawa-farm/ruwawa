@@ -60,8 +60,13 @@
                             <span uk-icon="icon: trash" class="icon-black" @click="removeProduct(index)"></span>
                         </div>
                     </div>
+                    <div class="uk-card uk-card-default uk-width-1-6@m uk-margin-left uk-margin-right center-vertical uk-text-center add-card" @click="addModal">
+                        <div>
+                            <img src="../../assets/images/add.png" alt="add" width="50px" height="50px">
+                            <h3 class="uk-card-title">Add product</h3>
+                        </div>
+                    </div>
             </div>
-
             <div id="modal-product" class="uk-flex-top" uk-modal>
                 <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
                     <button class="uk-modal-close-default icon-black" type="button" uk-close></button>
@@ -83,6 +88,52 @@
                     </div>
                 </div>
             </div>
+            <div id="modal-add" class="uk-flex-top" uk-modal>
+                <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+                    <button class="uk-modal-close-default icon-black" type="button" uk-close></button>
+                    <div class="uk-margin uk-padding uk-text-center">
+                        <form v-on:submit.prevent="submitNewProducts">
+                            <div class="products">
+                                <p>Products available in your farm</p>
+                                <div class="uk-margin">
+                                    <md-chip class="product" md-deletable v-for="(product, index) in newProducts" :key="product._id" @click="removeNewProduct(index)">{{product.name}}</md-chip>
+                                </div>
+                                <p>Select below</p>
+                                <div class="uk-margin">
+                                    <ul uk-accordion>
+                                        <li class="uk-open">
+                                            <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Cereals</h4></div>
+                                            <div class="uk-accordion-content">
+                                                <md-chip md-clickable v-for="(crop, index) in cereals" :key="crop._id" @click="addProduct(index, cereals)">{{crop.name}}</md-chip>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="uk-accordion-title" ><h4 class="accordion-title uk-align-left">Legumes</h4></div>
+                                            <div class="uk-accordion-content">
+                                                <md-chip md-clickable v-for="(crop, index) in legumes" :key="crop._id" @click="addProduct(index, legumes)">{{crop.name}}</md-chip>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Fruits</h4></div>
+                                            <div class="uk-accordion-content">
+                                                <md-chip md-clickable v-for="(fruit, index) in fruits" :key="fruit._id" @click="addProduct(index, fruits)">{{fruit.name}}</md-chip>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Nuts</h4></div>
+                                            <div class="uk-accordion-content">
+                                                <md-chip md-clickable v-for="(nut, index) in nuts" :key="nut._id" @click="addProduct(index, nuts)">{{nut.name}}</md-chip>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <p>If you cannot find your product in our list, please send us the details of the product via our contact form.</p>
+                            </div>
+                            <button class="uk-button uk-button-default" type="submit">{{btn}}</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -97,6 +148,11 @@
         data(){
             return {
                 profile: {},
+                fruits: [],
+                nuts: [],
+                cereals: [],
+                legumes: [],
+                newProducts: [],
                 name: '',
                 farmName: '',
                 email: '',
@@ -128,6 +184,31 @@
                         this.phone = "0"+profile.phone
                         this.products = profile.products
                         this.profilePicture = profile.profilePicture
+                        this.getProducts()
+                    })
+                    .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
+            },
+            getProducts(){
+                this.axios.get("products")
+                    .then(res => {
+                        res.data.products.forEach((item) => {
+                            let contains = this.products.some(el => el.name === item.name)
+                            if (contains) return;
+                            switch (item.type) {
+                                case "nut":
+                                    this.nuts.unshift(item);
+                                    break;
+                                case "fruit":
+                                    this.fruits.unshift(item);
+                                    break;
+                                case "legume":
+                                    this.legumes.unshift(item);
+                                    break;
+                                case "cereal":
+                                    this.cereals.unshift(item);
+                                    break;
+                            }
+                        });
                     })
                     .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
             },
@@ -195,9 +276,28 @@
                 this.products[this.productIndex].inStock = this.productInStock
                 UIkit.modal('#modal-product').hide()
             },
+            submitNewProducts(){
+                UIkit.modal('#modal-add').hide()
+            },
             removeProduct(index){
+                this.axios.delete(`/farmers/product/${this.products[index]._id}`, this.config)
+                .then(res => {
+                    if (res.status === 200)
+                        UIkit.notification({message: "Deleted product successfully", status: 'success'})
+                })
+                .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
                 this.products.splice(index, 1)
             },
+            removeNewProduct(index){
+                this.newProducts.splice(index, 1)
+            },
+            addProduct(index, cropType){
+                if(!this.newProducts.includes(cropType[index]))
+                    this.newProducts.push(cropType[index]);
+            },
+            addModal(){
+                UIkit.modal('#modal-add').show()
+            }
         }
     }
 </script>
@@ -226,10 +326,19 @@
         text-decoration: none;
     }
 
+    .add-card:hover{
+        cursor: pointer;
+    }
+
     .uk-modal-close-full {
         position: relative !important;
         border: 1px solid black;
         padding: 0 20px;
+    }
+
+    .product{
+        background-color: #0b6623;
+        color: white !important;
     }
 
     /* Responsive */
