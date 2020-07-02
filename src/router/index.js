@@ -8,8 +8,8 @@ import Toasted from 'vue-toasted';
 import VueGeolocation from "vue-browser-geolocation/src";
 import mdChips from "vue-material/dist/components/MdChips";
 import VueNavigationBar from "vue-navigation-bar";
+import VueCarousel from 'vue-carousel';
 import jwt from 'vuejs-jwt'
-import VueUploadComponent from 'vue-upload-component'
 import AOS from 'aos'
 
 const axios = Axios.create({
@@ -37,12 +37,12 @@ import farmerHome from '../components/farmer/navigation'
 //Components
 Vue.component("vue-navigation-bar", VueNavigationBar);
 Vue.component('Contacts', contacts)
-Vue.component('file-upload', VueUploadComponent)
 
 
 Vue.use(VueRouter);
 Vue.use(VuePageTransition);
 Vue.use(VueTelInput, {required: true});
+Vue.use(VueCarousel);
 Vue.use(Toasted);
 Vue.use(VueAxios, axios);
 Vue.use(VueGeolocation);
