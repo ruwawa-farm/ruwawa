@@ -13,7 +13,7 @@ import AOS from 'aos'
 
 const axios = Axios.create({
   baseURL: "https://ruwawa-db.herokuapp.com/",
-  timeout: 10000
+  timeout: 20000
 })
 
 //Styles
