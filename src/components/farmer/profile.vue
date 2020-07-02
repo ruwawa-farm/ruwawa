@@ -303,6 +303,19 @@
                 UIkit.modal('#modal-product').hide()
             },
             submitNewProducts(){
+                let data = {
+                    products: this.newProducts
+                }
+                this.axios.post('/farmers/product/add', data, this.config)
+                    .then(res => {
+                        if (res.status === 200) {
+                            this.products = this.products.concat(this.newProducts)
+                            this.newProducts.clear()
+                            this.getProducts()
+                            UIkit.notification({message: "Added new products successfully", status: 'success'})
+                        }
+                    })
+                    .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
                 UIkit.modal('#modal-add').hide()
             },
             removeProduct(index){
