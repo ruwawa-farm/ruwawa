@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="uk-height-1-1">
+  <div id="app" class="uk-height-1-1" @dragover.prevent @drop.prevent>
     <vue-page-transition>
       <router-view/>
     </vue-page-transition>

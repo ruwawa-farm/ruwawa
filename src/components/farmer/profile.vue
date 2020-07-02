@@ -135,6 +135,14 @@
                 </div>
             </div>
         </div>
+
+    <!-- Photos section-->
+        <div  v-cloak class="center-horizontal center-vertical uk-padding-large uk-text-center farm-photos-section" @drop="handleFileUpload">
+            <div class="js-upload uk-placeholder uk-text-center uk-width-1-2" @click="uploadFarmImage">
+                <span class="uk-text-middle">Drag and drop your farm images here </span>
+                <input type="file" style="display: none" @change="handleInputUpload" id="farmUpload" multiple>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -153,6 +161,8 @@
                 cereals: [],
                 legumes: [],
                 newProducts: [],
+                farmPhotos: [],
+                incomingFiles: [],
                 name: '',
                 farmName: '',
                 email: '',
@@ -214,6 +224,22 @@
             },
             uploadImage(){
                 document.getElementById("upload").click()
+            },
+            uploadFarmImage(){
+                document.getElementById("farmUpload").click()
+            },
+            upload(files){
+                if (this.farmPhotos.length + files.length >= 5){
+
+                }
+            },
+            handleFileUpload(e){
+                if (!e.dataTransfer.files) return;
+                this.upload(e.dataTransfer.files)
+            },
+            handleInputUpload(e){
+                if (!e.target.files) return;
+                this.upload( e.target.files)
             },
             onFileChange(e) {
                 const files = e.target.files || e.dataTransfer.files;
@@ -300,6 +326,7 @@
             }
         }
     }
+
 </script>
 
 <style scoped>
@@ -339,6 +366,10 @@
     .product{
         background-color: #0b6623;
         color: white !important;
+    }
+
+    .farm-photos-section {
+        min-height: 50vh;
     }
 
     /* Responsive */
