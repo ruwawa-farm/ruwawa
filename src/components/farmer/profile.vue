@@ -53,7 +53,7 @@
                         </div>
                         <div class="uk-card-body">
                             <p>Name: {{product.name}}</p>
-                            <p>Price: {{product.price}} per {{product.unit}}</p>
+                            <p>Price: Ksh.{{product.price}} per {{product.unit}}</p>
                         </div>
                         <div class="uk-card-footer">
                             <a href="#modal-product" uk-toggle @click="editProductIndex(index)"><span uk-icon="icon: pencil" class="icon-black"></span></a>
@@ -139,7 +139,7 @@
     <!-- Photos section-->
         <div  v-cloak class="uk-padding-large uk-text-center" @drop="handleFileUpload">
             <h2> Farm Photos</h2>
-            <carousel :per-page="1" :mouse-drag="false" v-bind:autoplay=true v-bind:loop=true>
+            <carousel :per-page="1" :mouse-drag="false" v-bind:autoplay=true v-bind:loop=true v-bind:center-mode=true :space-padding=2 easing="ease-in">
                 <slide v-for="(image, index) in farmPhotos " :key="index">
                     <img v-bind:src="image" id="farm-photo">
                 </slide>
@@ -375,8 +375,8 @@
 
     .profile-image {
         border-radius: 50%;
-        width: 50vw;
-        height: 50vw;
+        width: 20vw;
+        height: 20vw;
     }
 
     .profile-image:hover {
@@ -408,16 +408,30 @@
     }
 
     #farm-photo {
-        width: 50vw;
-        height: 25vw;
+        width: 800px;
+        height: 500px;
     }
 
+
+
     /* Responsive */
-    @media only screen and (min-width: 720px) {
+    @media only screen and (max-width: 720px) {
         .profile-image {
             border-radius: 50%;
-            width: 20vw;
-            height: 20vw;
+            width: 50vw;
+            height: 50vw;
+        }
+
+        #farm-photo {
+            width: 400px !important;
+            height: 250px;
+        }
+
+        .VueCarousel-inner{
+            flex-basis: 0px !important;
         }
     }
+
+
+
 </style>
