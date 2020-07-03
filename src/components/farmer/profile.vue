@@ -139,14 +139,14 @@
     <!-- Photos section-->
         <div  v-cloak class="uk-padding-large uk-text-center" @drop="handleFileUpload">
             <h2> Farm Photos</h2>
-            <carousel :per-page="1" :mouse-drag="false" autoplay=true loop=true>
+            <carousel :per-page="1" :mouse-drag="false" v-bind:autoplay=true v-bind:loop=true>
                 <slide v-for="(image, index) in farmPhotos " :key="index">
                     <img v-bind:src="image" id="farm-photo">
                 </slide>
             </carousel>
             <div class="js-upload center-horizontal uk-placeholder uk-text-center uk-width-1-2" @click="uploadFarmImage">
                 <span class="uk-text-middle">{{uploadStatus}}</span>
-                <input type="file" style="display: none" @change="handleInputUpload" id="farmUpload" multiple maxlength="5">
+                <input type="file" style="display: none" @change="handleFileUpload" id="farmUpload" multiple maxlength="5">
             </div>
         </div>
     </div>
@@ -190,7 +190,6 @@
         },
         methods : {
             getProfile(){
-                console.log(this.config.headers)
                 this.axios.get('/farmers/profile', this.config)
                     .then(res => {
                         let profile = res.data.farmer
@@ -236,39 +235,37 @@
             uploadFarmImage(){
                 document.getElementById("farmUpload").click()
             },
-            upload(files){
-                let newPhotos = []
-                if (this.farmPhotos.length + files.length > 5){
+            upload(photos){
+                if (this.farmPhotos !== undefined && this.farmPhotos.length + photos.length > 5){
                     UIkit.notification({message: "A maximum of 5 images allowed!", status: 'danger'})
                     return;
                 }
-                this.uploadStatus = "Uploading..."
                 let data = new FormData();
+                this.uploadStatus = "Uploading...";
+                ([...photos]).forEach(file => {data.append("photos", file)});
+                this.axios.post('farmers/photos/upload', data, this.config)
+                    .then(res => {
+                        if (res.status === 200){
+                            this.createFarmImages(photos)
+                            this.uploadStatus = "Drag and drop your farm images here"
+                            UIkit.notification({message: "Uploaded images successfully", status: 'success'})
+                        }
+                    })
+                    .catch(err => { UIkit.notification({message: err.response.data.error, status: 'danger'})})
+            },
+            createFarmImages(files){
                 ([...files]).forEach(file => {
-                    data.append(file.name, file)
                     const reader = new FileReader();
                     reader.onload = (e) => {
-                        newPhotos.push(e.target.result)
+                        this.farmPhotos.push(e.target.result)
                     };
                     reader.readAsDataURL(file);
                 });
-                this.axios.post('https://httpbin.org/post', data, this.config)
-                .then(res => {
-                    if (res.status === 200){
-                        this.farmPhotos = this.farmPhotos.concat(newPhotos)
-                        this.uploadStatus = "Drag and drop your farm images here"
-                        UIkit.notification({message: "Uploaded images successfully", status: 'success'})
-                    }
-                })
-                .catch(err => { UIkit.notification({message: err.response.data.error, status: 'danger'})})
             },
             handleFileUpload(e){
-                if (!e.dataTransfer.files) return;
-                this.upload(e.dataTransfer.files)
-            },
-            handleInputUpload(e){
-                if (!e.target.files) return;
-                this.upload( e.target.files)
+                const files = e.target.files || e.dataTransfer.files;
+                if (!files.length) return;
+                this.upload(files)
             },
             onFileChange(e) {
                 const files = e.target.files || e.dataTransfer.files;
@@ -279,7 +276,7 @@
                 let data = new FormData()
                 data.append('profile', files[0])
 
-                this.axios.post('/farmers/profile/picture/upload', data, this.config)
+                this.axios.post('farmers/profile/picture/upload', data, this.config)
                 .then(res => {
                     if (res.status === 200)
                         this.createImage(files[0]);
