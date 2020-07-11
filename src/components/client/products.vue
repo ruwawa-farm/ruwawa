@@ -11,7 +11,7 @@
                     <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Berries</h4></div>
                     <div class="uk-accordion-content">
                         <div uk-grid>
-                            <div class="uk-card uk-card-default uk-width-1-6@m uk-margin-left uk-margin-right"
+                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-margin-left uk-margin-right"
                                  v-for="(berry) in products.filter((e) => {return e.type === 'berry'})" :key="berry._id">
                                 <div class="uk-card-media-top">
                                     <img v-bind:src="berry.image_url" alt="product" height="auto">
@@ -29,7 +29,7 @@
                     <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Cereals</h4></div>
                     <div class="uk-accordion-content">
                         <div uk-grid>
-                            <div class="uk-card uk-card-default uk-width-1-6@m uk-margin-left uk-margin-right"
+                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-margin-left uk-margin-right"
                                  v-for="(cereal) in products.filter((e) => {return e.type === 'cereal'})" :key="cereal._id">
                                 <div class="uk-card-media-top">
                                     <img v-bind:src="cereal.image_url" alt="product" height="auto">
@@ -47,7 +47,7 @@
                     <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Fruits</h4></div>
                     <div class="uk-accordion-content">
                         <div uk-grid>
-                            <div class="uk-card uk-card-default uk-width-1-6@m uk-margin-left uk-margin-right"
+                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-margin-left uk-margin-right"
                                  v-for="(fruit) in products.filter((e) => {return e.type === 'fruit'})" :key="fruit._id">
                                 <div class="uk-card-media-top">
                                     <img v-bind:src="fruit.image_url" alt="product" height="auto">
@@ -65,7 +65,7 @@
                     <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Legumes</h4></div>
                     <div class="uk-accordion-content">
                         <div uk-grid>
-                            <div class="uk-card uk-card-default uk-width-1-6@m uk-margin-left uk-margin-right"
+                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-margin-left uk-margin-right"
                                  v-for="(legume) in products.filter((e) => {return e.type === 'legume'})" :key="legume._id">
                                 <div class="uk-card-media-top">
                                     <img v-bind:src="legume.image_url" alt="product" height="auto">
@@ -83,7 +83,7 @@
                     <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Nuts</h4></div>
                     <div class="uk-accordion-content">
                         <div uk-grid>
-                            <div class="uk-card uk-card-default uk-width-1-6@m uk-margin-left uk-margin-right"
+                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-margin-left uk-margin-right"
                                  v-for="(nut) in products.filter((e) => {return e.type === 'nut'})" :key="nut._id">
                                 <div class="uk-card-media-top">
                                     <img v-bind:src="nut.image_url" alt="product" height="auto">
@@ -101,7 +101,7 @@
                     <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Vegetables</h4></div>
                     <div class="uk-accordion-content">
                         <div uk-grid>
-                            <div class="uk-card uk-card-default uk-width-1-6@m uk-margin-left uk-margin-right"
+                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-margin-left uk-margin-right"
                                  v-for="(veg) in products.filter((e) => {return e.type === 'vegetable'})" :key="veg._id">
                                 <div class="uk-card-media-top">
                                     <img v-bind:src="veg.image_url" alt="product" height="auto">
@@ -153,5 +153,10 @@
         .uk-grid > * {
              padding-left: 0 !important;
         }
+    }
+
+    .uk-accordion-title,
+    .uk-card-default :hover {
+        cursor: pointer;
     }
 </style>
