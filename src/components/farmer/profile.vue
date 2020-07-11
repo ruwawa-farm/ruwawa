@@ -102,15 +102,15 @@
                                 <div class="uk-margin">
                                     <ul uk-accordion>
                                         <li class="uk-open">
-                                            <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Cereals</h4></div>
+                                            <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Berries</h4></div>
                                             <div class="uk-accordion-content">
-                                                <md-chip md-clickable v-for="(crop, index) in cereals" :key="crop._id" @click="addProduct(index, cereals)">{{crop.name}}</md-chip>
+                                                <md-chip md-clickable v-for="(berry, index) in berries" :key="berry._id" @click="addProduct(index, berries)">{{berry.name}}</md-chip>
                                             </div>
                                         </li>
                                         <li>
-                                            <div class="uk-accordion-title" ><h4 class="accordion-title uk-align-left">Legumes</h4></div>
+                                            <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Cereals</h4></div>
                                             <div class="uk-accordion-content">
-                                                <md-chip md-clickable v-for="(crop, index) in legumes" :key="crop._id" @click="addProduct(index, legumes)">{{crop.name}}</md-chip>
+                                                <md-chip md-clickable v-for="(crop, index) in cereals" :key="crop._id" @click="addProduct(index, cereals)">{{crop.name}}</md-chip>
                                             </div>
                                         </li>
                                         <li>
@@ -120,9 +120,21 @@
                                             </div>
                                         </li>
                                         <li>
+                                            <div class="uk-accordion-title" ><h4 class="accordion-title uk-align-left">Legumes</h4></div>
+                                            <div class="uk-accordion-content">
+                                                <md-chip md-clickable v-for="(crop, index) in legumes" :key="crop._id" @click="addProduct(index, legumes)">{{crop.name}}</md-chip>
+                                            </div>
+                                        </li>
+                                        <li>
                                             <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Nuts</h4></div>
                                             <div class="uk-accordion-content">
                                                 <md-chip md-clickable v-for="(nut, index) in nuts" :key="nut._id" @click="addProduct(index, nuts)">{{nut.name}}</md-chip>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Vegetables</h4></div>
+                                            <div class="uk-accordion-content">
+                                                <md-chip md-clickable v-for="(veg, index) in vegetables" :key="veg._id" @click="addProduct(index, vegetables)">{{veg.name}}</md-chip>
                                             </div>
                                         </li>
                                     </ul>
@@ -166,6 +178,8 @@
                 nuts: [],
                 cereals: [],
                 legumes: [],
+                berries: [],
+                vegetables: [],
                 newProducts: [],
                 farmPhotos: [],
                 incomingFiles: [],
@@ -181,16 +195,11 @@
                 uploadStatus: 'Drag and drop your farm images here',
                 profilePicture: require('../../assets/images/profile.png'),
                 loadingPicture: require('../../assets/images/loading.gif'),
-                config: {
-                    headers: {
-                        Authorization: `Bearer ${this.$jwt.getToken()}`
-                    }
-                },
             }
         },
         methods : {
             getProfile(){
-                this.axios.get('/farmers/profile', this.config)
+                this.axios.get('/farmers/profile', this.$store.state.config)
                     .then(res => {
                         let profile = res.data.farmer
                         this.profile = profile
@@ -224,6 +233,12 @@
                                 case "cereal":
                                     this.cereals.unshift(item);
                                     break;
+                                case "berry":
+                                    this.berries.unshift(item);
+                                    break;
+                                case "vegetable":
+                                    this.vegetables.unshift(item);
+                                    break;
                             }
                         });
                     })
@@ -243,7 +258,7 @@
                 let data = new FormData();
                 this.uploadStatus = "Uploading...";
                 ([...photos]).forEach(file => {data.append("photos", file)});
-                this.axios.post('farmers/photos/upload', data, this.config)
+                this.axios.post('farmers/photos/upload', data, this.$store.state.config)
                     .then(res => {
                         if (res.status === 200){
                             this.createFarmImages(photos)
@@ -276,7 +291,7 @@
                 let data = new FormData()
                 data.append('profile', files[0])
 
-                this.axios.post('farmers/profile/picture/upload', data, this.config)
+                this.axios.post('farmers/profile/picture/upload', data,this.$store.state.config)
                 .then(res => {
                     if (res.status === 200)
                         this.createImage(files[0]);
@@ -303,7 +318,7 @@
                     phone: parseInt(this.phone.replace(/\s/g,'')),
                     farmName: this.farmName
                 }
-                this.axios.post("/farmers/profile/edit", data, this.config)
+                this.axios.post("/farmers/profile/edit", data,this.$store.state.config)
                 .then(res => {
                     if (res.status === 200)
                         UIkit.notification({message: "Updated profile successfully", status: 'success'})
@@ -317,7 +332,7 @@
                     price: this.productPrice,
                     inStock: this.productInStock
                 }
-                this.axios.post("/farmers/product/edit", data, this.config)
+                this.axios.post("/farmers/product/edit", data,this.$store.state.config)
                 .then(res => {
                     if (res.status === 200)
                         UIkit.notification({message: "Updated product successfully", status: 'success'})
@@ -332,7 +347,7 @@
                 let data = {
                     products: this.newProducts
                 }
-                this.axios.post('/farmers/product/add', data, this.config)
+                this.axios.post('/farmers/product/add', data,this.$store.state.config)
                     .then(res => {
                         if (res.status === 200) {
                             this.products = this.products.concat(this.newProducts)
@@ -345,7 +360,7 @@
                 UIkit.modal('#modal-add').hide()
             },
             removeProduct(index){
-                this.axios.delete(`/farmers/product/${this.products[index]._id}`, this.config)
+                this.axios.delete(`/farmers/product/${this.products[index]._id}`,this.$store.state.config)
                 .then(res => {
                     if (res.status === 200)
                         UIkit.notification({message: "Deleted product successfully", status: 'success'})

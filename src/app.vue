@@ -12,6 +12,15 @@
 
     Uikit.use(Icons);
     export default {
+      data(){
+        return {
+          config: {
+            headers: {
+              Authorization: `Bearer ${this.$jwt.getToken()}`
+            }
+          }
+        }
+      }
     }
 </script>
 

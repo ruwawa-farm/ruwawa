@@ -2,7 +2,7 @@
     <div id="index">
         <div class="uk-child-width-expand@s uk-text-center uk-padding" uk-grid>
             <div>
-                <img src="../assets/images/ruwawa-logo2.png" alt="logo" width="50%" height="50%">
+                <img src="../assets/images/ruwawa-logo.png" alt="logo" width="50%" height="50%">
                 <h3>Welcome to Ruwawa. <br> First log into your account or create a new one.</h3>
             </div>
             <div>
@@ -70,7 +70,7 @@ export default {
                     .then(res => {
                         this.btn = "Login";
                         if (res.status === 200) {
-                            localStorage.setItem("auth_token", res.data.token)
+                            this.$store.commit("createConfig", res.data.token)
                             if(res.data.type === "client"){
                                 this.$router.push("/client/home")
                             }

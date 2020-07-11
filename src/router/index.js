@@ -13,8 +13,7 @@ import jwt from 'vuejs-jwt'
 import AOS from 'aos'
 
 const axios = Axios.create({
-  baseURL: "https://ruwawa-db.herokuapp.com/",
-  timeout: 20000
+  baseURL: "https://ruwawa-db.herokuapp.com/"
 })
 
 //Styles
@@ -37,7 +36,6 @@ import farmerHome from '../components/farmer/navigation'
 //Components
 Vue.component("vue-navigation-bar", VueNavigationBar);
 Vue.component('Contacts', contacts)
-
 
 Vue.use(VueRouter);
 Vue.use(VuePageTransition);

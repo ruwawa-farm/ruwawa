@@ -1,14 +1,14 @@
 <template>
-    <div id="navigation" class="uk-height-1-1" :class="{bottom_footer: isContacts}">
+    <div id="navigation" class="uk-height-1-1" :class="{bottom_footer: isBottomBar}">
         <div uk-sticky>
             <vue-navigation-bar :options="navbarOptions"  @vnb-item-clicked="vnbItemClicked"/>
         </div>
         <div>
-            <component v-bind:is = "view" @contacts-active="changeFooter"></component>
+            <component v-bind:is = "view" @contacts-active="changeFooter" @products-active="changeFooter"></component>
         </div>
         <footer class="social-footer" uk-grid>
             <div class="social-footer-left  ">
-                <h1 class="bold-text">Ruwawa</h1>
+                <img src="../../assets/images/ruwawa-logo.png" width="100px" height="100px">
             </div>
             <div class="social-footer-icons">
                 <ul class="uk-iconnav">
@@ -43,7 +43,7 @@
         },
         data() {
             return {
-                isContacts: false,
+                isBottomBar: false,
                 view: 'home',
                 config: {
                     headers: {
@@ -99,7 +99,7 @@
                 this.view = text.toLocaleLowerCase()
             },
             changeFooter(value){
-                this.isContacts = value
+                this.isBottomBar = value
             },
             checkConfirmed(){
                 if (this.$jwt.hasToken()){
