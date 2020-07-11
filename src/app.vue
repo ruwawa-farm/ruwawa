@@ -70,4 +70,9 @@
       margin-left: auto;
       margin-right: auto;
   }
+
+  .uk-button-default{
+    background-color: #0b6623 !important;
+    color: white !important;
+  }
 </style>
