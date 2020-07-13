@@ -10,8 +10,8 @@
                 <li>
                     <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Berries</h4></div>
                     <div class="uk-accordion-content">
-                        <div uk-grid>
-                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-margin-left uk-margin-right"
+                        <div class="products">
+                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-width-2-3 uk-margin-right uk-margin-left"
                                  v-for="berry in products.filter((e) => {return e.type === 'berry'})" :key="berry._id"
                                  @click="showFarmers(products.indexOf(berry))">
                                 <div class="uk-card-media-top">
@@ -29,8 +29,8 @@
                 <li>
                     <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Cereals</h4></div>
                     <div class="uk-accordion-content">
-                        <div uk-grid>
-                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-margin-left uk-margin-right"
+                        <div class="products">
+                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-width-2-3 uk-margin-left uk-margin-right"
                                  v-for="cereal in products.filter((e) => {return e.type === 'cereal'})" :key="cereal._id"
                                  @click="showFarmers(products.indexOf(cereal))">
                                 <div class="uk-card-media-top">
@@ -48,8 +48,8 @@
                 <li>
                     <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Fruits</h4></div>
                     <div class="uk-accordion-content">
-                        <div uk-grid>
-                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-margin-left uk-margin-right"
+                        <div class="products">
+                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-width-2-3 uk-margin-left uk-margin-right"
                                  v-for="fruit in products.filter((e) => {return e.type === 'fruit'})" :key="fruit._id"
                                  @click="showFarmers(products.indexOf(fruit))">
                                 <div class="uk-card-media-top">
@@ -67,8 +67,8 @@
                 <li>
                     <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Legumes</h4></div>
                     <div class="uk-accordion-content">
-                        <div uk-grid>
-                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-margin-left uk-margin-right"
+                        <div class="products">
+                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-width-2-3 uk-margin-left uk-margin-right"
                                  v-for="legume in products.filter((e) => {return e.type === 'legume'})" :key="legume._id"
                                  @click="showFarmers(products.indexOf(legume))">
                                 <div class="uk-card-media-top">
@@ -86,8 +86,8 @@
                 <li>
                     <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Nuts</h4></div>
                     <div class="uk-accordion-content">
-                        <div uk-grid>
-                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-margin-left uk-margin-right"
+                        <div class="products">
+                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-width-2-3 uk-margin-left uk-margin-right"
                                  v-for="nut in products.filter((e) => {return e.type === 'nut'})" :key="nut._id"
                                  @click="showFarmers(products.indexOf(nut))">
                                 <div class="uk-card-media-top">
@@ -105,8 +105,8 @@
                 <li>
                     <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Vegetables</h4></div>
                     <div class="uk-accordion-content">
-                        <div uk-grid>
-                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-margin-left uk-margin-right"
+                        <div class="products">
+                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-width-2-3 uk-margin-left uk-margin-right"
                                  v-for="veg in products.filter((e) => {return e.type === 'vegetable'})" :key="veg._id"
                                  @click="showFarmers(products.indexOf(veg))">
                                 <div class="uk-card-media-top">
@@ -149,15 +149,14 @@
                             <div class="uk-margin">
                                 <div class="uk-form-controls">
                                     <h3 class="uk-text-danger">{{farmersListState}}</h3>
-                                    <h3 class="farmers-radio" v-for="(farmer) in availableFarmers" :key="farmer._id">
+                                    <h4 class="farmers-radio" v-for="(farmer) in availableFarmers" :key="farmer._id">
                                         <label><input class="uk-radio" type="radio" name="radio1" @click="updateTotalPrice(getProductPrice(farmer))">
-                                            {{farmer.name}} from {{farmer.farmName}} :
-                                            Ksh. {{getProductPrice(farmer)}}
+                                            {{farmer.farmName}} : Ksh. {{getProductPrice(farmer)}}
                                         </label>
-                                    </h3><br>
+                                    </h4><br>
                                 </div>
                                 <h3>Total price: Ksh. {{totalProductPrice}}</h3>
-                                <button class="uk-button uk-button-default">Add to Cart</button>
+                                <button class="uk-button uk-button-default" v-bind:disabled="undefinedPrice">Add to Cart</button>
                             </div>
                         </div>
                     </div>
@@ -189,6 +188,7 @@
                 farmersListState: '',
                 totalProductPrice: 0,
                 farmersLoading: true,
+                undefinedPrice: false
             }
         },
         methods:{
@@ -209,9 +209,10 @@
                 .then(res => {
                     this.farmersLoading = false
                     this.availableFarmers = res.data.farmers
-                    if (this.availableFarmers.length === 0){
+                    if (this.availableFarmers.length === 0)
                         this.farmersListState = "No available farmers yet."
-                    }
+                    else
+                        this.farmersListState = ""
                 })
                 .catch(err => { UIkit.notification({message: err.response.data.error, status: 'danger'})})
             },
@@ -219,12 +220,21 @@
                 return farmer.products.find(product => product.name === this.productName).price
             },
             modalHidden(){
+                this.farmerProductPrice = 0
+                this.productAmount = 0
+                this.totalProductPrice = 0
                 this.farmersLoading = true
             },
             updateTotalPrice(value){
                 this.farmerProductPrice = parseInt(value)
-                if (value !== undefined && value !== "")
+                if (value === undefined || value === ""){
+                    this.totalProductPrice = 0
+                    this.undefinedPrice = true
+                }
+                else{
+                    this.undefinedPrice = false
                     this.totalProductPrice = parseInt(value) * this.productAmount
+                }
             }
         },
         watch: {
@@ -237,6 +247,9 @@
 </script>
 
 <style scoped>
+    :root {
+        --gutter : 20px
+    }
 
     @media (min-width: 1200px) {
         .uk-grid > * {
@@ -260,4 +273,21 @@
     .uk-radio{
         margin: 20px;
     }
+
+    .products {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding: 30px 0 30px 0;
+        -webkit-overflow-scrolling: touch;
+    }
+    .products .uk-card{
+        flex: 0 0 auto;
+    }
+
+    .products::-webkit-scrollbar {
+        display: none;
+    }
+
+
 </style>
