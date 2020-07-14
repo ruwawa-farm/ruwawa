@@ -103,7 +103,7 @@
             },
             checkConfirmed(){
                 if (this.$jwt.hasToken()){
-                    this.axios.get('/auth/client/confirmed', this.config)
+                    this.axios.get('/auth/client/confirmed', this.$store.state.config)
                     .then(res => {
                         if (res.status === 200)
                             return;
