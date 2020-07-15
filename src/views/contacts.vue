@@ -63,6 +63,9 @@
             close(){
                 this.error = false
             },
+        },
+        beforeDestroy() {
+            this.$emit('contacts-active', false)
         }
     }
 </script>

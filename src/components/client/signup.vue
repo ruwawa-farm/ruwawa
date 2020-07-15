@@ -78,8 +78,9 @@
                 .then(res => {
                     this.btn = 'Signup';
                     if (res.status === 200) {
-                        localStorage.setItem("auth_token", res.data.token)
-                        this.$router.push('/client/home')
+                        this.$store.commit("createConfig", res.data.token)
+                        this.$store.commit("addUserType", "client")
+                        this.$router.push('/home')
                     }
                     else {
                         this.error_message = "something went wrong! Try again later :(";

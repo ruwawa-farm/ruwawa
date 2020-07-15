@@ -10,7 +10,8 @@ export default new Vuex.Store({
         farmerProducts: [],
         farmerProfile: [],
         cart: [],
-        config: {}
+        config: {},
+        userType: ''
     },
     mutations: {
         addProducts(state, payload) {
@@ -26,6 +27,9 @@ export default new Vuex.Store({
         addFarmerProfile(state, payload) {
             state.farmerProfile = payload
             state.farmerProducts = payload.products
+        },
+        addUserType(state, payload){
+            state.userType = payload
         }
     },
     plugins: [createPersistedState()]

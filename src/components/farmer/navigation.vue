@@ -36,6 +36,8 @@
             'profile': profileComponent
         },
         created() {
+            if (this.$store.state.userType !== "farmer")
+                return this.$router.push('/home')
             this.checkConfirmed()
             let audio = new Audio(require('../../assets/audio/ruwawa.mp3'))
             audio.play()
@@ -45,11 +47,6 @@
             return {
                 view: 'home',
                 isContacts: false,
-                config: {
-                    headers: {
-                        Authorization: `Bearer ${this.$jwt.getToken()}`
-                    }
-                },
                 profile: {},
                 navbarOptions: {
                     mobileBreakpoint: 992,

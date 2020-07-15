@@ -65,12 +65,12 @@ const routes = [
     component: farmerSignup
   },
   {
-    path: '/client/home',
+    path: '/home',
     name: 'clientHome',
     component: clientHome
   },
   {
-    path: '/farmer/home',
+    path: '/dashboard',
     name: 'farmerHome',
     component: farmerHome
   }

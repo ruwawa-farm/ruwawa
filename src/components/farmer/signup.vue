@@ -227,8 +227,9 @@
                     .then(res => {
                         this.btn = "Login";
                         if (res.status === 200) {
-                            localStorage.setItem("auth_token", res.data.token)
-                            this.$router.push('/farmer/home')
+                            this.$store.commit("createConfig", res.data.token)
+                            this.$store.commit("addUserType", "farmer")
+                            this.$router.push('/dashboard')
                         }
                         else {
                             this.error_message = "something went wrong! Try again later :(";

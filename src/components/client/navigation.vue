@@ -38,18 +38,17 @@
             'orders': ordersComponent
         },
         created() {
+            if (this.$store.state.userType !== "client")
+                return this.$router.push('/dashboard')
             this.checkConfirmed()
-            new Audio(require('../../assets/audio/ruwawa.mp3')).play()
+            let audio = new Audio(require('../../assets/audio/ruwawa.mp3'))
+            audio.play()
+            audio.loop = true
         },
         data() {
             return {
                 isBottomBar: false,
                 view: 'home',
-                config: {
-                    headers: {
-                        Authorization: `Bearer ${this.$jwt.getToken()}`
-                    }
-                },
                 navbarOptions: {
                     mobileBreakpoint: 992,
                     tooltipAnimationType: 'shift-away',
@@ -99,6 +98,7 @@
                 this.view = text.toLocaleLowerCase()
             },
             changeFooter(value){
+                console.log(value)
                 this.isBottomBar = value
             },
             checkConfirmed(){

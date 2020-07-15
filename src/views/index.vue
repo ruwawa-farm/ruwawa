@@ -72,10 +72,12 @@ export default {
                         if (res.status === 200) {
                             this.$store.commit("createConfig", res.data.token)
                             if(res.data.type === "client"){
-                                this.$router.push("/client/home")
+                                this.$store.commit("addUserType", "client")
+                                this.$router.push("/home")
                             }
                             else {
-                                this.$router.push("/farmer/home")
+                                this.$store.commit("addUserType", "farmer")
+                                this.$router.push("/dashboard")
                             }
                         }
                         else {
