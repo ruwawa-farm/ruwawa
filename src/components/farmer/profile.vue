@@ -12,7 +12,7 @@
                     <h4>Email : {{this.email}}</h4>
                     <h4>Farm : {{this.farmName}}</h4>
                     <h4>Phone : {{this.phone}}</h4>
-                    <a class="uk-button uk-button-default" href="#modal-profile" uk-toggle>Edit</a>
+                    <button class="uk-button uk-button-default" href="#modal-profile" uk-toggle>Edit</button>
                 </div>
             </div>
 
@@ -170,6 +170,7 @@
     export default {
         created() {
             this.getProfile()
+            this.getProducts()
         },
         data(){
             return {
@@ -199,50 +200,42 @@
         },
         methods : {
             getProfile(){
-                this.axios.get('/farmers/profile', this.$store.state.config)
-                    .then(res => {
-                        let profile = res.data.farmer
-                        this.profile = profile
-                        this.name = profile.name
-                        this.farmName = profile.farmName
-                        this.email = profile.email
-                        this.phone = "0"+profile.phone
-                        this.products = profile.products
-                        this.profilePicture = profile.profilePicture
-                        this.farmPhotos = profile.farmPhotos
-                        this.getProducts()
-                    })
-                    .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
+                let profile = this.$store.state.farmerProfile
+                this.profile = profile
+                this.name = profile.name
+                this.farmName = profile.farmName
+                this.email = profile.email
+                this.phone = "0"+profile.phone
+                this.products = profile.products
+                this.profilePicture = profile.profilePicture
+                this.farmPhotos = profile.farmPhotos
             },
             getProducts(){
-                this.axios.get("products")
-                    .then(res => {
-                        res.data.products.forEach((item) => {
-                            let contains = this.products.some(el => el.name === item.name)
-                            if (contains) return;
-                            switch (item.type) {
-                                case "nut":
-                                    this.nuts.unshift(item);
-                                    break;
-                                case "fruit":
-                                    this.fruits.unshift(item);
-                                    break;
-                                case "legume":
-                                    this.legumes.unshift(item);
-                                    break;
-                                case "cereal":
-                                    this.cereals.unshift(item);
-                                    break;
-                                case "berry":
-                                    this.berries.unshift(item);
-                                    break;
-                                case "vegetable":
-                                    this.vegetables.unshift(item);
-                                    break;
-                            }
-                        });
-                    })
-                    .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
+                let products = this.$store.state.allProducts
+                products.forEach(item => {
+                    let contains = this.products.some(el => el.name === item.name)
+                    if (contains) return;
+                    switch (item.type) {
+                        case "nut":
+                            this.nuts.unshift(item);
+                            break;
+                        case "fruit":
+                            this.fruits.unshift(item);
+                            break;
+                        case "legume":
+                            this.legumes.unshift(item);
+                            break;
+                        case "cereal":
+                            this.cereals.unshift(item);
+                            break;
+                        case "berry":
+                            this.berries.unshift(item);
+                            break;
+                        case "vegetable":
+                            this.vegetables.unshift(item);
+                            break;
+                    }
+                })
             },
             uploadImage(){
                 document.getElementById("upload").click()

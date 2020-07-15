@@ -8,7 +8,7 @@ export default new Vuex.Store({
     state: {
         allProducts: [],
         farmerProducts: [],
-        farmerProfile: [],
+        farmerProfile: {},
         cart: [],
         config: {},
         userType: ''
