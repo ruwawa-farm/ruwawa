@@ -1,5 +1,5 @@
 <template>
-    <div class="uk-width-1-1">
+    <div class="uk-width-1-1 profile">
     <!-- Profile section -->
         <div class="uk-width-1-2 center-horizontal">
             <div uk-grid>
