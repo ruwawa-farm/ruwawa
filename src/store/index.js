@@ -1,8 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from "vuex-persistedstate";
+import UIkit from "uikit";
 
 Vue.use(Vuex)
+
+const listener = store => {
+    const actions = ["addToCart"]
+    store.subscribe(mutation => {
+        if (actions.includes(mutation.type)){
+            UIkit.notification({message: "</h3>Added to cart</h3>", status: 'success'})
+        }
+    })
+}
 
 export default new Vuex.Store({
     state: {
@@ -11,7 +21,8 @@ export default new Vuex.Store({
         farmerProfile: {},
         cart: [],
         config: {},
-        userType: ''
+        userType: '',
+        isBottomBar: false,
     },
     mutations: {
         addProducts(state, payload) {
@@ -30,7 +41,16 @@ export default new Vuex.Store({
         },
         addUserType(state, payload){
             state.userType = payload
+        },
+        addToCart(state, payload){
+            state.cart.unshift(payload)
+        },
+        removeFromCart(state, payload){
+            state.cart.splice(payload, 1)
+        },
+        changeBottomBar(state, payload){
+            state.isBottomBar = payload
         }
     },
-    plugins: [createPersistedState()]
-})
+    plugins: [createPersistedState(), listener]
+});

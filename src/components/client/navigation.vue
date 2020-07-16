@@ -1,10 +1,10 @@
 <template>
-    <div id="navigation" class="uk-height-1-1" :class="{bottom_footer: isBottomBar}">
+    <div id="navigation" class="uk-height-1-1 bottom_footer">
         <div uk-sticky>
             <vue-navigation-bar :options="navbarOptions"  @vnb-item-clicked="vnbItemClicked"/>
         </div>
         <div>
-            <component v-bind:is = "view" @contacts-active="changeFooter" @products-active="changeFooter"></component>
+            <component v-bind:is = "view"></component>
         </div>
         <footer class="social-footer" uk-grid>
             <div class="social-footer-left  ">
@@ -27,6 +27,7 @@
     import productsComponent from './products.vue'
     import farmersComponent from './farmers.vue'
     import ordersComponent from './orders.vue'
+    import cartComponent from './cart.vue'
 
     import UIkit from 'uikit'
 
@@ -35,7 +36,8 @@
             'home': homeComponent,
             'products': productsComponent,
             'farmers': farmersComponent,
-            'orders': ordersComponent
+            'orders': ordersComponent,
+            'cart': cartComponent
         },
         created() {
             if (this.$store.state.userType !== "client")
@@ -88,6 +90,13 @@
                             path: '',
                             isLinkAction: true,
                             class: 'nav-button'
+                        },
+                        {
+                            type: 'button',
+                            text: 'Cart',
+                            path: '',
+                            isLinkAction: true,
+                            class: 'nav-button'
                         }
                     ]
                 }
@@ -97,12 +106,8 @@
             vnbItemClicked(text) {
                 this.view = text.toLocaleLowerCase()
             },
-            changeFooter(value){
-                console.log(value)
-                this.isBottomBar = value
-            },
             checkConfirmed(){
-                if (this.$jwt.hasToken()){
+                if (this.$store.state.userType !== ""){
                     this.axios.get('/auth/client/confirmed', this.$store.state.config)
                     .then(res => {
                         if (res.status === 200)

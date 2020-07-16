@@ -26,9 +26,6 @@
     import UIkit from 'uikit'
 
     export default {
-        created() {
-            this.$emit('contacts-active', true)
-        },
         data(){
             return {
                 btn: 'Submit',
@@ -63,9 +60,6 @@
             close(){
                 this.error = false
             },
-        },
-        beforeDestroy() {
-            this.$emit('contacts-active', false)
         }
     }
 </script>

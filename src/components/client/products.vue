@@ -10,7 +10,7 @@
                     <div class="uk-accordion-title uk-text-center"><h4 class="accordion-title uk-align-left">Berries</h4></div>
                     <div class="uk-accordion-content">
                         <div class="products">
-                            <div class="uk-card uk-card-default uk-width-5-6@m"
+                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-width-2-3 uk-margin-right uk-margin-left"
                                  v-for="berry in products.filter((e) => {return e.type === 'berry'})" :key="berry._id"
                                  @click="showFarmers(products.indexOf(berry))">
                                 <div class="uk-card-media-top">
@@ -29,7 +29,7 @@
                     <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Cereals</h4></div>
                     <div class="uk-accordion-content">
                         <div class="products">
-                            <div class="uk-card uk-card-default uk-width-5-6@m"
+                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-width-2-3 uk-margin-right uk-margin-left"
                                  v-for="cereal in products.filter((e) => {return e.type === 'cereal'})" :key="cereal._id"
                                  @click="showFarmers(products.indexOf(cereal))">
                                 <div class="uk-card-media-top">
@@ -48,7 +48,7 @@
                     <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Fruits</h4></div>
                     <div class="uk-accordion-content">
                         <div class="products">
-                            <div class="uk-card uk-card-default uk-card-hover uk-width-5-6@m"
+                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-width-2-3 uk-margin-right uk-margin-left"
                                  v-for="fruit in products.filter((e) => {return e.type === 'fruit'})" :key="fruit._id"
                                  @click="showFarmers(products.indexOf(fruit))">
                                 <div class="uk-card-media-top">
@@ -67,7 +67,7 @@
                     <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Legumes</h4></div>
                     <div class="uk-accordion-content">
                         <div class="products">
-                            <div class="uk-card uk-card-default uk-width-5-6@m"
+                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-width-2-3 uk-margin-right uk-margin-left"
                                  v-for="legume in products.filter((e) => {return e.type === 'legume'})" :key="legume._id"
                                  @click="showFarmers(products.indexOf(legume))">
                                 <div class="uk-card-media-top">
@@ -86,7 +86,7 @@
                     <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Nuts</h4></div>
                     <div class="uk-accordion-content">
                         <div class="products">
-                            <div class="uk-card uk-card-default uk-width-5-6@m"
+                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-width-2-3 uk-margin-right uk-margin-left"
                                  v-for="nut in products.filter((e) => {return e.type === 'nut'})" :key="nut._id"
                                  @click="showFarmers(products.indexOf(nut))">
                                 <div class="uk-card-media-top">
@@ -105,7 +105,7 @@
                     <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Vegetables</h4></div>
                     <div class="uk-accordion-content">
                         <div class="products">
-                            <div class="uk-card uk-card-default uk-width-5-6@m"
+                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-width-2-3 uk-margin-right uk-margin-left"
                                  v-for="veg in products.filter((e) => {return e.type === 'vegetable'})" :key="veg._id"
                                  @click="showFarmers(products.indexOf(veg))">
                                 <div class="uk-card-media-top">
@@ -133,7 +133,7 @@
                             <h1>{{products[productIndex].name}}</h1>
                             <h4>Enter the amount you need below in {{products[productIndex].unit}}s</h4>
                             <div class="uk-margin">
-                                <input class="uk-input" v-model="productAmount" type="number" placeholder="Amount">
+                                <input class="uk-input" v-model="productAmount" type="number" placeholder="Amount" required>
                             </div>
                         </div>
                     </div>
@@ -150,13 +150,13 @@
                                 <div class="uk-form-controls">
                                     <h3 class="uk-text-danger">{{farmersListState}}</h3>
                                     <h4 class="farmers-radio" v-for="(farmer) in availableFarmers" :key="farmer._id">
-                                        <label><input class="uk-radio" type="radio" name="radio1" @click="updateTotalPrice(getProductPrice(farmer))">
+                                        <label><input class="uk-radio" type="radio" name="radio1" @click="updateTotalPrice(farmer)">
                                             {{farmer.farmName}} : Ksh. {{getProductPrice(farmer)}}
                                         </label>
                                     </h4><br>
                                 </div>
                                 <h3>Total price: Ksh. {{totalProductPrice}}</h3>
-                                <button class="uk-button uk-button-default" v-bind:disabled="undefinedPrice">Add to Cart</button>
+                                <button class="uk-button uk-button-default" type="submit" v-bind:disabled="undefinedPrice" @click="addToCart">Add to Cart</button>
                             </div>
                         </div>
                     </div>
@@ -172,7 +172,6 @@
 
     export default {
         created() {
-            this.$emit('products-active', true)
             if (this.$store.state.allProducts.length === 0)
                 return this.getProducts()
             this.products = this.$store.state.allProducts
@@ -191,6 +190,7 @@
             return {
                 products: [],
                 availableFarmers: [],
+                selectedFarmer: {},
                 productIndex: 0,
                 productName: '',
                 productAmount: 0,
@@ -198,7 +198,7 @@
                 farmersListState: '',
                 totalProductPrice: 0,
                 farmersLoading: true,
-                undefinedPrice: false,
+                undefinedPrice: true,
                 modalActive: false
             }
         },
@@ -237,27 +237,39 @@
                 this.totalProductPrice = 0
                 this.farmersLoading = true
                 this.modalActive = false
+                this.selectedFarmer = {}
             },
             updateTotalPrice(value){
-                this.farmerProductPrice = parseInt(value)
-                if (value === undefined || value === ""){
+                let price = this.getProductPrice(value)
+                this.farmerProductPrice = parseInt(price)
+                this.selectedFarmer = value
+                if (price === undefined || price === ""){
                     this.totalProductPrice = 0
                     this.undefinedPrice = true
                 }
                 else{
                     this.undefinedPrice = false
-                    this.totalProductPrice = parseInt(value) * this.productAmount
+                    this.totalProductPrice = parseInt(price) * this.productAmount
                 }
+            },
+            addToCart(){
+                let order = {
+                    product: this.products[this.productIndex],
+                    farmer: this.selectedFarmer,
+                    total: this.totalProductPrice,
+                    amount: parseInt(this.productAmount)
+                }
+                this.$store.commit("addToCart", order)
+                UIkit.modal('#modal-farmers').hide()
             }
         },
         watch: {
             productAmount(value) {
-                if (value !== "")
+                if (value !== "" && Object.keys(this.selectedFarmer).length !== 0){
                     this.totalProductPrice = parseInt(value) * this.farmerProductPrice
+                    this.undefinedPrice = false
+                }
             },
-        },
-        beforeDestroy() {
-            this.$emit('products-active', false)
         }
     }
 </script>
@@ -286,17 +298,17 @@
     .uk-radio{
         margin: 20px;
     }
-
     .products {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: grid;
-        grid-gap: 1rem;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding: 30px 0 30px 0;
+        -webkit-overflow-scrolling: touch;
     }
-
-    @media only screen and (max-width: 900px) {
-        .products { grid-template-columns: repeat(2, 1fr); }
+    .products .uk-card{
+        flex: 0 0 auto;
     }
-
+    .products::-webkit-scrollbar {
+        display: none;
+    }
 </style>

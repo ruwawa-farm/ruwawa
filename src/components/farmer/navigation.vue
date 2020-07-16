@@ -1,5 +1,5 @@
 <template>
-    <div id="navigation" class="uk-height-1-1" :class="{bottom_footer: isContacts}">
+    <div id="navigation" class="uk-height-1-1 bottom_footer">
         <div uk-sticky>
             <vue-navigation-bar :options="navbarOptions"  @vnb-item-clicked="vnbItemClicked"/>
         </div>
@@ -93,7 +93,7 @@
                 this.isContacts = value
             },
             checkConfirmed(){
-                if (this.$jwt.hasToken()){
+                if (this.$store.state.userType !== ""){
                     this.axios.get('/auth/farmer/confirmed', this.$store.state.config)
                         .then(res => {
                             if (res.status === 200)
@@ -106,7 +106,8 @@
                 }
             },
             getProfile(){
-                if (this.$store.state.farmerProfile.length === 0){
+                let profile = this.$store.state.farmerProfile
+                if (Object.keys(profile).length === 0){
                     this.axios.get('/farmers/profile', this.$store.state.config)
                         .then(res => {
                             this.$store.commit("addFarmerProfile", res.data.farmer)

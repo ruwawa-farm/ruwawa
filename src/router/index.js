@@ -7,6 +7,9 @@ import VueAxios from "vue-axios";
 import Toasted from 'vue-toasted';
 import VueGeolocation from "vue-browser-geolocation/src";
 import mdChips from "vue-material/dist/components/MdChips";
+import mdCard from "vue-material/dist/components/MdCard";
+import mdIcons from "vue-material/dist/components/MdIcon";
+import mdButtons from "vue-material/dist/components/MdButton"
 import VueNavigationBar from "vue-navigation-bar";
 import VueCarousel from 'vue-carousel';
 import jwt from 'vuejs-jwt'
@@ -45,6 +48,9 @@ Vue.use(Toasted);
 Vue.use(VueAxios, axios);
 Vue.use(VueGeolocation);
 Vue.use(mdChips);
+Vue.use(mdCard);
+Vue.use(mdIcons);
+Vue.use(mdButtons);
 Vue.use(AOS.init())
 Vue.use(jwt)
 
