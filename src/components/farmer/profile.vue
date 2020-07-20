@@ -33,6 +33,12 @@
                             <div class="uk-margin">
                                 <vue-tel-input v-model="phone"></vue-tel-input>
                             </div>
+                            <div class="uk-margin">
+                                <select class="uk-select" required v-model="delivers">
+                                    <option :value=true>Can make deliveries</option>
+                                    <option :value=false>Unable to make deliveries</option>
+                                </select>
+                            </div>
                             <div>
                                 <button class="uk-button" type="submit">{{btn}}</button>
                             </div>
@@ -192,6 +198,7 @@
                 productIndex: "",
                 productPrice: "",
                 productInStock: false,
+                delivers: true,
                 btn: 'Submit',
                 uploadStatus: 'Drag and drop your farm images here',
                 profilePicture: require('../../assets/images/profile.png'),
