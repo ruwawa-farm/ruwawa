@@ -42,6 +42,13 @@
 
 <script>
     export default {
+        mounted() {
+            this.orders.forEach(order => {
+                if (order.delivered){
+                    this.step = 1
+                }
+            })
+        },
         data(){
             return {
                 btn: 'Next',
@@ -52,7 +59,6 @@
         methods: {
             removeFromCart(order){
                 let index = this.orders.indexOf(order)
-                this.orders.splice(index, 1)
                 this.$store.commit('removeFromCart', index)
             },
             confirm(){

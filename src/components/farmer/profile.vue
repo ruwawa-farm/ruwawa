@@ -316,7 +316,8 @@
                     name: this.name,
                     email: this.email,
                     phone: parseInt(this.phone.replace(/\s/g,'')),
-                    farmName: this.farmName
+                    farmName: this.farmName,
+                    delivers: this.delivers
                 }
                 this.axios.post("/farmers/profile/edit", data,this.$store.state.config)
                 .then(res => {

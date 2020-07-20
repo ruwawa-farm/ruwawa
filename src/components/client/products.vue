@@ -11,7 +11,7 @@
                     <div class="uk-accordion-content">
                         <div class="products">
                             <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-width-2-3 uk-margin-right uk-margin-left"
-                                 v-for="berry in products.filter((e) => {return e.type === 'berry'})" :key="berry._id"
+                                 v-for="berry in products.filter(e => {return e.type === 'berry'})" :key="berry._id"
                                  @click="showFarmers(products.indexOf(berry))">
                                 <div class="uk-card-media-top">
                                     <img v-bind:src="berry.image_url" alt="product" height="auto">
@@ -30,7 +30,7 @@
                     <div class="uk-accordion-content">
                         <div class="products">
                             <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-width-2-3 uk-margin-right uk-margin-left"
-                                 v-for="cereal in products.filter((e) => {return e.type === 'cereal'})" :key="cereal._id"
+                                 v-for="cereal in products.filter(e => {return e.type === 'cereal'})" :key="cereal._id"
                                  @click="showFarmers(products.indexOf(cereal))">
                                 <div class="uk-card-media-top">
                                     <img v-bind:src="cereal.image_url" alt="product" height="auto">
@@ -49,7 +49,7 @@
                     <div class="uk-accordion-content">
                         <div class="products">
                             <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-width-2-3 uk-margin-right uk-margin-left"
-                                 v-for="fruit in products.filter((e) => {return e.type === 'fruit'})" :key="fruit._id"
+                                 v-for="fruit in products.filter(e => {return e.type === 'fruit'})" :key="fruit._id"
                                  @click="showFarmers(products.indexOf(fruit))">
                                 <div class="uk-card-media-top">
                                     <img v-bind:src="fruit.image_url" alt="product" height="auto">
@@ -68,7 +68,7 @@
                     <div class="uk-accordion-content">
                         <div class="products">
                             <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-width-2-3 uk-margin-right uk-margin-left"
-                                 v-for="legume in products.filter((e) => {return e.type === 'legume'})" :key="legume._id"
+                                 v-for="legume in products.filter(e => {return e.type === 'legume'})" :key="legume._id"
                                  @click="showFarmers(products.indexOf(legume))">
                                 <div class="uk-card-media-top">
                                     <img v-bind:src="legume.image_url" alt="product" height="auto">
@@ -87,7 +87,7 @@
                     <div class="uk-accordion-content">
                         <div class="products">
                             <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-width-2-3 uk-margin-right uk-margin-left"
-                                 v-for="nut in products.filter((e) => {return e.type === 'nut'})" :key="nut._id"
+                                 v-for="nut in products.filter(e => {return e.type === 'nut'})" :key="nut._id"
                                  @click="showFarmers(products.indexOf(nut))">
                                 <div class="uk-card-media-top">
                                     <img v-bind:src="nut.image_url" alt="product" height="auto">
@@ -106,7 +106,7 @@
                     <div class="uk-accordion-content">
                         <div class="products">
                             <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-width-2-3 uk-margin-right uk-margin-left"
-                                 v-for="veg in products.filter((e) => {return e.type === 'vegetable'})" :key="veg._id"
+                                 v-for="veg in products.filter(e => {return e.type === 'vegetable'})" :key="veg._id"
                                  @click="showFarmers(products.indexOf(veg))">
                                 <div class="uk-card-media-top">
                                     <img v-bind:src="veg.image_url" alt="product" height="auto">
@@ -135,11 +135,18 @@
                             <div class="uk-margin">
                                 <input class="uk-input" v-model="productAmount" type="number" placeholder="Amount" required>
                             </div>
+                            <h4>Choose the delivery method</h4>
+                            <div class="uk-margin">
+                                <select class="uk-select" required v-model="delivered">
+                                    <option :value=true>Delivery to your location</option>
+                                    <option :value=false>Pickup from the farm</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="uk-padding-large">
-                        <h1>Available Farmers</h1>
-                        <h4>Choose from which farmer you would like to buy from</h4>
+                        <h1>Available Farms</h1>
+                        <h4>Choose from which farm you would like to buy from</h4>
 
                         <div v-bind:class="{loaded: !farmersLoading}">
                             <img src="../../assets/images/farmers_loading.gif">
@@ -149,7 +156,7 @@
                             <div class="uk-margin">
                                 <div class="uk-form-controls">
                                     <h3 class="uk-text-danger">{{farmersListState}}</h3>
-                                    <h4 class="farmers-radio" v-for="(farmer) in availableFarmers" :key="farmer._id">
+                                    <h4 class="farmers-radio" v-for="farmer in displayFarmers" :key="farmer._id">
                                         <label><input class="uk-radio" type="radio" name="radio1" @click="updateTotalPrice(farmer)">
                                             {{farmer.farmName}} : Ksh. {{getProductPrice(farmer)}}
                                         </label>
@@ -190,6 +197,7 @@
             return {
                 products: [],
                 availableFarmers: [],
+                displayFarmers: [],
                 selectedFarmer: {},
                 productIndex: 0,
                 productName: '',
@@ -197,6 +205,7 @@
                 farmerProductPrice: 0,
                 farmersListState: '',
                 totalProductPrice: 0,
+                delivered: false,
                 farmersLoading: true,
                 undefinedPrice: true,
                 modalActive: false
@@ -221,6 +230,7 @@
                 .then(res => {
                     this.farmersLoading = false
                     this.availableFarmers = res.data.farmers
+                    this.displayFarmers = res.data.farmers
                     if (this.availableFarmers.length === 0)
                         this.farmersListState = "No available farmers yet."
                     else
@@ -237,6 +247,7 @@
                 this.totalProductPrice = 0
                 this.farmersLoading = true
                 this.modalActive = false
+                this.delivered = false
                 this.selectedFarmer = {}
             },
             updateTotalPrice(value){
@@ -257,9 +268,11 @@
                     product: this.products[this.productIndex],
                     farmer: this.selectedFarmer,
                     total: this.totalProductPrice,
-                    amount: parseInt(this.productAmount)
+                    amount: parseInt(this.productAmount),
+                    delivered: this.delivered
                 }
                 this.$store.commit("addToCart", order)
+                this.modalHidden()
                 UIkit.modal('#modal-farmers').hide()
             }
         },
@@ -270,6 +283,11 @@
                     this.undefinedPrice = false
                 }
             },
+            delivered(value){
+                this.displayFarmers = value ? this.availableFarmers.filter(e => {
+                    return e.delivers === value
+                }) : this.availableFarmers;
+            }
         }
     }
 </script>
