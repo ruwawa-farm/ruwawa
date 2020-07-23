@@ -80,7 +80,6 @@
 <script>
     import mapLocationSelector from 'vue-google-maps-location-selector';
     import {getDistance} from 'geolib'
-    import UIkit from 'uikit'
 
     export default {
         components: {
@@ -157,8 +156,14 @@
                     this.sumTotal += (order.total + order.deliveryCost)
                 })
             },
-            confirmOrder(){
-                UIkit.notification({message: "Order confirmed", status: 'success'})
+            confirmOrder: function () {
+                let allOrders = new Set()
+                this.orders.forEach(order => {
+                    let allFarmerOrders = this.orders.filter(e => e.farmer.name === order.farmer.name)
+                    allOrders.add(JSON.stringify(allFarmerOrders))
+                });
+                let orders = Array.from(allOrders).map(e => JSON.parse(e))
+                console.log(orders)
             }
         }
     }
