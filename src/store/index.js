@@ -48,6 +48,9 @@ export default new Vuex.Store({
         removeFromCart(state, payload){
             state.cart.splice(payload, 1)
         },
+        clearCart(state){
+          state.cart.length = 0
+        },
         changeBottomBar(state, payload){
             state.isBottomBar = payload
         }

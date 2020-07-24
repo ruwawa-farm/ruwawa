@@ -80,6 +80,7 @@
 <script>
     import mapLocationSelector from 'vue-google-maps-location-selector';
     import {getDistance} from 'geolib'
+    import UIkit from "uikit";
 
     export default {
         components: {
@@ -163,7 +164,14 @@
                     allOrders.add(JSON.stringify(allFarmerOrders))
                 });
                 let orders = Array.from(allOrders).map(e => JSON.parse(e))
-                console.log(orders)
+                this.axios.post('eka-url-hapa', {orders: orders}, this.$store.state.config)
+                    .then(res => {
+                        if (res.status === 200){
+                            this.$store.commit("clearCart")
+                            UIkit.notification({message: "Recorded orders successfully", status: 'success'})
+                        }
+                    })
+                    .catch(err => { UIkit.notification({message: err.response.data.error, status: 'danger'})})
             }
         }
     }
