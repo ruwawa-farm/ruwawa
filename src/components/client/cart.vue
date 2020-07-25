@@ -171,7 +171,7 @@
                             UIkit.notification({message: "Recorded orders successfully", status: 'success'})
                         }
                     })
-                    .catch(err => { UIkit.notification({message: err.response.data.error, status: 'danger'})})
+                    .catch(err => { UIkit.notification({message: "Order not recorded", status: 'danger'})})
             }
         }
     }
