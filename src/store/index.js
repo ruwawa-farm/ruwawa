@@ -17,6 +17,7 @@ const listener = store => {
 export default new Vuex.Store({
     state: {
         allProducts: [],
+        allFarmers: [],
         farmerProducts: [],
         farmerProfile: {},
         cart: [],
@@ -53,6 +54,9 @@ export default new Vuex.Store({
         },
         changeBottomBar(state, payload){
             state.isBottomBar = payload
+        },
+        addFarmers(state, payload){
+            state.allFarmers = payload
         }
     },
     plugins: [createPersistedState(), listener]

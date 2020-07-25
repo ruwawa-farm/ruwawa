@@ -1,5 +1,5 @@
 <template>
-    <div id="navigation" class="uk-height-1-1 bottom_footer">
+    <div id="navigation" class="uk-height-1-1" :class="{bottom_footer : isBottomBar}">
         <div uk-sticky>
             <vue-navigation-bar :options="navbarOptions"  @vnb-item-clicked="vnbItemClicked"/>
         </div>
@@ -43,13 +43,14 @@
             if (this.$store.state.userType !== "client")
                 return this.$router.push('/dashboard')
             this.checkConfirmed()
+            this.getFarmers()
             let audio = new Audio(require('../../assets/audio/ruwawa.mp3'))
             audio.play()
             audio.loop = true
         },
         data() {
             return {
-                isBottomBar: false,
+                isBottomBar: true,
                 view: 'home',
                 navbarOptions: {
                     mobileBreakpoint: 992,
@@ -104,6 +105,7 @@
         },
         methods :{
             vnbItemClicked(text) {
+                this.isBottomBar = text !== "Farmers";
                 this.view = text.toLocaleLowerCase()
             },
             checkConfirmed(){
@@ -118,6 +120,11 @@
                 else {
                     this.$router.push('/')
                 }
+            },
+            getFarmers(){
+                this.axios.get(`/farmers/search/*`, this.$store.state.config)
+                    .then(res => {this.$store.commit("addFarmers", res.data.farmers)})
+                    .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
             }
         }
     }
