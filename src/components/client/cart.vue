@@ -164,7 +164,7 @@
                     allOrders.add(JSON.stringify(allFarmerOrders))
                 });
                 let orders = Array.from(allOrders).map(e => JSON.parse(e))
-                this.axios.post('/orders/new', {orders: orders}, this.$store.state.config)
+                this.axios.post('http://localhost:2400/orders/new', {orders: orders}, this.$store.state.config)
                     .then(res => {
                         if (res.status === 200){
                             this.$store.commit("clearCart")
