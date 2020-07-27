@@ -44,6 +44,7 @@
                 return this.$router.push('/dashboard')
             this.checkConfirmed()
             this.getFarmers()
+            this.getOrders()
             let audio = new Audio(require('../../assets/audio/ruwawa.mp3'))
             audio.play()
             audio.loop = true
@@ -119,6 +120,14 @@
                 else {
                     this.$router.push('/')
                 }
+            },
+            getOrders(){
+                this.axios.get('/orders/client', this.$store.state.config)
+                    .then(res => {
+                        this.$store.commit("addOrders", res.data.orders)
+                        this.$store.commit("ordersChanged", false)
+                    })
+                    .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
             },
             getFarmers(){
                 this.axios.get(`/farmers/search/*`, this.$store.state.config)

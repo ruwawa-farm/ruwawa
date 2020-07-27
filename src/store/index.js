@@ -21,6 +21,8 @@ export default new Vuex.Store({
         farmerProducts: [],
         farmerProfile: {},
         cart: [],
+        orders: [],
+        ordersChanged: true,
         config: {},
         userType: '',
         isBottomBar: false,
@@ -57,6 +59,12 @@ export default new Vuex.Store({
         },
         addFarmers(state, payload){
             state.allFarmers = payload
+        },
+        addOrders(state, payload){
+            state.orders = state.orders.concat(payload)
+        },
+        ordersChanged(state, payload){
+            state.ordersChanged = payload
         }
     },
     plugins: [createPersistedState(), listener]

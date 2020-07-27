@@ -69,7 +69,7 @@
                 </tbody>
             </table>
             <div class="uk-text-center">
-                <button class="uk-button uk-button-default" type="button" @click="confirmOrder">Select</button>
+                <button class="uk-button uk-button-default" type="button" @click="confirmOrder">Submit</button>
             </div>
         </div>
 
@@ -77,14 +77,10 @@
 </template>
 
 <script>
-    import mapLocationSelector from 'vue-google-maps-location-selector';
     import {getDistance} from 'geolib'
     import UIkit from "uikit";
 
     export default {
-        components: {
-            mapLocationSelector
-        },
         mounted() {
             this.orders.forEach(order => {
                 if (order.delivered){
@@ -158,16 +154,12 @@
                 })
             },
             confirmOrder: function () {
-                let allOrders = new Set()
-                this.orders.forEach(order => {
-                    let allFarmerOrders = this.orders.filter(e => e.farmer.name === order.farmer.name)
-                    allOrders.add(JSON.stringify(allFarmerOrders))
-                });
-                let orders = Array.from(allOrders).map(e => JSON.parse(e))
-                this.axios.post('/orders/new', {orders: orders}, this.$store.state.config)
+                this.axios.post('/orders/new', {orders: this.orders}, this.$store.state.config)
                     .then(res => {
                         if (res.status === 200){
+                            this.orders.clear()
                             this.$store.commit("clearCart")
+                            this.$store.commit("ordersChanged", true)
                             UIkit.notification({message: "Recorded orders successfully", status: 'success'})
                         }
                     })
