@@ -158,7 +158,13 @@
                 })
             },
             confirmOrder: function () {
-                this.axios.post('/orders/new', {orders: this.orders}, this.$store.state.config)
+                let allOrders = new Set()
+                this.orders.forEach(order => {
+                    let allFarmerOrders = this.orders.filter(e => e.farmer.name === order.farmer.name)
+                    allOrders.add(JSON.stringify(allFarmerOrders))
+                });
+                let orders = Array.from(allOrders).map(e => JSON.parse(e))
+                this.axios.post('http://localhost:2400/orders/new', {orders: orders}, this.$store.state.config)
                     .then(res => {
                         if (res.status === 200){
                             this.$store.commit("clearCart")
