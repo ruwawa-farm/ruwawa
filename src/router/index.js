@@ -14,6 +14,7 @@ import VueNavigationBar from "vue-navigation-bar";
 import VueCarousel from 'vue-carousel';
 import jwt from 'vuejs-jwt'
 import AOS from 'aos'
+import VuePlaceAutocomplete from 'vue-place-autocomplete';
 
 const axios = Axios.create({
   baseURL: "https://ruwawa-db.herokuapp.com/"
@@ -53,6 +54,7 @@ Vue.use(mdIcons);
 Vue.use(mdButtons);
 Vue.use(AOS.init())
 Vue.use(jwt)
+Vue.use(VuePlaceAutocomplete);
 
 const routes = [
   {

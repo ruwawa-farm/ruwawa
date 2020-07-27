@@ -38,9 +38,8 @@
         </div>
 
         <div class="delivery uk-text-center" :class="{hidden: !showDelivery}">
-            <h1>Select the Delivery location</h1>
-            <h3>Drag the map to place the pointer</h3>
-            <map-location-selector :latitude="currentLat" :longitude="currentLong" @locationUpdated="locationUpdated" :key="refresh" class="uk-width-1-2@m"></map-location-selector>
+            <h1>Enter the delivery address</h1>
+            <place-autocomplete-field v-model="deliveryLocation" placeholder="Enter an an address, zipcode, or location" label="Address" name="field1" api-key="AIzaSyAF-NGOw1lcrVBEp81LPAbqxd3yzXC1l34"></place-autocomplete-field>
             <div class="uk-margin">
                 <button class="uk-button uk-button-default" type="button" @click="locationSelected">Select</button>
             </div>
@@ -108,6 +107,7 @@
                 sumTotal: 0,
                 lat: '',
                 lng: '',
+                deliveryLocation: '',
             }
         },
         methods: {
@@ -172,6 +172,11 @@
                         }
                     })
                     .catch(err => { UIkit.notification({message: err.response.data.error, status: 'danger'})})
+            }
+        },
+        watch : {
+            deliveryLocation(value){
+                console.log(value)
             }
         }
     }
