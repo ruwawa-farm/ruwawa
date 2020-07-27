@@ -27,10 +27,14 @@
         </div>
 
         <div class="farmers-list">
-            <div class="uk-child-width-expand@s" uk-grid>
-                <div class="uk-card uk-card-default" v-for="farmer in farmers" :key="farmer._id">
+            <h3 class="uk-text-center uk-text-danger">{{noFarmers}}</h3>
+            <div v-bind:class="{loaded: !farmersLoading}" class="uk-text-center">
+                <img src="../../assets/images/farmers_loading.gif">
+            </div>
+            <div v-bind:class="{loaded: farmersLoading}" uk-grid>
+                <div class="uk-card uk-card-default w3-col w3-center m2 l2 s6" v-for="farmer in farmers" :key="farmer._id">
                     <div class="uk-card-media-top">
-                        <img v-bind:src="farmer.profilePicture" alt="profile" width="200px" height="200px">
+                        <img v-bind:src="farmer.profilePicture" class="profile uk-padding-small" alt="profile">
                     </div>
                     <div class="uk-card-body">
                         {{farmer.name}}
@@ -46,25 +50,53 @@
     import UIkit from "uikit";
 
     export default {
-        mounted() {
-            this.searchFarmers()
-        },
         data(){
             return {
                 query: "",
-                farmers: this.$store.state.allFarmers
+                farmers: this.$store.state.allFarmers,
+                noFarmers: "",
+                farmersLoading: false
             }
         },
         methods: {
-            searchFarmers(){
-                let name = this.query==="" ? "*" : this.query
+            searchFarmers: function () {
+                this.farmersLoading = true
+                let name = this.query === "" ? "*" : this.query
                 this.axios.get(`/farmers/search/${name}`, this.$store.state.config)
-                .then(res => {this.farmers = res.data.farmers})
-                .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
+                    .then(res => {
+                        this.farmersLoading = false
+                        this.farmers = res.data.farmers
+                        this.noFarmers = res.data.farmers.length === 0 ? `No farmers with the name ${name} found` : "";
+                    })
+                    .catch(err => {
+                        UIkit.notification({message: err.response.data.error, status: 'danger'})
+                    })
             }
         }
     }
 </script>
 
 <style scoped>
+    @import 'https://www.w3schools.com/w3css/4/w3.css';
+
+    @media (min-width: 1200px) {
+        .uk-grid > * {
+            padding-left: 0 !important;
+        }
+        .uk-card {
+            margin: 10px;
+        }
+    }
+
+    .loaded {
+        display: none;
+    }
+
+    .profile {
+        width: 200px;
+        height: 200px;
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+
 </style>

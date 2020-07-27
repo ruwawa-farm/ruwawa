@@ -105,7 +105,6 @@
         },
         methods :{
             vnbItemClicked(text) {
-                this.isBottomBar = text !== "Farmers";
                 this.view = text.toLocaleLowerCase()
             },
             checkConfirmed(){
