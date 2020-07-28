@@ -46,6 +46,11 @@
             },
             removeProduct(index){
                 this.$store.commit("removeOrder", index)
+                this.axios.get('/orders/client/delete', {id: this.orders[index]._id}, this.$store.state.config)
+                    .then(res => {
+                        if (res.status === 200) UIkit.notification({message: 'Order deleted successfully', status: 'success'})
+                    })
+                    .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
             }
         }
     }
