@@ -157,7 +157,7 @@
                 this.axios.post('/orders/new', {orders: this.orders}, this.$store.state.config)
                     .then(res => {
                         if (res.status === 200){
-                            this.orders.clear()
+                            this.orders = []
                             this.$store.commit("clearCart")
                             this.$store.commit("ordersChanged", true)
                             UIkit.notification({message: "Recorded orders successfully", status: 'success'})

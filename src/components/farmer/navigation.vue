@@ -39,6 +39,7 @@
             if (this.$store.state.userType !== "farmer")
                 return this.$router.push('/home')
             this.checkConfirmed()
+            this.getOrders()
             let audio = new Audio(require('../../assets/audio/ruwawa.mp3'))
             audio.play()
             audio.loop = true
@@ -104,6 +105,14 @@
                 else {
                     this.$router.push('/')
                 }
+            },
+            getOrders(){
+                this.axios.get('/orders/farmer', this.$store.state.config)
+                    .then(res => {
+                        this.$store.commit("addOrders", res.data.orders)
+                        this.$store.commit("ordersChanged", false)
+                    })
+                    .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
             },
             getProfile(){
                 let profile = this.$store.state.farmerProfile

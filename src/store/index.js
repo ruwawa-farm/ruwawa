@@ -52,7 +52,7 @@ export default new Vuex.Store({
             state.cart.splice(payload, 1)
         },
         clearCart(state){
-          state.cart.length = 0
+            state.cart = []
         },
         changeBottomBar(state, payload){
             state.isBottomBar = payload
@@ -62,6 +62,9 @@ export default new Vuex.Store({
         },
         addOrders(state, payload){
             state.orders = state.orders.concat(payload)
+        },
+        removeOrder(state, payload){
+            state.orders.splice(payload, 1)
         },
         ordersChanged(state, payload){
             state.ordersChanged = payload

@@ -5,11 +5,14 @@
         <div class="orders-list">
             <h3 class="uk-text-center uk-text-danger">{{noOrders}}</h3>
             <div uk-grid>
-                <div class="uk-card uk-card-default w3-col w3-center m2 l2 s6" v-for="order in orders" :key="order._id">
+                <div class="uk-card uk-card-default w3-col w3-center m2 l2 s6" v-for="(order, index) in orders" :key="order._id">
                     <div class="uk-card-media-top">
                         <img v-bind:src="order.product.image_url" class="profile uk-padding-small" alt="profile">
                     </div>
                     <div class="uk-card-body">
+                        <div class="uk-card-footer">
+                            <span uk-icon="icon: trash" class="icon-black" @click="removeProduct(index)"></span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -40,6 +43,9 @@
                         })
                         .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
                 }
+            },
+            removeProduct(index){
+                this.$store.commit("removeOrder", index)
             }
         }
     }
