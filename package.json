@@ -29,6 +29,7 @@
     "vue-navigation-bar": "^2.0.0",
     "vue-page-transition": "^0.2.2",
     "vue-place-autocomplete": "^0.5.3",
+    "vue-rate": "^2.4.0",
     "vue-router": "^3.1.6",
     "vue-tel-input": "^4.4.0",
     "vue-toasted": "^1.1.28",

@@ -32,12 +32,50 @@
                 <img src="../../assets/images/farmers_loading.gif">
             </div>
             <div v-bind:class="{loaded: farmersLoading}" uk-grid>
-                <div class="uk-card uk-card-default w3-col w3-center m2 l2 s6" v-for="farmer in farmers" :key="farmer._id">
+                <div class="uk-card uk-card-default w3-col w3-center m2 l2 s6" @click="showDetails(farmer)" v-for="farmer in farmers" :key="farmer._id" href="#modal-profile" uk-toggle>
                     <div class="uk-card-media-top">
                         <img v-bind:src="farmer.profilePicture" class="profile uk-padding-small" alt="profile">
                     </div>
                     <div class="uk-card-body">
                         {{farmer.name}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal-profile" class="uk-flex-top uk-modal-container" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+                <button class="uk-modal-close-default icon-black" type="button" uk-close></button>
+                <div class="uk-margin uk-padding">
+                    <div uk-grid>
+                        <div class="uk-text-center">
+                            <img v-bind:src="currentFarmer.profilePicture" class="profile uk-padding-small" alt="profile">
+                        </div>
+                        <div class="uk-padding">
+                            <h4>Name : {{currentFarmer.name}}</h4>
+                            <h4>Email : {{currentFarmer.email}}</h4>
+                            <h4>Farm : {{currentFarmer.farmName}}</h4>
+                            <h4>Phone : 0{{currentFarmer.phone}}</h4>
+                            <br>
+                            <h4>Rate this farmer</h4>
+                            <rate :length="5" :value="2" :ratedesc="['Very bad', 'bad', 'Okay', 'Good', 'Very good']" v-model="rating" />
+                            <form v-on:submit.prevent="submitRating">
+                                <div class="uk-margin">
+                                    <input class="uk-input" placeholder="Enter your comment" type="text" v-model="comment" required>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div uk-grid>
+                        <div class="uk-card uk-card-default uk-width-1-6@m uk-margin-left uk-margin-right" v-for="product in currentFarmer.products" :key="product._id">
+                            <div class="uk-card-media-top">
+                                <div class="uk-card-badge uk-label" v-bind:class="[product.inStock? 'uk-label-success' : 'uk-label-danger']">{{product.inStock? "In stock" : "Out of Stock"}}</div>
+                                <img v-bind:src="product.image_url" alt="product" height="auto">
+                            </div>
+                            <div class="uk-card-body">
+                                <p>{{product.name}} @ Ksh.{{product.price}}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -52,10 +90,13 @@
     export default {
         data(){
             return {
-                query: "",
+                query: '',
                 farmers: this.$store.state.allFarmers,
-                noFarmers: "",
-                farmersLoading: false
+                noFarmers: '',
+                currentFarmer: {},
+                farmersLoading: false,
+                rating: 2,
+                comment: '',
             }
         },
         methods: {
@@ -71,6 +112,12 @@
                     .catch(err => {
                         UIkit.notification({message: err.response.data.error, status: 'danger'})
                     })
+            },
+            showDetails(farmer){
+                this.currentFarmer = farmer
+            },
+            submitRating(){
+                console.log("Rating submitted")
             }
         }
     }
@@ -86,6 +133,10 @@
         .uk-card {
             margin: 10px;
         }
+    }
+
+    .uk-card:hover {
+        cursor: pointer;
     }
 
     .loaded {

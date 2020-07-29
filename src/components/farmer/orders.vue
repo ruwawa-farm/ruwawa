@@ -33,7 +33,7 @@
         },
         methods: {
             checkOrders(){
-                if (this.orders.length =g== 0) this.noOrders = "No orders available"
+                if (this.orders.length === 0) this.noOrders = "No orders available"
             }
         }
     }

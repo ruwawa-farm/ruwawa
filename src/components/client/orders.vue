@@ -5,13 +5,14 @@
         <div class="orders-list">
             <h3 class="uk-text-center uk-text-danger">{{noOrders}}</h3>
             <div uk-grid>
-                <div class="uk-card uk-card-default w3-col w3-center m2 l2 s6" v-for="(order, index) in orders" :key="order._id">
+                <div class="uk-margin-left uk-card uk-card-default w3-col w3-center m2 l2 s6" v-for="order in orders" :key="order._id">
                     <div class="uk-card-media-top">
+                        <div class="uk-card-badge uk-label" v-bind:class="[order.confirmed? 'uk-label-success' : 'uk-label-danger']">{{order.confirmed? "Confirmed" : "Not confirmed"}}</div>
                         <img v-bind:src="order.product.image_url" class="profile uk-padding-small" alt="profile">
                     </div>
                     <div class="uk-card-body">
                         <div class="uk-card-footer">
-                            <span uk-icon="icon: trash" class="icon-black" @click="removeProduct(index)"></span>
+                            <span uk-icon="icon: trash" class="icon-black" @click="removeProduct(order)"></span>
                         </div>
                     </div>
                 </div>
@@ -44,13 +45,18 @@
                         .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
                 }
             },
-            removeProduct(index){
-                this.$store.commit("removeOrder", index)
-                this.axios.get('/orders/client/delete', {id: this.orders[index]._id}, this.$store.state.config)
+            removeProduct: function (order) {
+                let data = {id: order._id}
+                this.axios.post('/orders/client/delete', data, this.$store.state.config)
                     .then(res => {
-                        if (res.status === 200) UIkit.notification({message: 'Order deleted successfully', status: 'success'})
+                        if (res.status === 200) {
+                            this.$store.commit("removeOrder", this.orders.indexOf(order))
+                            UIkit.notification({message: 'Order deleted successfully', status: 'success'})
+                        }
                     })
-                    .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
+                    .catch(err => {
+                        UIkit.notification({message: err.response.data.error, status: 'danger'})
+                    })
             }
         }
     }

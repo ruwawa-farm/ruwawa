@@ -28,6 +28,10 @@
     @import "../node_modules/uikit/src/less/uikit.less";
     @import "./assets/less/theme.less";
 
+    html, body, h1, h2, p, h3, h4, h5{
+      font-family: ProximaNova,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif !important;
+    }
+
     .uk-height-1-1 {
       min-height: 100vh !important;
       background-color: white;
