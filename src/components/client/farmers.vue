@@ -9,21 +9,6 @@
                 </form>
             </div>
 
-            <div class="uk-margin">
-                <div uk-form-custom="target: > * > span:first-child">
-                    <select>
-                        <option value="">Filter By.</option>
-                        <option value="1">Rating</option>
-                        <option value="2">Products</option>
-                        <option value="3">Offers delivery</option>
-                        <option value="4">Name (A - Z)</option>
-                    </select>
-                    <button class="uk-button uk-button-default" type="button" tabindex="-1">
-                        <span></span>
-                        <span uk-icon="icon: chevron-down"></span>
-                    </button>
-                </div>
-            </div>
         </div>
 
         <div class="farmers-list">
@@ -58,7 +43,7 @@
                             <h4>Phone : 0{{currentFarmer.phone}}</h4>
                             <br>
                             <h4><b>Rate this farmer</b></h4>
-                            <rate :length="5" :value="2" :ratedesc="['Very bad', 'bad', 'Okay', 'Good', 'Very good']" v-model="rating" />
+                            <rate :length="5" :value="3" :ratedesc="['Very bad', 'bad', 'Okay', 'Good', 'Very good']" v-model="rating" />
                             <form v-on:submit.prevent="submitRating">
                                 <div class="uk-margin">
                                     <input class="uk-input" placeholder="Enter your comment" type="text" v-model="comment" required>
@@ -75,6 +60,15 @@
                             <div class="uk-card-body">
                                 <p>{{product.name}} @ Ksh.{{product.price}}</p>
                             </div>
+                        </div>
+                    </div>
+
+                    <div id="comments">
+                        <h2>Comments</h2>
+                        <div v-for="rating in ratings" :key="rating.user">
+                            <h4> <b> {{rating.user}} </b> <rate :length="5" :value="rating.rating" :disabled="true" /></h4>
+                            <h5>{{rating.comment}}</h5>
+                            <hr>
                         </div>
                     </div>
                 </div>
@@ -95,7 +89,9 @@
                 noFarmers: '',
                 currentFarmer: {},
                 farmersLoading: false,
-                rating: 2,
+                rating: 3,
+                average: 3,
+                ratings: [],
                 comment: '',
             }
         },
@@ -115,9 +111,26 @@
             },
             showDetails(farmer){
                 this.currentFarmer = farmer
+                this.axios.get(`/farmers/ratings/${farmer._id}`, this.$store.state.config)
+                    .then(res => {
+                        this.ratings = res.data.ratings
+                        this.average = res.data.average
+                    })
+                    .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
             },
             submitRating(){
-                console.log("Rating submitted")
+                let data = {
+                    rating: this.rating,
+                    comment: this.comment
+                }
+                this.axios.post(`/farmers/rate/${this.currentFarmer._id}`, data, this.$store.state.config)
+                .then(res => {
+                    if (res.status === 200) {
+                        this.ratings.unshift(data)
+                        UIkit.notification({message: "Recorded rating successfully", status: 'success'})
+                    }
+                })
+                .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
             }
         }
     }
