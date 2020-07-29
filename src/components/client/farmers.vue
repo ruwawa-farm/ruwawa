@@ -57,7 +57,7 @@
                             <h4>Farm : {{currentFarmer.farmName}}</h4>
                             <h4>Phone : 0{{currentFarmer.phone}}</h4>
                             <br>
-                            <h4>Rate this farmer</h4>
+                            <h4><b>Rate this farmer</b></h4>
                             <rate :length="5" :value="2" :ratedesc="['Very bad', 'bad', 'Okay', 'Good', 'Very good']" v-model="rating" />
                             <form v-on:submit.prevent="submitRating">
                                 <div class="uk-margin">
