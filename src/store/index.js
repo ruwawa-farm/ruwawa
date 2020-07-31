@@ -25,6 +25,7 @@ export default new Vuex.Store({
         ordersChanged: true,
         config: {},
         userType: '',
+        googleApiKey: 'AIzaSyAF-NGOw1lcrVBEp81LPAbqxd3yzXC1l34',
         isBottomBar: false,
     },
     mutations: {

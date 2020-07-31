@@ -39,7 +39,10 @@
 
         <div class="delivery uk-text-center" :class="{hidden: !showDelivery}">
             <h1>Enter the delivery address</h1>
-            <place-autocomplete-field v-model="deliveryLocation" placeholder="Enter an an address, zipcode, or location" label="Address" name="field1" api-key="AIzaSyAF-NGOw1lcrVBEp81LPAbqxd3yzXC1l34"></place-autocomplete-field>
+            <input class="uk-input uk-width-1-3@m" placeholder="Enter your delivery address" v-gmaps-searchbox:location.name.geometry=vm>
+            <google-map id="map" ref="Map" :key="refresh" :center="location" :zoom="14">
+                <google-map-marker :position="location" :key="markerRefresh"></google-map-marker>
+            </google-map>
             <div class="uk-margin">
                 <button class="uk-button uk-button-default" type="button" @click="locationSelected">Select</button>
             </div>
@@ -100,10 +103,12 @@
                 currentLat: 0.0,
                 currentLong: 0.0,
                 refresh: 0,
+                markerRefresh: 0,
                 sumTotal: 0,
                 lat: '',
                 lng: '',
-                deliveryLocation: '',
+                vm: {},
+                location: {lat: '', lng: ''}
             }
         },
         methods: {
@@ -127,7 +132,10 @@
                         this.currentLong = coordinates.lng;
                         this.lat = coordinates.lat;
                         this.lng = coordinates.lng;
+                        this.location.lat = coordinates.lat
+                        this.location.lng = coordinates.lng
                         this.refresh += 1;
+                        this.markerRefresh += 1;
                     });
             },
             locationUpdated(latlng) {
@@ -166,10 +174,17 @@
                     .catch(err => { UIkit.notification({message: err.response.data.error, status: 'danger'})})
             }
         },
-        watch : {
-            deliveryLocation(value){
-                console.log(value)
-            }
+        watch: {
+            "vm.location"(value){
+                let lat = value.geometry.location.lat()
+                let lng = value.geometry.location.lng()
+                this.lat = lat
+                this.lng = lng
+                this.location.lat = lat
+                this.location.lng = lng
+                this.refresh += 1;
+                this.markerRefresh += 1;
+            },
         }
     }
 </script>
@@ -204,6 +219,19 @@
         height: 400px !important;
         margin-left: auto !important;
         margin-right: auto !important;
+    }
+
+    .vue-google-map {
+        margin: 10px auto;
+        width: 400px !important;
+        height: 400px !important;
+    }
+
+    @media (min-width: 960px){
+        .vue-google-map {
+            width: calc(100% * 1 / 3.001) !important;
+            height: auto;
+        }
     }
 
 </style>

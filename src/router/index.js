@@ -14,7 +14,8 @@ import VueNavigationBar from "vue-navigation-bar";
 import VueCarousel from 'vue-carousel';
 import jwt from 'vuejs-jwt'
 import AOS from 'aos'
-import VuePlaceAutocomplete from 'vue-place-autocomplete';
+import VueGmaps from 'vue-gmaps'
+import VueGoogleMap from 'vuejs-google-maps'
 import rate from 'vue-rate'
 
 const axios = Axios.create({
@@ -56,8 +57,9 @@ Vue.use(mdIcons);
 Vue.use(mdButtons);
 Vue.use(AOS.init())
 Vue.use(jwt)
-Vue.use(VuePlaceAutocomplete);
 Vue.use(rate)
+Vue.use(VueGmaps, {key: 'AIzaSyAF-NGOw1lcrVBEp81LPAbqxd3yzXC1l34'})
+Vue.use(VueGoogleMap, {load: {apiKey: 'AIzaSyAF-NGOw1lcrVBEp81LPAbqxd3yzXC1l34'}})
 
 const routes = [
   {
