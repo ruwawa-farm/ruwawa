@@ -108,7 +108,7 @@
                 lat: '',
                 lng: '',
                 vm: {},
-                location: {lat: '', lng: ''}
+                location: {lat: this.lat, lng: this.lng}
             }
         },
         methods: {
@@ -120,6 +120,10 @@
                 this.showCart = false
                 if (this.hasDelivery) {
                     this.showDelivery = true
+                    this.location.lat = this.lat
+                    this.location.lng = this.lng
+                    this.refresh += 1;
+                    this.markerRefresh += 1;
                 } else {
                     this.showSummary = true
                     this.getTotals()
@@ -132,10 +136,6 @@
                         this.currentLong = coordinates.lng;
                         this.lat = coordinates.lat;
                         this.lng = coordinates.lng;
-                        this.location.lat = coordinates.lat
-                        this.location.lng = coordinates.lng
-                        this.refresh += 1;
-                        this.markerRefresh += 1;
                     });
             },
             locationUpdated(latlng) {
