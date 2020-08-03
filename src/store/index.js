@@ -61,14 +61,24 @@ export default new Vuex.Store({
         addFarmers(state, payload){
             state.allFarmers = payload
         },
+        clearFarmers(state){
+            state.allFarmers = []
+        },
         addOrders(state, payload){
             state.orders = state.orders.concat(payload)
+        },
+        clearOrders(state){
+            state.orders = []
         },
         removeOrder(state, payload){
             state.orders.splice(payload, 1)
         },
         ordersChanged(state, payload){
             state.ordersChanged = payload
+        },
+        confirmedOrder(state, payload){
+            state.orders[payload.index].confirmed = payload.confirmed
+            state.orders[payload.index].declined = !payload.confirmed
         }
     },
     plugins: [createPersistedState(), listener]

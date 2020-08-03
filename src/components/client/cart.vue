@@ -167,7 +167,7 @@
                         if (res.status === 200){
                             this.orders = []
                             this.$store.commit("clearCart")
-                            this.$store.commit("ordersChanged", true)
+                            this.$store.commit("addOrders", res.data.orders)
                             UIkit.notification({message: "Recorded orders successfully", status: 'success'})
                         }
                     })

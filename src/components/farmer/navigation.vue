@@ -107,6 +107,7 @@
                 }
             },
             getOrders(){
+                this.$store.commit('clearOrders')
                 this.axios.get('/orders/farmer', this.$store.state.config)
                     .then(res => {
                         this.$store.commit("addOrders", res.data.orders)

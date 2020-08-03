@@ -7,7 +7,7 @@
             <div uk-grid>
                 <div class="uk-card uk-card-default w3-col w3-center m2 l2 s6" v-for="order in orders" :key="order._id">
                     <div class="uk-card-media-top">
-                        <div class="uk-card-badge uk-label" v-bind:class="[order.confirmed? 'uk-label-success' : 'uk-label-danger']">{{order.confirmed? "Confirmed" : "Not confirmed"}}</div>
+                        <div class="uk-card-badge uk-label" v-bind:class="[order.confirmed? 'uk-label-success' : 'uk-label-danger']">{{order.confirmed? "Confirmed" : order.declined ? "Declined" : "Not confirmed"}}</div>
                         <img v-bind:src="order.product.image_url" class="profile uk-padding-small" alt="profile">
                     </div>
                     <div class="uk-card-body">

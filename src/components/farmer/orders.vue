@@ -7,10 +7,13 @@
             <div uk-grid>
                 <div class="uk-card uk-card-default w3-col w3-center m2 l2 s6" v-for="order in orders" :key="order._id">
                     <div class="uk-card-media-top">
-                        <div class="uk-card-badge uk-label" v-bind:class="[order.confirmed? 'uk-label-success' : 'uk-label-danger']">{{order.confirmed? "Confirmed" : "Not confirmed"}}</div>
+                        <div class="uk-card-badge uk-label" v-bind:class="[order.confirmed? 'uk-label-success' : 'uk-label-danger']">{{order.confirmed? "Confirmed" : order.declined ? "Declined" : "Not confirmed"}}</div>
                         <img v-bind:src="order.product.image_url" class="profile uk-padding-small" alt="profile">
                     </div>
                     <div class="uk-card-body">
+                        <p>Amount : {{order.amount}} {{order.product.unit}}s</p>
+                        <p>Total price : Ksh.{{order.sumTotal}}</p>
+                        <p>To be delivered : {{order.delivered ? "Yes" : "No"}}</p>
                         <div class="uk-card-footer uk-flex uk-flex-around">
                             <a class="uk-button uk-text-primary" @click="confirmOrder(order)">Confirm</a>
                             <a class="uk-button uk-text-danger" href="#modal-decline" @click="declineOrder(order)" uk-toggle>Decline</a>
@@ -40,6 +43,7 @@
 
 <script>
     import UiKit from 'uikit'
+    import UIkit from "uikit";
     export default {
         mounted() {
             this.checkOrders()
@@ -57,14 +61,40 @@
                 if (this.orders.length === 0) this.noOrders = "No orders available"
             },
             confirmOrder(order){
-                console.log(order)
+                let data = {
+                    confirmed: true,
+                    order: order
+                }
+                this.axios.post('/orders/confirm', data, this.$store.state.config)
+                .then(res => {
+                    if (res.status === 200){
+                        UIkit.notification({message: "Updated order status", status: 'success'})
+                        this.$store.commit('confirmedOrder', {index: this.orders.indexOf(order), confirmed: true})
+                        order.confirmed = true
+                    }
+                })
+                .catch(err => { UIkit.notification({message: err.response.data.error, status: 'danger'})})
             },
             declineOrder(order){
                 this.currentOrder = order
             },
             submitOrderDecline(){
+                let data = {
+                    confirmed: false,
+                    reason: this.reason,
+                    order: this.currentOrder
+                }
+                this.axios.post('/orders/confirm', data, this.$store.state.config)
+                    .then(res => {
+                        if (res.status === 200){
+                            UIkit.notification({message: "Updated order status", status: 'success'})
+                            this.$store.commit('confirmedOrder', {index: this.orders.indexOf(this.currentOrder), confirmed: false})
+                            this.currentOrder.confirmed = false
+                            this.currentOrder.declined = true
+                        }
+                    })
+                    .catch(err => { UIkit.notification({message: err.response.data.error, status: 'danger'})})
                 UiKit.modal('#modal-decline').hide()
-                console.log(this.reason)
             },
         }
     }

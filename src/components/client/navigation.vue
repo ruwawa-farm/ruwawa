@@ -122,6 +122,7 @@
                 }
             },
             getOrders(){
+                this.$store.commit('clearOrders')
                 this.axios.get('/orders/client', this.$store.state.config)
                     .then(res => {
                         this.$store.commit("addOrders", res.data.orders)
@@ -131,7 +132,10 @@
             },
             getFarmers(){
                 this.axios.get(`/farmers/search/*`, this.$store.state.config)
-                    .then(res => {this.$store.commit("addFarmers", res.data.farmers)})
+                    .then(res => {
+                        this.$store.commit('clearFarmers')
+                        this.$store.commit("addFarmers", res.data.farmers)
+                    })
                     .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
             }
         }
