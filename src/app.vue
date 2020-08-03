@@ -27,6 +27,7 @@
 <style lang='less'>
     @import "../node_modules/uikit/src/less/uikit.less";
     @import "./assets/less/theme.less";
+    @import 'https://www.w3schools.com/w3css/4/w3.css';
 
     html, body, h1, h2, p, h3, h4, h5{
       font-family: ProximaNova,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif !important;

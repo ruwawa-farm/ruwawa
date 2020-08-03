@@ -137,8 +137,6 @@
 </script>
 
 <style scoped>
-    @import 'https://www.w3schools.com/w3css/4/w3.css';
-
     @media (min-width: 1200px) {
         .uk-grid > * {
             padding-left: 0 !important;
