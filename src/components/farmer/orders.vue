@@ -14,7 +14,7 @@
                         <p>Amount : {{order.amount}} {{order.product.unit}}s</p>
                         <p>Total price : Ksh.{{order.sumTotal}}</p>
                         <p>To be delivered : {{order.delivered ? "Yes" : "No"}}</p>
-                        <div class="uk-card-footer uk-flex uk-flex-around">
+                        <div class="uk-card-footer uk-flex uk-flex-around" v-bind:class="[order.confirmed || order.declined ? 'hidden' : 'uk-flex']">
                             <a class="uk-button uk-text-primary" @click="confirmOrder(order)">Confirm</a>
                             <a class="uk-button uk-text-danger" href="#modal-decline" @click="declineOrder(order)" uk-toggle>Decline</a>
                         </div>
@@ -108,5 +108,9 @@
         .uk-card {
             margin: 10px;
         }
+    }
+
+    .hidden {
+        display: none;
     }
 </style>
