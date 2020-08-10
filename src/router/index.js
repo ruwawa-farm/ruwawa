@@ -17,6 +17,7 @@ import AOS from 'aos'
 import VueGmaps from 'vue-gmaps'
 import VueGoogleMap from 'vuejs-google-maps'
 import rate from 'vue-rate'
+import {Datetime} from "vue-datetime";
 
 const axios = Axios.create({
   baseURL: "https://ruwawa-db.herokuapp.com/"
@@ -28,6 +29,7 @@ import 'vue-material/dist/theme/default.css'
 import "vue-navigation-bar/dist/vue-navigation-bar.css";
 import 'aos/dist/aos.css'
 import 'vue-rate/dist/vue-rate.css'
+import 'vue-datetime/dist/vue-datetime.css'
 
 
 
@@ -43,6 +45,7 @@ import farmerHome from '../components/farmer/navigation'
 //Components
 Vue.component("vue-navigation-bar", VueNavigationBar);
 Vue.component('Contacts', contacts)
+Vue.component('datetime', Datetime)
 
 Vue.use(VueRouter);
 Vue.use(VuePageTransition);

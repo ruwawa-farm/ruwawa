@@ -16,6 +16,7 @@
     "howler": "^2.2.0",
     "less": "^3.11.1",
     "less-loader": "^5.0.0",
+    "luxon": "^1.24.1",
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
     "uikit": "^3.4.0",
@@ -24,6 +25,7 @@
     "vue-badger-accordion": "^1.1.6",
     "vue-browser-geolocation": "^1.8.0",
     "vue-carousel": "^0.18.0",
+    "vue-datetime": "^1.0.0-beta.13",
     "vue-gmaps": "^0.2.2",
     "vue-google-maps-location-selector": "^1.0.1",
     "vue-google-places": "^0.1.5",
@@ -37,7 +39,8 @@
     "vuejs-google-maps": "0.0.10",
     "vuejs-jwt": "^1.1.0",
     "vuex": "^3.5.1",
-    "vuex-persistedstate": "^3.0.1"
+    "vuex-persistedstate": "^3.0.1",
+    "weekstart": "^1.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.3.0",
