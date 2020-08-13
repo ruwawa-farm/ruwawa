@@ -45,6 +45,7 @@
             this.checkConfirmed()
             this.getFarmers()
             this.getOrders()
+            this.getSubscriptions()
             let audio = new Audio(require('../../assets/audio/ruwawa.mp3'))
             audio.play()
             audio.loop = true
@@ -137,7 +138,17 @@
                         this.$store.commit("addFarmers", res.data.farmers)
                     })
                     .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
-            }
+            },
+            getSubscriptions(){
+                this.axios.get('/subscriptions/client', this.$store.state.config)
+                .then(res => {
+                    if (res.status === 200){
+                        this.$store.commit('subscriptionsChanged', false)
+                        this.$store.commit('addSubscriptions', res.data.subscriptions)
+                    }
+                })
+                .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
+            },
         }
     }
 </script>

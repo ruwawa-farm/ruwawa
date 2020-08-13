@@ -173,10 +173,12 @@
                     amount: parseInt(this.amount),
                     date: parseInt(this.date)
                 }
-                this.axios.post('subscriptions/new', data, this.$store.state.config)
+                this.axios.post('/subscriptions/new', data, this.$store.state.config)
                 .then(res => {
-                    if (res.status === 200)
+                    if (res.status === 200) {
                         UIkit.notification({message: res.data.reason, status: 'success'})
+                        this.$store.commit('subscriptionsChanged', true)
+                    }
                 })
                 .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
             }

@@ -1,9 +1,9 @@
 <template>
     <div class="orders">
-        <h2 class="uk-text-center">My orders</h2>
 
         <div class="orders-list">
-            <h3 class="uk-text-center uk-text-danger">{{noOrders}}</h3>
+            <h2 class="uk-text-center">My orders</h2>
+            <h3 class="uk-text-center uk-text-danger">{{orders.length === 0 ? "You have not made any order yet": ""}}</h3>
             <div uk-grid>
                 <div class="uk-card uk-card-default w3-col w3-center m2 l2 s6" v-for="order in orders" :key="order._id">
                     <div class="uk-card-media-top">
@@ -18,6 +18,21 @@
                 </div>
             </div>
         </div>
+
+        <div class="subscriptions-list">
+            <h2 class="uk-text-center">My Subscriptions</h2>
+            <h3 class="uk-text-center uk-text-danger">{{subscriptions.length === 0 ? "You have no subscriptions yet" : ""}}</h3>
+            <div uk-grid>
+                <div class="uk-card uk-card-default w3-col w3-center m2 l2 s6" v-for="sub in subscriptions" :key="sub._id">
+                    <div class="uk-card-media-top">
+                       <img v-bind:src="sub.product.image_url" class="profile uk-padding-small" alt="profile">
+                    </div>
+                    <div class="uk-card-body">
+                        <h3>Date : {{sub.date}}{{["st","nd","rd"][((sub.date+90)%100-10)%10-1]||"th"}}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -27,11 +42,14 @@
     export default {
         mounted() {
             this.getOrders()
+            this.getSubscriptions()
         },
         data() {
             return {
                 noOrders: "",
-                orders: this.$store.state.orders
+                noSubscriptions: '',
+                orders: this.$store.state.orders,
+                subscriptions: this.$store.state.subscriptions
             }
         },
         methods: {
@@ -57,6 +75,18 @@
                     .catch(err => {
                         UIkit.notification({message: err.response.data.error, status: 'danger'})
                     })
+            },
+            getSubscriptions(){
+                if (this.$store.state.subscriptionsChanged){
+                    this.axios.get('/subscriptions/client', this.$store.state.config)
+                        .then(res => {
+                            if (res.status === 200){
+                                this.$store.commit('subscriptionsChanged', false)
+                                this.$store.commit('addSubscriptions', res.data.subscriptions)
+                            }
+                        })
+                        .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
+                }
             }
         }
     }
@@ -70,6 +100,11 @@
         }
         .uk-card {
             margin: 10px;
+        }
+
+        .orders-list,
+        .subscriptions-list {
+            padding: 30px !important;
         }
     }
 

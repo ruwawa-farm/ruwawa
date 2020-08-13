@@ -3,7 +3,7 @@
         <h2 class="uk-text-center">My orders</h2>
 
         <div class="orders-list">
-            <h3 class="uk-text-center uk-text-danger">{{noOrders}}</h3>
+            <h3 class="uk-text-center uk-text-danger">{{orders.length === 0 ? "You have no orders yet": ""}}</h3>
             <div uk-grid>
                 <div class="uk-card uk-card-default w3-col w3-center m2 l2 s6" v-for="order in orders" :key="order._id">
                     <div class="uk-card-media-top">
@@ -18,6 +18,21 @@
                             <a class="uk-button uk-text-primary" @click="confirmOrder(order)">Confirm</a>
                             <a class="uk-button uk-text-danger" href="#modal-decline" @click="declineOrder(order)" uk-toggle>Decline</a>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="subscriptions-list">
+            <h2 class="uk-text-center">My Subscribers</h2>
+            <h3 class="uk-text-center uk-text-danger">{{subscriptions.length === 0 ? "You have no subscribers yet" : ""}}</h3>
+            <div uk-grid>
+                <div class="uk-card uk-card-default w3-col w3-center m2 l2 s6" v-for="sub in subscriptions" :key="sub._id">
+                    <div class="uk-card-media-top">
+                        <img v-bind:src="sub.product.image_url" class="profile uk-padding-small" alt="profile">
+                    </div>
+                    <div class="uk-card-body">
+                        <h3>Date : {{sub.date}}{{["st","nd","rd"][((sub.date+90)%100-10)%10-1]||"th"}}</h3>
                     </div>
                 </div>
             </div>
@@ -53,7 +68,8 @@
                 noOrders: '',
                 reason: '',
                 currentOrder: {},
-                orders: this.$store.state.orders
+                orders: this.$store.state.orders,
+                subscriptions: this.$store.state.subscriptions
             }
         },
         methods: {

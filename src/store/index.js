@@ -23,6 +23,8 @@ export default new Vuex.Store({
         cart: [],
         orders: [],
         ordersChanged: true,
+        subscriptions: [],
+        subscriptionsChanged: true,
         config: {},
         userType: '',
         googleApiKey: 'AIzaSyAF-NGOw1lcrVBEp81LPAbqxd3yzXC1l34',
@@ -79,6 +81,12 @@ export default new Vuex.Store({
         confirmedOrder(state, payload){
             state.orders[payload.index].confirmed = payload.confirmed
             state.orders[payload.index].declined = !payload.confirmed
+        },
+        addSubscriptions(state, payload){
+            state.subscriptions = payload
+        },
+        subscriptionsChanged(state, payload){
+            state.subscriptionsChanged = payload
         }
     },
     plugins: [createPersistedState(), listener]
