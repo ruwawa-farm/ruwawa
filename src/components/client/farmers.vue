@@ -169,6 +169,7 @@
                     email: this.currentFarmer.email,
                     product: this.currentProduct,
                     farmer_id: this.currentFarmer._id,
+                    farmName: this.currentFarmer.farmName,
                     total: this.totalPrice,
                     amount: parseInt(this.amount),
                     date: parseInt(this.date)

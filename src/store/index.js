@@ -85,6 +85,9 @@ export default new Vuex.Store({
         addSubscriptions(state, payload){
             state.subscriptions = payload
         },
+        removeSubscription(state, payload){
+            state.subscriptions.splice(payload, 1)
+        },
         subscriptionsChanged(state, payload){
             state.subscriptionsChanged = payload
         }

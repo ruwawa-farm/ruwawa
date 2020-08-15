@@ -27,8 +27,14 @@
                     <div class="uk-card-media-top">
                        <img v-bind:src="sub.product.image_url" class="profile uk-padding-small" alt="profile">
                     </div>
-                    <div class="uk-card-body">
-                        <h3>Date : {{sub.date}}{{["st","nd","rd"][((sub.date+90)%100-10)%10-1]||"th"}}</h3>
+                    <div class="uk-card-body sub-card">
+                        <p>From : {{sub.farmName}}</p>
+                        <p>Amount : {{sub.amount}}{{sub.product.unit}}s</p>
+                        <p>Total : Ksh.{{sub.total}}</p>
+                        <p>Date : {{sub.date}}{{["st","nd","rd"][((sub.date+90)%100-10)%10-1]||"th"}}</p>
+                    </div>
+                    <div class="uk-card-footer">
+                        <a class="uk-button uk-text-danger" @click="cancelSubscription(sub)">Cancel</a>
                     </div>
                 </div>
             </div>
@@ -87,6 +93,18 @@
                         })
                         .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
                 }
+            },
+            cancelSubscription(sub){
+                let data = {subscription: sub}
+                this.axios.post('/subscriptions/cancel', data, this.$store.state.config)
+                    .then(res => {
+                        if (res.status === 200){
+                            const index = this.subscriptions.indexOf(sub)
+                            this.subscriptions.splice(index, 1)
+                            this.$store.commit('removeSubscription', index)
+                        }
+                    })
+                    .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
             }
         }
     }
@@ -106,6 +124,10 @@
         .subscriptions-list {
             padding: 30px !important;
         }
+    }
+
+    .sub-card {
+        text-align: start !important;
     }
 
 </style>
