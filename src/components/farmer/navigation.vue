@@ -135,7 +135,7 @@
                     .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
             },
             getSubscriptions(){
-                this.axios.get('/subscriptions/client', this.$store.state.config)
+                this.axios.get('/subscriptions/farmer', this.$store.state.config)
                     .then(res => {
                         if (res.status === 200){
                             this.$store.commit('addSubscriptions', res.data.subscriptions)

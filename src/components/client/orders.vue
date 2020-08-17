@@ -31,7 +31,7 @@
                         <p>From : {{sub.farmName}}</p>
                         <p>Amount : {{sub.amount}}{{sub.product.unit}}s</p>
                         <p>Total : Ksh.{{sub.total}}</p>
-                        <p>Date : {{sub.date}}{{["st","nd","rd"][((sub.date+90)%100-10)%10-1]||"th"}}</p>
+                        <p>Next confirmed : {{sub.date}}{{["st","nd","rd"][((sub.date+90)%100-10)%10-1]||"th"}} {{sub.LCD}}</p>
                     </div>
                     <div class="uk-card-footer">
                         <a class="uk-button uk-text-danger" @click="cancelSubscription(sub)">Cancel</a>

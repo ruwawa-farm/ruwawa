@@ -31,8 +31,13 @@
                     <div class="uk-card-media-top">
                         <img v-bind:src="sub.product.image_url" class="profile uk-padding-small" alt="profile">
                     </div>
-                    <div class="uk-card-body">
-                        <h3>Date : {{sub.date}}{{["st","nd","rd"][((sub.date+90)%100-10)%10-1]||"th"}}</h3>
+                    <div class="uk-card-body sub-card">
+                        <p>Amount : {{sub.amount}}{{sub.product.unit}}s</p>
+                        <p>Total : Ksh.{{sub.total}}</p>
+                        <p>Next confirmed : {{sub.date}}{{["st","nd","rd"][((sub.date+90)%100-10)%10-1]||"th"}} {{sub.LCD}}</p>
+                    </div>
+                    <div class="uk-card-footer uk-flex uk-flex-around">
+                        <p class="uk-button uk-text-primary" @click="confirmSubscription(sub)">Confirm {{monthNames[new Date().getMonth() + 1]}} delivery</p>
                     </div>
                 </div>
             </div>
@@ -68,6 +73,7 @@
                 noOrders: '',
                 reason: '',
                 currentOrder: {},
+                monthNames : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
                 orders: this.$store.state.orders,
                 subscriptions: this.$store.state.subscriptions
             }
@@ -112,6 +118,17 @@
                     .catch(err => { UIkit.notification({message: err.response.data.error, status: 'danger'})})
                 UiKit.modal('#modal-decline').hide()
             },
+            confirmSubscription(sub){
+                const data = {subscription: sub}
+                this.axios.post('/subscriptions/confirm', data, this.$store.state.config)
+                    .then(res => {
+                        if (res.status === 200){
+                            UIkit.notification({message: "Updated subscription status", status: 'success'})
+                            this.subscriptions[this.subscriptions.indexOf(sub)].LCD = this.monthNames[new Date().getMonth() + 1]
+                        }
+                    })
+                    .catch(err => { UIkit.notification({message: err.response.data.error, status: 'danger'})})
+            }
         }
     }
 </script>
@@ -124,6 +141,10 @@
         .uk-card {
             margin: 10px;
         }
+    }
+
+    .sub-card {
+        text-align: start !important;
     }
 
     .hidden {
