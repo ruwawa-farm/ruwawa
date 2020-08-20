@@ -6,43 +6,78 @@
                 <h3>Welcome to Ruwawa. <br> First log into your account or create a new one.</h3>
             </div>
             <div>
-                <div class="uk-card uk-card-small uk-card-default uk-card-hover uk-width-1-2@m">
-                    <div class="uk-card-header">
-                        <div class="uk-grid-small uk-flex-middle" uk-grid>
-                            <div class="uk-width-expand">
-                                <h3 class="uk-card-title uk-margin-remove-bottom">Login</h3>
+                <transition name="fade" mode="out-in">
+                    <div v-if="show" key="1" class="login-form uk-card uk-card-small uk-card-default uk-card-hover uk-width-1-2@m">
+                        <div class="uk-card-header">
+                            <div class="uk-grid-small uk-flex-middle" uk-grid>
+                                <div class="uk-width-expand">
+                                    <h3 class="uk-card-title uk-margin-remove-bottom">Login</h3>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="uk-card-body">
-                        <p>Enter the correct details to login</p>
-                        <form v-on:submit.prevent="getAuth">
-                            <div class="uk-margin">
-                                <input class="uk-input" type="email" placeholder="Enter your email" v-model="email" required>
-                            </div>
-                            <div class="uk-margin">
-                                <input class="uk-input" type="password" placeholder="Enter your password" v-model="password" required>
-                            </div>
-                            <div class="uk-alert-danger" v-bind:class="{err: !error}" uk-alert>
-                                <p id="err_msg">{{error_message}} <span uk-icon="close" v-on:click="close"></span></p>
-                            </div>
-                            <div class="uk-flex uk-flex-around">
-                                <div>
-                                    <button class="uk-button" type="submit">{{btn}}</button>
+                        <div class="uk-card-body">
+                            <p>Enter the correct details to login</p>
+                            <form v-on:submit.prevent="getAuth">
+                                <div class="uk-margin">
+                                    <input class="uk-input" type="email" placeholder="Enter your email" v-model="email" required>
                                 </div>
-                                <div>
-                                    <router-link to="/client/signup"><button class="uk-button">Sign up</button></router-link>
+                                <div class="uk-margin">
+                                    <input class="uk-input" type="password" placeholder="Enter your password" v-model="password" required>
+                                </div>
+                                <div class="uk-alert-danger" v-bind:class="{err: !error}" uk-alert>
+                                    <p id="err_msg">{{error_message}} <span uk-icon="close" v-on:click="close"></span></p>
+                                </div>
+                                <div class="uk-margin">
+                                    <span @click="toggle">Forgot password?</span>
+                                </div>
+                                <div class="uk-flex uk-flex-around">
+                                    <div>
+                                        <button class="uk-button" type="submit">{{btn}}</button>
+                                    </div>
+                                    <div>
+                                        <router-link to="/client/signup"><button class="uk-button">Sign up</button></router-link>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div v-else key="2" class="reset-form uk-card uk-card-small uk-card-default uk-card-hover uk-width-1-2@m">
+                        <div class="uk-card-header">
+                            <div class="uk-grid-small uk-flex-middle" uk-grid>
+                                <div class="uk-width-expand">
+                                    <h3 class="uk-card-title uk-margin-remove-bottom">Reset password</h3>
                                 </div>
                             </div>
-                        </form>
+                        </div>
+                        <div class="uk-card-body">
+                            <p>Enter your email to reset the password</p>
+                            <form v-on:submit.prevent="resetPass">
+                                <div class="uk-margin">
+                                    <input class="uk-input" type="email" placeholder="Enter your email" v-model="email" required>
+                                </div>
+                                <div class="uk-alert-danger" v-bind:class="{err: !error}" uk-alert>
+                                    <p id="err_msg">{{error_message}} <span uk-icon="close" v-on:click="close"></span></p>
+                                </div>
+                                <div class="uk-margin">
+                                    <span @click="toggle">Back to login</span>
+                                </div>
+                                <div class="uk-flex uk-flex-around">
+                                    <div>
+                                        <button class="uk-button" type="submit">{{reset}}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                </div>
+                </transition>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import UIkit from "uikit";
+
 export default {
     data (){
         return {
@@ -50,7 +85,9 @@ export default {
             password:'',
             error_message: '',
             btn:'Login',
+            reset: 'reset',
             error:false,
+            show: true
         }
     },
     methods:{
@@ -93,6 +130,19 @@ export default {
                     })
             }
         },
+        resetPass(){
+            let data = {email: this.email}
+            this.axios.post('/auth/password/forgot', data)
+                .then(res => {
+                    if (res.status === 200){
+                        UIkit.notification({message: "Reset email sent successfully", status: 'success'})
+                    }
+                })
+                .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
+        },
+        toggle(){
+            this.show = !this.show
+        },
         close(){
             this.error = false
         }
@@ -130,6 +180,13 @@ export default {
     }
     .uk-card-title{
         color: white;
+    }
+
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s
+    }
+    .fade-enter, .fade-leave-to {
+        opacity: 0
     }
 
 </style>
