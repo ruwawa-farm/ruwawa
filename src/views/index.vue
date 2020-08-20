@@ -123,7 +123,6 @@ export default {
                         }
                     })
                     .catch(err => {
-                        console.log(err)
                         this.btn = "Login";
                         this.error_message = err.response.data.error;
                         this.error = true;
@@ -131,14 +130,19 @@ export default {
             }
         },
         resetPass(){
+            this.reset = "Sending..."
             let data = {email: this.email}
             this.axios.post('/auth/password/forgot', data)
                 .then(res => {
+                    this.reset = "Reset"
                     if (res.status === 200){
                         UIkit.notification({message: "Reset email sent successfully", status: 'success'})
                     }
                 })
-                .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
+                .catch(err => {
+                    this.reset = "Reset"
+                    UIkit.notification({message: err.response.data.error, status: 'danger'})
+                })
         },
         toggle(){
             this.show = !this.show
