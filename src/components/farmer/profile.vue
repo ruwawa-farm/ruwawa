@@ -266,7 +266,12 @@
                             UIkit.notification({message: "Uploaded images successfully", status: 'success'})
                         }
                     })
-                    .catch(err => { UIkit.notification({message: err.response.data.error, status: 'danger'})})
+                    .catch(err => {
+                        if (err.message.contains("Network Error"))
+                            UIkit.notification({message: "Connection timeout", status: 'danger'})
+                        else
+                            UIkit.notification({message: err.response.data.error, status: 'danger'})
+                    })
             },
             createFarmImages(files){
                 ([...files]).forEach(file => {
@@ -298,7 +303,10 @@
                 })
                 .catch(err => {
                     this.profilePicture = this.profile.profilePicture
-                    UIkit.notification({message: err.response.data.error, status: 'danger'})
+                    if (err.message.contains("Network Error"))
+                        UIkit.notification({message: "Connection timeout", status: 'danger'})
+                    else
+                        UIkit.notification({message: err.response.data.error, status: 'danger'})
                 })
             },
             createImage(file) {
