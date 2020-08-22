@@ -128,8 +128,9 @@
         },
         mounted(){
             this.axios.get("products")
-                .then(response => {
-                    response.data.products.forEach((item) => {
+                .then(res => {
+                    this.$store.commit("addProducts", res.data.products)
+                    res.data.products.forEach((item) => {
                         switch (item.type) {
                             case "nut":
                                 this.nuts.unshift(item);
@@ -146,7 +147,11 @@
                         }
                     });
                 })
-                .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
+                .catch(err => {
+                    if (err.message.contains("Network Error"))
+                        UIkit.notification({message: "Connection timeout", status: 'danger'})
+                    else UIkit.notification({message: err.response.data.error, status: 'danger'})
+                })
         },
         data(){
             return {
@@ -309,11 +314,6 @@
         color: #0b6623;
         font-weight: bolder;
         text-decoration: underline;
-    }
-
-    .uk-button-default{
-        background: none !important;
-        color: #222;
     }
 
     .hidden{

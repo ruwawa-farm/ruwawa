@@ -122,17 +122,9 @@
                     this.axios.get('/farmers/profile', this.$store.state.config)
                         .then(res => {
                             this.$store.commit("addFarmerProfile", res.data.farmer)
-                            this.getProducts()
                         })
                         .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
                 }
-            },
-            getProducts(){
-                this.axios.get("products")
-                    .then(res => {
-                        this.$store.commit("addProducts", res.data.products)
-                    })
-                    .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
             },
             getSubscriptions(){
                 this.axios.get('/subscriptions/farmer', this.$store.state.config)
