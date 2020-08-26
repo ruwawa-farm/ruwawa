@@ -47,18 +47,8 @@
                                 <div class="uk-margin">
                                     <input class="uk-input" type="text" placeholder="Enter your farm name" v-model="farmName" required>
                                 </div>
-                                <div class="uk-margin" uk-toggle="target: #my-id" @click="getCurrentLocation">
-                                    <input class="uk-input" type="text" :value="farmAddress"  disabled required>
-                                </div>
-                                <div id="my-id" uk-modal>
-                                    <div class="uk-modal-dialog uk-modal-body uk-text-center">
-                                        <h2 class="uk-modal-title">Select the Farm location</h2>
-                                        <h3>Drag the map to place the pointer</h3>
-                                        <map-location-selector :latitude="currentLat" :longitude="currentLong" @locationUpdated="locationUpdated" :key="refresh" class="uk-width-1-1"></map-location-selector>
-                                        <div class="uk-margin">
-                                            <button class="uk-button uk-modal-close" type="button" @click="changeMap">Select</button>
-                                        </div>
-                                    </div>
+                                <div class="uk-margin">
+                                    <input class="uk-input" placeholder="Enter your farm address" v-gmaps-searchbox:location.name.geometry=vm>
                                 </div>
                                 <div class="products">
                                     <p>Products available in your farm</p>
@@ -119,13 +109,9 @@
 </template>
 
 <script>
-    import mapLocationSelector from 'vue-google-maps-location-selector';
     import UIkit from 'uikit'
 
     export default {
-        components: {
-            mapLocationSelector
-        },
         mounted(){
             this.axios.get("products")
                 .then(res => {
@@ -162,12 +148,11 @@
                 password_rpt: '',
                 btn: 'Submit',
                 error_message: '',
-                currentLat: 0.0,
-                currentLong: 0.0,
                 lat: '',
                 lng: '',
+                vm: {},
+                location: {lat: this.lat, lng: this.lng},
                 farmName: '',
-                refresh: 0,
                 farmAddress: 'Click to select your farm location',
                 products: [],
                 fruits: [],
@@ -189,25 +174,9 @@
             goBack(){
                 this.stepOneDone = false
             },
-            getCurrentLocation(){
-                this.$getLocation()
-                    .then((coordinates) => {
-                        this.currentLat = coordinates.lat;
-                        this.currentLong = coordinates.lng;
-                        this.lat = coordinates.lat;
-                        this.lng = coordinates.lng;
-                        this.refresh += 1;
-                    });
-            },
             locationUpdated(latlng) {
                 this.lat = latlng.lat;
                 this.lng = latlng.lng;
-            },
-            changeMap(){
-                this.currentLat = this.lat;
-                this.currentLong = this.long;
-                this.farmAddress = "Location selected. Click to change it";
-                this.refresh += 1;
             },
             addProduct(index, cropType){
                 if(!this.products.includes(cropType[index]))
@@ -267,7 +236,13 @@
                 else {
                     this.error = false
                 }
-            }
+            },
+            "vm.location"(value){
+                let lat = value.geometry.location.lat()
+                let lng = value.geometry.location.lng()
+                this.lat = lat
+                this.lng = lng
+            },
         }
     }
 </script>
