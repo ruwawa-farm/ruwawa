@@ -329,8 +329,10 @@
                 }
                 this.axios.post("/farmers/profile/edit", data,this.$store.state.config)
                 .then(res => {
-                    if (res.status === 200)
+                    if (res.status === 200){
+                        this.$store.commit('addFarmerProfile', res.data.result)
                         UIkit.notification({message: "Updated profile successfully", status: 'success'})
+                    }
                 })
                 .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
                 UIkit.modal('#modal-profile').hide()
