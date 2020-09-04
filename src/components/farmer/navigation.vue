@@ -41,6 +41,7 @@
             this.checkConfirmed()
             this.getOrders()
             this.getSubscriptions()
+            this.getProducts()
             let audio = new Audio(require('../../assets/audio/ruwawa.mp3'))
             audio.play()
             audio.loop = true
@@ -125,6 +126,15 @@
                         })
                         .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
                 }
+            },
+            getProducts(){
+                this.axios.get("products")
+                    .then(res => {this.$store.commit("addProducts", res.data.products)})
+                    .catch(err => {
+                        if (err.message.contains("Network Error"))
+                            UIkit.notification({message: "Connection timeout", status: 'danger'})
+                        else UIkit.notification({message: err.response.data.error, status: 'danger'})
+                    })
             },
             getSubscriptions(){
                 this.axios.get('/subscriptions/farmer', this.$store.state.config)
