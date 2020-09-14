@@ -13,10 +13,10 @@
             </div>
             <div class="social-footer-icons">
                 <ul class="uk-iconnav">
-                    <li><a href="#" uk-icon="icon: facebook; ratio: 2"></a></li>
-                    <li><a href="#" uk-icon="icon: instagram; ratio: 2"></a></li>
-                    <li><a href="#" uk-icon="icon: twitter; ratio: 2"></a></li>
-                    <li><a href="#" uk-icon="icon: whatsapp; ratio: 2"></a></li>
+                    <li><a href="https://www.facebook.com/ruwawa.coffee.7" uk-icon="icon: facebook; ratio: 2"></a></li>
+                    <li><a href="https://www.instagram.com/ruwawagram/" uk-icon="icon: instagram; ratio: 2"></a></li>
+                    <li><a href="https://twitter.com/ruwawacoffee" uk-icon="icon: twitter; ratio: 2"></a></li>
+                    <li><a href="https://wa.me/254793458896" uk-icon="icon: whatsapp; ratio: 2"></a></li>
                 </ul>
             </div>
         </footer>
