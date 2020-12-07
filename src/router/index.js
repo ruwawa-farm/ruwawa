@@ -17,6 +17,7 @@ import AOS from 'aos'
 import VueGmaps from 'vue-gmaps'
 import VueGoogleMap from 'vuejs-google-maps'
 import rate from 'vue-rate'
+import VuePluralize from 'vue-pluralize'
 import {Datetime} from "vue-datetime";
 
 const axios = Axios.create({
@@ -61,6 +62,7 @@ Vue.use(mdButtons);
 Vue.use(AOS.init())
 Vue.use(jwt)
 Vue.use(rate)
+Vue.use(VuePluralize)
 Vue.use(VueGmaps, {key: 'AIzaSyAF-NGOw1lcrVBEp81LPAbqxd3yzXC1l34'})
 Vue.use(VueGoogleMap, {load: {apiKey: 'AIzaSyAF-NGOw1lcrVBEp81LPAbqxd3yzXC1l34'}})
 
