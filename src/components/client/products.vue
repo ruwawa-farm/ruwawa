@@ -2,123 +2,27 @@
     <div id="products uk-width-1-1">
 
         <!-- All products list -->
-        <div class="uk-width-3-4 center-horizontal uk-margin"   >
+        <div class="uk-width-3-4@m uk-width-1-1@s center-horizontal"   >
             <h2 class="uk-text-center">Select the product you want to buy from the list below</h2>
-            <ul uk-accordion>
-                <!-- Berries -->
-                <li>
-                    <div class="uk-accordion-title uk-text-center"><h4 class="accordion-title uk-align-left">Berries</h4></div>
-                    <div class="uk-accordion-content">
-                        <div class="products">
-                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-width-2-3 uk-margin-right uk-margin-left"
-                                 v-for="berry in products.filter(e => {return e.type === 'berry'})" :key="berry._id"
-                                 @click="showFarmers(products.indexOf(berry))">
+            <ul uk-accordion="multiple: true">
+                <li class="uk-open" v-for="type in productTypes" :key="type">
+                    <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">{{ type | pluralize(10) }}</h4></div>
+                    <div class="uk-accordion-content uk-width-1-1">
+                        <div class="uk-grid uk-grid-small center-horizontal">
+                            <div class="uk-card uk-width-1-6@m uk-margin-bottom uk-width-1-2 center-horizontal"
+                                 v-bind:class="[largeDevice ? 'uk-card-default uk-card-hover uk-margin-right uk-margin-left': '']"
+                                 v-for="product in products.filter(e => {return e.type === type})" :key="product._id"
+                                 @click="showFarmers(products.indexOf(product))">
                                 <div class="uk-card-media-top">
-                                    <img v-bind:src="berry.image_url" alt="product" height="auto">
+                                    <img v-bind:src="product.image_url" alt="product" height="auto">
                                 </div>
                                 <div class="uk-card-body">
-                                    <p>{{berry.name}}</p>
+                                    <p>{{product.name}}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </li>
-
-                <!-- Cereals -->
-                <li>
-                    <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Cereals</h4></div>
-                    <div class="uk-accordion-content">
-                        <div class="products">
-                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-width-2-3 uk-margin-right uk-margin-left"
-                                 v-for="cereal in products.filter(e => {return e.type === 'cereal'})" :key="cereal._id"
-                                 @click="showFarmers(products.indexOf(cereal))">
-                                <div class="uk-card-media-top">
-                                    <img v-bind:src="cereal.image_url" alt="product" height="auto">
-                                </div>
-                                <div class="uk-card-body">
-                                    <p>{{cereal.name}}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-
-                <!-- Fruits -->
-                <li>
-                    <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Fruits</h4></div>
-                    <div class="uk-accordion-content">
-                        <div class="products">
-                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-width-2-3 uk-margin-right uk-margin-left"
-                                 v-for="fruit in products.filter(e => {return e.type === 'fruit'})" :key="fruit._id"
-                                 @click="showFarmers(products.indexOf(fruit))">
-                                <div class="uk-card-media-top">
-                                    <img v-bind:src="fruit.image_url" alt="product" height="auto">
-                                </div>
-                                <div class="uk-card-body">
-                                    <p>{{fruit.name}}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-
-                <!-- Legumes -->
-                <li>
-                    <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Legumes</h4></div>
-                    <div class="uk-accordion-content">
-                        <div class="products">
-                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-width-2-3 uk-margin-right uk-margin-left"
-                                 v-for="legume in products.filter(e => {return e.type === 'legume'})" :key="legume._id"
-                                 @click="showFarmers(products.indexOf(legume))">
-                                <div class="uk-card-media-top">
-                                    <img v-bind:src="legume.image_url" alt="product" height="auto">
-                                </div>
-                                <div class="uk-card-body">
-                                    <p>{{legume.name}}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-
-                <!-- Nuts -->
-                <li>
-                    <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Nuts</h4></div>
-                    <div class="uk-accordion-content">
-                        <div class="products">
-                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-width-2-3 uk-margin-right uk-margin-left"
-                                 v-for="nut in products.filter(e => {return e.type === 'nut'})" :key="nut._id"
-                                 @click="showFarmers(products.indexOf(nut))">
-                                <div class="uk-card-media-top">
-                                    <img v-bind:src="nut.image_url" alt="product" height="auto">
-                                </div>
-                                <div class="uk-card-body">
-                                    <p>{{nut.name}}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-
-                <!-- Vegetables -->
-                <li>
-                    <div class="uk-accordion-title"><h4 class="accordion-title uk-align-left">Vegetables</h4></div>
-                    <div class="uk-accordion-content">
-                        <div class="products">
-                            <div class="uk-card uk-card-default uk-card-hover uk-width-1-6@m uk-width-2-3 uk-margin-right uk-margin-left"
-                                 v-for="veg in products.filter(e => {return e.type === 'vegetable'})" :key="veg._id"
-                                 @click="showFarmers(products.indexOf(veg))">
-                                <div class="uk-card-media-top">
-                                    <img v-bind:src="veg.image_url" alt="product" height="auto">
-                                </div>
-                                <div class="uk-card-body">
-                                    <p>{{veg.name}}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-
             </ul>
         </div>
 
@@ -170,27 +74,24 @@
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
 <script>
     import UIkit from "uikit";
 
+    const small = window.matchMedia("(max-width: 700px)")
     export default {
-        created() {
+        created: function () {
             if (this.$store.state.allProducts.length === 0)
                 return this.getProducts()
             this.products = this.$store.state.allProducts
+            this.largeDevice = !small.matches
         },
         mounted() {
             window.onpopstate = ev => {
-                if (this.modalActive){
-                    this.$router.push("")
-                }
-                else {
-                    return ev
-                }
+                if (this.modalActive)this.$router.push("")
+                else return ev
             }
         },
         data(){
@@ -198,6 +99,7 @@
                 products: [],
                 availableFarmers: [],
                 displayFarmers: [],
+                productTypes: ['berry', 'cereal', 'fruit', 'legume', 'nut', 'vegetable'],
                 selectedFarmer: {},
                 productIndex: 0,
                 productName: '',
@@ -208,7 +110,8 @@
                 delivered: false,
                 farmersLoading: true,
                 undefinedPrice: true,
-                modalActive: false
+                modalActive: false,
+                largeDevice: true
             }
         },
         methods:{
@@ -300,9 +203,25 @@
              padding-left: 0 !important;
         }
     }
-
+    .product-card {
+        margin: 2px !important;
+    }
     .loaded {
         display: none;
+    }
+
+    .uk-accordion-title{
+        background: #F4F6F7 !important;
+    }
+
+    .uk-accordion-content {
+        background: #F7F9F9 !important;
+        margin-top: 0 !important;
+    }
+
+    .accordion-title,
+    .uk-accordion-title::before {
+        padding: 1em !important;
     }
 
     .uk-accordion-title,
