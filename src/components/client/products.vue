@@ -203,9 +203,7 @@
              padding-left: 0 !important;
         }
     }
-    .product-card {
-        margin: 2px !important;
-    }
+
     .loaded {
         display: none;
     }
