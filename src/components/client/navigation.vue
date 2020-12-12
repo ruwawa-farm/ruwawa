@@ -27,7 +27,7 @@
                             <p id="err_msg">{{error_message}} <span uk-icon="close" v-on:click="close"></span></p>
                         </div>
                         <div>
-                            <button class="uk-button contact-btn uk-width-1-2" type="submit">{{btn}}</button>
+                            <button class="uk-button round-btn uk-width-1-2" type="submit">{{btn}}</button>
                         </div>
                     </form>
                 </div>
@@ -231,7 +231,7 @@
         border: 1px solid #a0d18c;
     }
 
-    .contact-btn {
+    .round-btn {
         border-radius: 20px;
     }
 

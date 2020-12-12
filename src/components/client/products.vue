@@ -12,7 +12,7 @@
                             <div class="uk-card uk-width-1-6@m uk-margin-bottom uk-width-1-2 center-horizontal"
                                  v-bind:class="[largeDevice ? 'uk-card-default uk-card-hover uk-margin-right uk-margin-left': '']"
                                  v-for="product in products.filter(e => {return e.type === type})" :key="product._id"
-                                 @click="showFarmers(products.indexOf(product))">
+                                 @click="showFarmers(product)">
                                 <div class="uk-card-media-top">
                                     <img v-bind:src="product.image_url" alt="product" height="auto">
                                 </div>
@@ -27,24 +27,17 @@
         </div>
 
         <!-- Farmer's list modal -->
-        <div id="modal-farmers" class="uk-modal-full" uk-modal>
+        <div id="modal-farmers" class="uk-flex-top uk-modal-container" uk-modal>
             <div class="uk-modal-dialog">
                 <button class="uk-modal-close-full uk-close-large icon-black" type="button" uk-close @click="modalHidden"></button>
                 <div class="uk-grid-collapse uk-child-width-1-2@s uk-flex-middle" uk-grid>
                     <div class="center-vertical" uk-height-viewport>
                         <div class="uk-text-center">
-                            <img v-bind:src="products[productIndex].image_url" width="300px" height="300px">
-                            <h1>{{products[productIndex].name}}</h1>
-                            <h4>Enter the amount you need below in {{products[productIndex].unit}}s</h4>
+                            <img v-bind:src="currentProduct.image_url" width="300px" height="300px">
+                            <h1>{{currentProduct.name}}</h1>
+                            <h4>Enter the amount you need below in {{currentProduct.unit}}s</h4>
                             <div class="uk-margin">
                                 <input class="uk-input" v-model="productAmount" type="number" placeholder="Amount" required>
-                            </div>
-                            <h4>Choose the delivery method</h4>
-                            <div class="uk-margin">
-                                <select class="uk-select" required v-model="delivered">
-                                    <option :value=true>Delivery to your location</option>
-                                    <option :value=false>Pickup from the farm</option>
-                                </select>
                             </div>
                         </div>
                     </div>
@@ -52,22 +45,18 @@
                         <h1>Available Farms</h1>
                         <h4>Choose from which farm you would like to buy from</h4>
 
-                        <div v-bind:class="{loaded: !farmersLoading}">
-                            <img src="../../assets/images/farmers_loading.gif">
-                        </div>
-
-                        <div v-bind:class="{loaded: farmersLoading}">
+                        <div>
                             <div class="uk-margin">
                                 <div class="uk-form-controls">
                                     <h3 class="uk-text-danger">{{farmersListState}}</h3>
-                                    <h4 class="farmers-radio" v-for="farmer in displayFarmers" :key="farmer._id">
+                                    <h4 class="farmers-radio" v-for="farmer in availableFarmers" :key="farmer._id">
                                         <label><input class="uk-radio" type="radio" name="radio1" @click="updateTotalPrice(farmer)">
                                             {{farmer.farmName}} : Ksh. {{getProductPrice(farmer)}}
                                         </label>
                                     </h4><br>
                                 </div>
                                 <h3>Total price: Ksh. {{totalProductPrice}}</h3>
-                                <button class="uk-button uk-button-default" type="submit" v-bind:disabled="undefinedPrice" @click="addToCart">Add to Cart</button>
+                                <button class="uk-button uk-button-default" type="submit" @click="addToCart">Add to Cart</button>
                             </div>
                         </div>
                     </div>
@@ -98,18 +87,13 @@
             return {
                 products: [],
                 availableFarmers: [],
-                displayFarmers: [],
+                allFarmers: this.$store.state.allFarmers,
                 productTypes: ['berry', 'cereal', 'fruit', 'legume', 'nut', 'vegetable'],
                 selectedFarmer: {},
-                productIndex: 0,
-                productName: '',
-                productAmount: 0,
-                farmerProductPrice: 0,
+                currentProduct: {},
                 farmersListState: '',
                 totalProductPrice: 0,
-                delivered: false,
-                farmersLoading: true,
-                undefinedPrice: true,
+                productAmount: 0,
                 modalActive: false,
                 largeDevice: true
             }
@@ -123,26 +107,23 @@
                 })
                 .catch(err => { UIkit.notification({message: err.response.data.error, status: 'danger'})})
             },
-            showFarmers(index){
+            showFarmers(product){
+                console.log(product)
                 this.modalActive = true
-                this.productIndex = index
-                let product = this.products[index]
-                this.productName = product.name
+                this.currentProduct = product
+                this.availableFarmers = []
                 UIkit.modal('#modal-farmers').show()
-                this.axios.get(`/farmers/product/${product._id}/instock`, this.$store.state.config)
-                .then(res => {
-                    this.farmersLoading = false
-                    this.availableFarmers = res.data.farmers
-                    this.displayFarmers = res.data.farmers
-                    if (this.availableFarmers.length === 0)
-                        this.farmersListState = "No available farmers yet."
-                    else
-                        this.farmersListState = ""
+
+                this.allFarmers.forEach( farmer => {
+                    const productFind = farmer.products.find(item => item._id === product._id)
+                    if (productFind && productFind.inStock && productFind.price !== "") {
+                        this.availableFarmers.push(farmer)
+                    }
                 })
-                .catch(err => { UIkit.notification({message: err.response.data.error, status: 'danger'})})
+                this.farmersListState = this.availableFarmers.length === 0 ? "No available farmers yet." : "";
             },
             getProductPrice(farmer){
-                return farmer.products.find(product => product.name === this.productName).price
+                return farmer.products.find(product => product.name === this.currentProduct.name).price
             },
             modalHidden(){
                 this.farmerProductPrice = 0
@@ -157,22 +138,14 @@
                 let price = this.getProductPrice(value)
                 this.farmerProductPrice = parseInt(price)
                 this.selectedFarmer = value
-                if (price === undefined || price === ""){
-                    this.totalProductPrice = 0
-                    this.undefinedPrice = true
-                }
-                else{
-                    this.undefinedPrice = false
-                    this.totalProductPrice = parseInt(price) * this.productAmount
-                }
+                this.totalProductPrice = parseInt(price) * this.productAmount
             },
             addToCart(){
                 let order = {
-                    product: this.products[this.productIndex],
+                    product: this.currentProduct,
                     farmer: this.selectedFarmer,
                     total: this.totalProductPrice,
                     amount: parseInt(this.productAmount),
-                    delivered: this.delivered,
                     deliveryCost: 0
                 }
                 this.$store.commit("addToCart", order)
@@ -184,13 +157,7 @@
             productAmount(value) {
                 if (value !== "" && Object.keys(this.selectedFarmer).length !== 0){
                     this.totalProductPrice = parseInt(value) * this.farmerProductPrice
-                    this.undefinedPrice = false
                 }
-            },
-            delivered(value){
-                this.displayFarmers = value ? this.availableFarmers.filter(e => {
-                    return e.delivers === value
-                }) : this.availableFarmers;
             }
         }
     }
