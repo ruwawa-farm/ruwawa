@@ -62,7 +62,7 @@
                 <tbody>
                 <tr v-for="order in orders" :key="order.product._id">
                     <td>{{order.product.name}}</td>
-                    <td>{{order.amount}} {{order.product.unit}}s</td>
+                    <td>{{order.amount}} {{ order.product.unit | pluralize(order.amount) }}</td>
                     <td>{{order.deliveryCost}}</td>
                     <td>{{order.deliveryCost + order.total}}</td>
                 </tr>
