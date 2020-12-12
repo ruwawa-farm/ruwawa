@@ -100,7 +100,7 @@
                             text: 'Cart',
                             path: '',
                             isLinkAction: true,
-                            class: 'nav-button'
+                            class: 'nav-button',
                         }
                     ]
                 }
