@@ -69,6 +69,10 @@
       color: black !important;
     }
 
+    .icon-black:hover {
+        cursor: pointer;
+    }
+
     .center-vertical {
       display: flex;
       align-items: center;
