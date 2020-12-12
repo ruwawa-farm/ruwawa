@@ -36,7 +36,6 @@ import 'vue-datetime/dist/vue-datetime.css'
 
 //views
 import index from '../views/index.vue'
-import contacts from '../views/contacts'
 import clientSignup from '../components/client/signup.vue'
 import farmerSignup from '../components/farmer/signup.vue'
 import clientHome from '../components/client/navigation.vue'
@@ -45,7 +44,6 @@ import farmerHome from '../components/farmer/navigation'
 
 //Components
 Vue.component("vue-navigation-bar", VueNavigationBar);
-Vue.component('Contacts', contacts)
 Vue.component('datetime', Datetime)
 
 Vue.use(VueRouter);

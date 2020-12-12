@@ -5,9 +5,9 @@
         </div>
         <div>
             <div class="sticky-mic"></div>
-            <component v-bind:is = "view" @contacts-active="changeFooter"></component>
+            <component v-bind:is = "view"></component>
         </div>
-        <footer class="ruwawa-footer">
+        <footer class="ruwawa-footer" :class="{hidden: hideFooter}">
             <div uk-grid class="uk-width-2-3@m center-horizontal ruwawa-contact-footer">
                 <img src="../../assets/images/ruwawa-logo.png" class="ruwawa-footer-logo" data-aos="fade-up" data-aos-duration="4000">
                 <div data-aos="fade-up" data-aos-duration="4000">
@@ -72,7 +72,7 @@
         data() {
             return {
                 view: 'home',
-                isContacts: false,
+                hideFooter: false,
                 profile: {},
                 btn: 'Submit',
                 error_message: '',
@@ -104,13 +104,6 @@
                             path: '',
                             isLinkAction: true,
                             class: 'nav-button'
-                        },
-                        {
-                            type: 'button',
-                            text: 'Contacts',
-                            path: '',
-                            isLinkAction: true,
-                            class: 'nav-button'
                         }
                     ]
                 }
@@ -119,9 +112,7 @@
         methods :{
             vnbItemClicked(text) {
                 this.view = text.toLocaleLowerCase()
-            },
-            changeFooter(value){
-                this.isContacts = value
+                this.hideFooter = this.view !== "home";
             },
             checkConfirmed(){
                 if (this.$store.state.userType !== ""){
@@ -234,12 +225,6 @@ input[type=text]:focus {
     -webkit-border-radius: 15px !important;
     -moz-border-radius: 15px !important;
     border-radius: 15px !important;
-}
-
-.bottom_footer {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 }
 
 .ruwawa-footer {

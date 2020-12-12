@@ -1,12 +1,12 @@
 <template>
-    <div id="navigation" class="uk-height-1-1" :class="{bottom_footer : isBottomBar}">
+    <div id="navigation" class="uk-height-1-1">
         <div uk-sticky>
             <vue-navigation-bar :options="navbarOptions"  @vnb-item-clicked="vnbItemClicked"/>
         </div>
         <div>
             <component v-bind:is = "view"></component>
         </div>
-        <footer class="ruwawa-footer">
+        <footer class="ruwawa-footer" :class="{hidden: hideFooter}">
             <div uk-grid class="uk-width-2-3@m center-horizontal ruwawa-contact-footer">
                 <img src="../../assets/images/ruwawa-logo.png" class="ruwawa-footer-logo" data-aos="fade-up" data-aos-duration="4000">
                 <div data-aos="fade-up" data-aos-duration="4000">
@@ -76,7 +76,7 @@
         },
         data() {
             return {
-                isBottomBar: true,
+                hideFooter: false,
                 view: 'home',
                 btn: 'Submit',
                 error_message: '',
@@ -118,13 +118,6 @@
                         },
                         {
                             type: 'button',
-                            text: 'Contacts',
-                            path: '',
-                            isLinkAction: true,
-                            class: 'nav-button'
-                        },
-                        {
-                            type: 'button',
                             text: 'Cart',
                             path: '',
                             isLinkAction: true,
@@ -137,6 +130,7 @@
         methods :{
             vnbItemClicked(text) {
                 this.view = text.toLocaleLowerCase()
+                this.hideFooter = this.view !== "home";
             },
             checkConfirmed(){
                 if (this.$store.state.userType !== ""){
