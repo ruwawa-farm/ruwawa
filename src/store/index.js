@@ -26,6 +26,7 @@ export default new Vuex.Store({
         subscriptions: [],
         subscriptionsChanged: true,
         config: {},
+        token: '',
         userType: '',
         googleApiKey: 'AIzaSyAF-NGOw1lcrVBEp81LPAbqxd3yzXC1l34',
         isBottomBar: false,
@@ -35,6 +36,7 @@ export default new Vuex.Store({
             state.allProducts = payload
         },
         createConfig(state, payload){
+            state.token = payload
             state.config = {
                 headers: {
                     Authorization: 'Bearer ' + payload
@@ -52,7 +54,8 @@ export default new Vuex.Store({
             state.cart.unshift(payload)
         },
         removeFromCart(state, payload){
-            state.cart.splice(payload, 1)
+            let index = state.cart.indexOf(payload)
+            state.cart.splice(index , 1)
         },
         clearCart(state){
             state.cart = []

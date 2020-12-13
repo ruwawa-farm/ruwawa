@@ -33,6 +33,10 @@
       font-family: ProximaNova,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif !important;
     }
 
+    .hidden {
+        display: none;
+    }
+
     .uk-height-1-1 {
       min-height: 100vh !important;
       background-color: white;
@@ -63,6 +67,10 @@
     .icon-black {
       margin: 1em;
       color: black !important;
+    }
+
+    .icon-black:hover {
+        cursor: pointer;
     }
 
     .center-vertical {

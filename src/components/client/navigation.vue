@@ -1,21 +1,44 @@
 <template>
-    <div id="navigation" class="uk-height-1-1" :class="{bottom_footer : isBottomBar}">
+    <div id="navigation" class="uk-height-1-1">
         <div uk-sticky>
             <vue-navigation-bar :options="navbarOptions"  @vnb-item-clicked="vnbItemClicked"/>
         </div>
         <div>
             <component v-bind:is = "view"></component>
         </div>
-        <footer class="social-footer" uk-grid>
-            <div class="social-footer-left  ">
-                <img src="../../assets/images/ruwawa-logo.png" width="100px" height="100px">
+        <footer class="ruwawa-footer" :class="{hidden: hideFooter}">
+            <div uk-grid class="uk-width-2-3@m center-horizontal ruwawa-contact-footer">
+                <img src="../../assets/images/ruwawa-logo.png" class="ruwawa-footer-logo" data-aos="fade-up" data-aos-duration="4000">
+                <div data-aos="fade-up" data-aos-duration="4000">
+                    <h5 class="ruwawa-contact">Email: <a href="mailto:ruwawafarm@gmail.com">ruwawafarm@gmail.com</a></h5>
+                    <h5 class="ruwawa-contact">Phone: +254793458896 </h5>
+                    <h5 class="ruwawa-contact">123-90100, Nairobi, Kenya</h5>
+                </div>
+                <div class="uk-text-center ruwawa-contact-form" data-aos="fade-up" data-aos-duration="4000">
+                    <h5 class="form-title">Send us your feedback and queries and we will be sure to get back to you as soon as possible.</h5>
+                    <form v-on:submit.prevent="sendFeedback">
+                        <div class="uk-margin">
+                            <input class="uk-input round-corner" type="text" placeholder="Subject" v-model="subject">
+                        </div>
+                        <div class="uk-margin">
+                            <textarea class="uk-textarea" placeholder="Enter your message here" rows="5" required v-model="message"></textarea>
+                        </div>
+                        <div class="uk-alert-danger" v-bind:class="{err: !error}" uk-alert>
+                            <p id="err_msg">{{error_message}} <span uk-icon="close" v-on:click="close"></span></p>
+                        </div>
+                        <div>
+                            <button class="uk-button round-btn uk-width-1-2" type="submit">{{btn}}</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="social-footer-icons">
-                <ul class="uk-iconnav">
-                    <li><a href="https://www.facebook.com/ruwawa.coffee.7" uk-icon="icon: facebook; ratio: 2"></a></li>
-                    <li><a href="https://www.instagram.com/ruwawagram/" uk-icon="icon: instagram; ratio: 2"></a></li>
-                    <li><a href="https://twitter.com/ruwawacoffee" uk-icon="icon: twitter; ratio: 2"></a></li>
-                    <li><a href="https://wa.me/254793458896" uk-icon="icon: whatsapp; ratio: 2"></a></li>
+            <div class="social-footer-icons" data-aos="fade-up" data-aos-duration="4000">
+                <ul class="uk-iconnav uk-width-1-2@m center-horizontal ruwawa-socials">
+                    <li class="bold-text">&#9400; Ruwawa 2020, </li>
+                    <li><a href="https://www.facebook.com/ruwawa.coffee.7" uk-icon="icon: facebook; ratio: 1.5"></a></li>
+                    <li><a href="https://www.instagram.com/ruwawagram/" uk-icon="icon: instagram; ratio: 1.5"></a></li>
+                    <li><a href="https://twitter.com/ruwawacoffee" uk-icon="icon: twitter; ratio: 1.5"></a></li>
+                    <li><a href="https://wa.me/254793458896" uk-icon="icon: whatsapp; ratio: 1.5"></a></li>
                 </ul>
             </div>
         </footer>
@@ -53,8 +76,13 @@
         },
         data() {
             return {
-                isBottomBar: true,
+                hideFooter: false,
                 view: 'home',
+                btn: 'Submit',
+                error_message: '',
+                error: false,
+                subject: '',
+                message: '',
                 navbarOptions: {
                     mobileBreakpoint: 992,
                     tooltipAnimationType: 'shift-away',
@@ -90,17 +118,10 @@
                         },
                         {
                             type: 'button',
-                            text: 'Contacts',
-                            path: '',
-                            isLinkAction: true,
-                            class: 'nav-button'
-                        },
-                        {
-                            type: 'button',
                             text: 'Cart',
                             path: '',
                             isLinkAction: true,
-                            class: 'nav-button'
+                            class: 'nav-button',
                         }
                     ]
                 }
@@ -109,14 +130,12 @@
         methods :{
             vnbItemClicked(text) {
                 this.view = text.toLocaleLowerCase()
+                this.hideFooter = this.view !== "home";
             },
             checkConfirmed(){
                 if (this.$store.state.userType !== ""){
                     this.axios.get('/auth/client/confirmed', this.$store.state.config)
-                    .then(res => {
-                        if (res.status === 200)
-                            return;
-                    })
+                    .then(res => { console.log(res.status) })
                     .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
                 }
                 else {
@@ -159,11 +178,31 @@
                 })
                 .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
             },
+            sendFeedback(){
+                this.btn = 'sending...'
+                let tokenData = this.$jwt.decode(this.$store.state.token)
+                console.log(tokenData)
+                let user = Object.values(tokenData)[0]
+                let data = { subject: this.subject, message: this.message, name: user.name, email: user.email }
+                this.axios.post('/admin/feedback', data, this.$store.state.config)
+                    .then(res => {
+                        this.btn = 'Submit'
+                        UIkit.notification({message: res.data.reason, status: res.data.message})
+                    })
+                    .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
+            },
+            close(){
+                this.error = false
+            },
         }
     }
 </script>
 
 <style lang="scss">
+    .form-title {
+        color: white !important;
+    }
+
     .vnb {
         background: #0b6623;
         .nav-button{
@@ -179,22 +218,81 @@
         }
     }
 
+    input[type=text]{
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
+        border-radius: 20px;
+        border: 1px solid #2d9fd9;
+        padding-left: 10px;
+    }
+
+    input[type=text]:focus {
+        outline: none;
+        border: 1px solid #a0d18c;
+    }
+
+    .round-btn {
+        border-radius: 20px;
+    }
+
+    .uk-textarea {
+        -webkit-border-radius: 15px !important;
+        -moz-border-radius: 15px !important;
+        border-radius: 15px !important;
+    }
+
     .bottom_footer {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
     }
 
-    .social-footer {
-        padding: 0 0.5rem 0 0.5rem;
+    .ruwawa-footer {
+        background: #0b6623;
+        padding: 3rem 0.5rem;
+    }
+
+    .ruwawa-socials{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    @media (max-width: 768px) {
+        .ruwawa-contact-form {
+            margin: 5em 0 !important;
+        }
+        .ruwawa-contact {
+            margin-top: 0px !important;
+        }
+    }
+
+    .ruwawa-contact {
+        margin-top: 20px !important;
+        color: white !important;
+
+        a {
+            color: white !important;
+        }
+    }
+
+    .ruwawa-contact-footer {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background: #0b6623;
+    }
 
-        h1 {
-            margin: 0 0 0 0 !important;
-        }
+    .ruwawa-footer-logo {
+        width: 150px !important;
+        height: auto;
+    }
+
+    .err{
+        display: none;
+    }
+
+    .social-footer-icons {
+        padding-top: 2rem;
     }
 
 </style>

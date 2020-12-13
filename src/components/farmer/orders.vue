@@ -1,7 +1,6 @@
 <template>
     <div class="orders">
         <h2 class="uk-text-center">My orders</h2>
-
         <div class="orders-list">
             <h3 class="uk-text-center uk-text-danger">{{orders.length === 0 ? "You have no orders yet": ""}}</h3>
             <div uk-grid>
@@ -145,9 +144,5 @@
 
     .sub-card {
         text-align: start !important;
-    }
-
-    .hidden {
-        display: none;
     }
 </style>
