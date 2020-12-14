@@ -1,9 +1,10 @@
 <template>
     <div class="uk-width-1-1 center-horizontal">
-        <div class="cart uk-text-center">
+        <div class="uk-text-center" :class="{cart: !smallDevice}">
             <h1>My Cart</h1>
-            <table class="uk-table uk-table-middle uk-width-2-3@m center-horizontal">
-                <thead>
+            <div class="ruwawa-cart-large" :class="{hidden: smallDevice}">
+                <table class="uk-table uk-table-middle uk-width-2-3@m center-horizontal">
+                    <thead>
                     <tr>
                         <th></th>
                         <th><h4>Product</h4></th>
@@ -11,28 +12,50 @@
                         <th><h4>Total</h4></th>
                         <th></th>
                     </tr>
-                </thead>
-                <tbody>
-                <tr v-for="order in orders" :key="order.product._id" class="uk-card uk-card-default uk-margin">
-                    <td> <img :src="order.product.image_url" width="100px"></td>
-                    <td> {{order.product.name}}</td>
-                    <td>{{order.amount}} {{ order.product.unit | pluralize(order.amount) }}</td>
-                    <td> Ksh. {{order.total}}</td>
-                    <td><span uk-icon="icon: trash" class="icon-black" @click="removeOrder(order)"></span></td>
-                </tr>
-                </tbody>
-            </table>
-            <button class="uk-button uk-button-default uk-width-1-6@m  round-btn" @click="submit">Submit</button>
+                    </thead>
+                    <tbody>
+                    <tr v-for="order in orders" :key="order.product._id" class="uk-card uk-card-default uk-margin">
+                        <td> <img :src="order.product.image_url" width="100px"></td>
+                        <td> {{order.product.name}}</td>
+                        <td>{{order.amount}} {{ order.product.unit | pluralize(order.amount) }}</td>
+                        <td> Ksh. {{order.total}}</td>
+                        <td><span uk-icon="icon: trash" class="icon-black" @click="removeOrder(order)"></span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="ruwawa-cart-small uk-width-1-1 uk-padding-large" :class="{hidden: !smallDevice}">
+                <div v-for="order in orders" :key="order.product._id" class="uk-card uk-card-default uk-width-1-1 uk-margin">
+                    <div uk-grid class="uk-flex-between">
+                        <img :src="order.product.image_url" width="150px" class="uk-margin-left">
+                        <div class="center-vertical">
+                            <table>
+                                <tr><td class="small-td uk-margin-top"><h5>{{order.product.name}}</h5></td></tr>
+                                <tr><td class="small-td uk-margin-top">{{order.amount}} {{ order.product.unit | pluralize(order.amount) }}</td></tr>
+                                <tr><td class="small-td uk-margin-top">Ksh. {{order.total}}</td></tr>
+                            </table>
+                        </div>
+                        <div class="center-vertical uk-margin-right">
+                            <span uk-icon="icon: trash" class="icon-black" @click="removeOrder(order)"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="uk-button uk-button-default uk-width-1-6@m uk-width-2-3 round-btn" @click="submit">Submit</button>
         </div>
     </div>
 </template>
 
 <script>
+    const small = window.matchMedia("(max-width: 700px)")
     export default {
-        mounted() {
+        created() {
+            this.smallDevice= small.matches
         },
         data(){
             return {
+                smallDevice: true,
                 orders: this.$store.state.cart
             }
         },
@@ -51,6 +74,10 @@
 
 .cart {
     margin: 5rem !important;
+}
+
+.small-td {
+    text-align: start !important;
 }
 
 th {
