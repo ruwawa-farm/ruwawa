@@ -71,7 +71,7 @@
 
     const small = window.matchMedia("(max-width: 700px)")
     export default {
-        created: function () {
+        created() {
             if (this.$store.state.allProducts.length === 0)
                 return this.getProducts()
             this.products = this.$store.state.allProducts
