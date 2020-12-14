@@ -49,6 +49,8 @@
 </template>
 
 <script>
+    import UIkit from "uikit";
+
     const small = window.matchMedia("(max-width: 700px)")
     export default {
         created() {
@@ -65,7 +67,24 @@
                 this.$store.commit('removeFromCart', order)
             },
             submit() {
-                console.log("order submitted")
+                const orders = this.orders.map(this.prepareOrder)
+                this.axios.post('/orders/new', {orders: orders}, this.$store.state.config)
+                    .then(res => {
+                        this.orders = []
+                        this.$store.commit("clearCart")
+                        this.$store.commit("addOrders", res.data.orders)
+                        UIkit.notification({message: "Recorded orders successfully", status: 'success'})
+                    })
+                    .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
+            },
+            prepareOrder(order){
+                return {
+                    product_id: order.product._id,
+                    farmer_id: order.farmer._id,
+                    email: order.farmer.email,
+                    total: order.total,
+                    amount: order.amount
+                }
             }
         }
     }

@@ -2,7 +2,7 @@
     <div class="orders">
 
         <div class="orders-list">
-            <h2 class="uk-text-center">My orders</h2>DELIVERY COST (KSH.)
+            <h2 class="uk-text-center">My orders</h2>
             <h3 class="uk-text-center uk-text-danger">{{orders.length === 0 ? "You have not made any order yet": ""}}</h3>
             <div uk-grid>
                 <div class="uk-card uk-card-default w3-col w3-center m2 l2 s6" v-for="order in orders" :key="order._id">

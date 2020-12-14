@@ -144,7 +144,6 @@
                     farmer: this.selectedFarmer,
                     total: this.totalProductPrice,
                     amount: parseInt(this.productAmount),
-                    deliveryCost: 0
                 }
                 this.$store.commit("addToCart", order)
                 this.modalHidden()
