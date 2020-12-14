@@ -34,7 +34,6 @@
             </div>
             <div class="social-footer-icons" data-aos="fade-up" data-aos-duration="4000">
                 <ul class="uk-iconnav uk-width-1-2@m center-horizontal ruwawa-socials">
-                    <li class="bold-text">&#9400; Ruwawa 2020, </li>
                     <li><a href="https://www.facebook.com/ruwawa.coffee.7" uk-icon="icon: facebook; ratio: 1.5"></a></li>
                     <li><a href="https://www.instagram.com/ruwawagram/" uk-icon="icon: instagram; ratio: 1.5"></a></li>
                     <li><a href="https://twitter.com/ruwawacoffee" uk-icon="icon: twitter; ratio: 1.5"></a></li>
