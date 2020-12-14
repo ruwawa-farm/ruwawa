@@ -36,7 +36,7 @@
                             <img v-bind:src="currentProduct.image_url" width="300px" height="300px">
                             <h1>{{currentProduct.name}}</h1>
                             <h4>Enter the amount you need below in {{currentProduct.unit}}s</h4>
-                            <div class="uk-margin">
+                            <div class="uk-margin uk-width-2-3 uk-width-1-1@m center-horizontal">
                                 <input class="uk-input" v-model="productAmount" type="number" placeholder="Amount" required>
                             </div>
                         </div>
@@ -44,7 +44,6 @@
                     <div class="uk-padding-large">
                         <h1>Available Farms</h1>
                         <h4>Choose from which farm you would like to buy from</h4>
-
                         <div>
                             <div class="uk-margin">
                                 <div class="uk-form-controls">
@@ -108,7 +107,6 @@
                 .catch(err => { UIkit.notification({message: err.response.data.error, status: 'danger'})})
             },
             showFarmers(product){
-                console.log(product)
                 this.modalActive = true
                 this.currentProduct = product
                 this.availableFarmers = []
