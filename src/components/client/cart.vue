@@ -28,7 +28,7 @@
             <div class="ruwawa-cart-small uk-width-1-1 uk-padding-large" :class="{hidden: !smallDevice}">
                 <div v-for="order in orders" :key="order.product._id" class="uk-card uk-card-default uk-width-1-1 uk-margin">
                     <div uk-grid class="uk-flex-between">
-                        <img :src="order.product.image_url" width="150px" class="uk-margin-left">
+                        <img :src="order.product.image_url" width="100px">
                         <div class="center-vertical">
                             <table>
                                 <tr><td class="small-td uk-margin-top"><h5>{{order.product.name}}</h5></td></tr>
@@ -42,6 +42,7 @@
                     </div>
                 </div>
             </div>
+
             <button class="uk-button uk-button-default uk-width-1-6@m uk-width-2-3 round-btn" @click="submit">Submit</button>
         </div>
     </div>
