@@ -48,7 +48,7 @@
             <div class="uk-width-3-4@m ruwawa-service-section uk-text-center">
                 <h2 class="white-text bold-text uk-margin">Our Services</h2>
                 <div class="uk-child-width-expand@m uk-margin center-horizontal">
-                    <div class="small-section-padding service-one" data-aos="fade-up" data-aos-duration="4000">
+                    <div class="small-section-padding service-one">
                         <h3 class="white-text">Ruwawa connects different consumers to various farmers for their supply of farm products.</h3>
                     </div>
                     <div class="small-section-padding service-two" data-aos="fade-up" data-aos-duration="4000">
@@ -60,6 +60,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 </template>
 <script>
