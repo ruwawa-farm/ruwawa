@@ -44,21 +44,18 @@
         </div>
 
         <!-- Our services section -->
-        <div class="uk-container ruwawa-services center-vertical uk-width-1-1@m uk-margin-top">
+        <div class="ruwawa-services center-vertical uk-width-1-1@m uk-margin-top">
             <div class="uk-width-3-4@m ruwawa-service-section uk-text-center">
                 <h2 class="white-text bold-text uk-margin">Our Services</h2>
-                <div class="uk-child-width-expand@m uk-margin" uk-grid>
-                    <div class="small-section-padding" data-aos="fade-up" data-aos-duration="4000">
-                        <h3 class="white-text bold-text">Connect</h3>
-                        <p class="white-text">Ruwawa connects different consumers to various farmers for their supply of farm products.</p>
+                <div class="uk-child-width-expand@m uk-margin center-horizontal">
+                    <div class="small-section-padding service-one" data-aos="fade-up" data-aos-duration="4000">
+                        <h3 class="white-text">Ruwawa connects different consumers to various farmers for their supply of farm products.</h3>
                     </div>
-                    <div class="small-section-padding" data-aos="fade-up" data-aos-duration="4000">
-                        <h3 class="white-text bold-text">Advertise</h3>
-                        <p class="white-text">Farmers are able to reach a wider market and clientele through our platform.</p>
+                    <div class="small-section-padding service-two" data-aos="fade-up" data-aos-duration="4000">
+                        <h3 class="white-text">Farmers are able to reach a wider market and clientele through our platform.</h3>
                     </div>
-                    <div class="small-section-padding" data-aos="fade-up" data-aos-duration="4000">
-                        <h3 class="white-text bold-text">Support </h3>
-                        <p class="white-text">We are always available to help our customers with any help they may need.</p>
+                    <div class="small-section-padding service-three" data-aos="fade-up" data-aos-duration="4000">
+                        <h3 class="white-text">We are always available to help our customers with any help they may need.</h3>
                     </div>
                 </div>
             </div>
@@ -155,6 +152,58 @@
             background-blend-mode: multiply;
             min-height: 50vh;
         }
+    }
+
+    @media only screen and (max-width: 720px) {
+        .ruwawa-services {
+            height: 500px !important;
+        }
+    }
+
+    .center-horizontal {
+        position: relative !important;
+    }
+
+    .service-one {
+        position: absolute;
+        animation:fade-one 20s infinite;
+        -webkit-animation:fade-one 20s infinite;
+    }
+    .service-two {
+        position: absolute;
+        animation:fade-two 20s infinite;
+        -webkit-animation:fade-two 20s infinite;
+    }
+
+    .service-three {
+        position: absolute;
+        animation:fade-three 20s infinite;
+        -webkit-animation:fade-three 20s infinite;
+    }
+
+    @keyframes fade-one {
+        0%   {opacity:0}
+        20% { opacity: 1}
+        40% { opacity: 0}
+        60% { opacity: 0}
+        80% { opacity: 0}
+        100% { opacity: 0}
+    }
+    @keyframes fade-two {
+        0%   {opacity:0}
+        20% { opacity: 0}
+        40% { opacity: 0}
+        60% { opacity: 1}
+        80% { opacity: 0}
+        100% { opacity: 0}
+    }
+    @keyframes fade-three {
+        0%   {opacity:0}
+        20% { opacity: 0}
+        40% { opacity: 0}
+        60% { opacity: 0}
+        80% { opacity: 0}
+        100% { opacity: 1}
     }
 
 </style>
