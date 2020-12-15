@@ -47,12 +47,8 @@ export default {
     .uk-card {
         margin: 10px;
     }
-    .orders-list,
-    .subscriptions-list {
+    .orders-list {
         padding: 30px !important;
     }
-}
-.sub-card {
-    text-align: start !important;
 }
 </style>
