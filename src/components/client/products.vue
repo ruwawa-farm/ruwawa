@@ -55,7 +55,7 @@
                                     </h4><br>
                                 </div>
                                 <h3>Total price: Ksh. {{totalProductPrice}}</h3>
-                                <button class="uk-button uk-button-default" type="submit" @click="addToCart">Add to Cart</button>
+                                <button class="uk-button uk-button-default" type="submit" @click="addToCart" :class="{disabled: disableButton}">Add to Cart</button>
                             </div>
                         </div>
                     </div>
@@ -93,6 +93,7 @@
                 farmersListState: '',
                 totalProductPrice: 0,
                 productAmount: 0,
+                disableButton: true,
                 modalActive: false,
                 largeDevice: true
             }
@@ -147,6 +148,7 @@
                 }
                 this.$store.commit("addToCart", order)
                 this.modalHidden()
+                this.disableButton = true
                 UIkit.modal('#modal-farmers').hide()
             }
         },
@@ -155,6 +157,9 @@
                 if (value !== "" && Object.keys(this.selectedFarmer).length !== 0){
                     this.totalProductPrice = parseInt(value) * this.farmerProductPrice
                 }
+            },
+            totalProductPrice(value){
+                this.disableButton = parseInt(value) === 0;
             }
         }
     }
@@ -210,5 +215,15 @@
     }
     .products::-webkit-scrollbar {
         display: none;
+    }
+
+    .disabled {
+        cursor: not-allowed;
+        pointer-events: none;
+
+        /*Button disabled - CSS color class*/
+        color: #c0c0c0;
+        background-color: #ffffff;
+
     }
 </style>
