@@ -3,9 +3,8 @@
 
         <div class="search-bar" uk-grid>
             <div class="uk-navbar-item uk-width-2-3">
-                <form @submit.prevent="searchFarmers" class="uk-search uk-search-navbar">
-                    <span uk-search-icon></span>
-                    <input class="uk-search-input" type="search" v-model="query" placeholder="Search farmers...">
+                <form @submit.prevent class="uk-search uk-search-navbar">
+                    <input class="uk-search-input uk-input" type="search" v-model="query" placeholder="Search farmers...">
                 </form>
             </div>
 
@@ -13,10 +12,7 @@
 
         <div class="farmers-list">
             <h3 class="uk-text-center uk-text-danger">{{noFarmers}}</h3>
-            <div v-bind:class="{loaded: !farmersLoading}" class="uk-text-center">
-                <img src="../../assets/images/farmers_loading.gif">
-            </div>
-            <div v-bind:class="{loaded: farmersLoading}" uk-grid>
+            <div class="uk-flex-center" uk-grid>
                 <div class="uk-card uk-card-default w3-col w3-center m2 l2 s6" @click="showDetails(farmer)" v-for="farmer in farmers" :key="farmer._id" href="#modal-profile" uk-toggle>
                     <div class="uk-card-media-top">
                         <img v-bind:src="farmer.profilePicture" class="profile uk-padding-small" alt="profile">
@@ -123,19 +119,6 @@
             }
         },
         methods: {
-            searchFarmers: function () {
-                this.farmersLoading = true
-                let name = this.query === "" ? "*" : this.query
-                this.axios.get(`/farmers/search/${name}`, this.$store.state.config)
-                    .then(res => {
-                        this.farmersLoading = false
-                        this.farmers = res.data.farmers
-                        this.noFarmers = res.data.farmers.length === 0 ? `No farmers with the name ${name} found` : "";
-                    })
-                    .catch(err => {
-                        UIkit.notification({message: err.response.data.error, status: 'danger'})
-                    })
-            },
             showDetails(farmer){
                 this.currentFarmer = farmer
                 this.axios.get(`/farmers/ratings/${farmer._id}`, this.$store.state.config)
@@ -187,6 +170,11 @@
         watch: {
             amount(value){
                 this.totalPrice = parseInt(value) * this.currentProduct.price
+            },
+            query(value){
+                const data = this.$store.state.allFarmers
+                this.farmers = value === "" ? data : data.filter(farmer => farmer.name.toLowerCase().includes(value.toLowerCase()));
+                this.noFarmers = this.farmers.length === 0 ? `No farmers with the name ${value} found` : "";
             }
         }
     }
