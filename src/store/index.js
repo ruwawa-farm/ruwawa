@@ -97,6 +97,10 @@ export default new Vuex.Store({
         },
         subscriptionsChanged(state, payload){
             state.subscriptionsChanged = payload
+        },
+        logout(state){
+            state.userType = ""
+            state.token = ""
         }
     },
     plugins: [createPersistedState(), listener]

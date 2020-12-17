@@ -79,6 +79,12 @@
 import UIkit from "uikit";
 
 export default {
+    created() {
+        if (this.$store.state.token !== ""){
+            const route = this.$store.state.userType === "farmer" ? "/dashboard" : "/home"
+            this.$router.push(route)
+        }
+    },
     data (){
         return {
             email: '',
