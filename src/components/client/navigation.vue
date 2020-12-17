@@ -142,9 +142,9 @@
                 }
             },
             getOrders(){
-                this.$store.commit('clearOrders')
                 this.axios.get('/orders/client', this.$store.state.config)
                     .then(res => {
+                        this.$store.commit('clearOrders')
                         this.$store.commit("addOrders", res.data.orders)
                         this.$store.commit("ordersChanged", false)
                     })
