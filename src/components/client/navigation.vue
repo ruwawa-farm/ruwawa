@@ -121,6 +121,13 @@
                             path: '',
                             isLinkAction: true,
                             class: 'nav-button',
+                        },
+                        {
+                            type: 'button',
+                            text: 'Logout',
+                            path: '',
+                            isLinkAction: true,
+                            class: 'nav-button',
                         }
                     ]
                 }
@@ -128,8 +135,14 @@
         },
         methods :{
             vnbItemClicked(text) {
-                this.view = text.toLocaleLowerCase()
-                this.hideFooter = this.view !== "home";
+                if (text.toLocaleLowerCase() === "logout"){
+                    this.$store.commit('logout')
+                    this.$router.push('/')
+                }
+                else {
+                    this.view = text.toLocaleLowerCase()
+                    this.hideFooter = this.view !== "home";
+                }
             },
             checkConfirmed(){
                 if (this.$store.state.userType !== ""){
