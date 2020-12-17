@@ -1,15 +1,12 @@
 <template>
     <div class="farmers">
-
         <div class="search-bar" uk-grid>
             <div class="uk-navbar-item uk-width-2-3">
                 <form @submit.prevent class="uk-search uk-search-navbar">
                     <input class="uk-search-input uk-input" type="search" v-model="query" placeholder="Search farmers...">
                 </form>
             </div>
-
         </div>
-
         <div class="farmers-list">
             <h3 class="uk-text-center uk-text-danger">{{noFarmers}}</h3>
             <div class="uk-flex-center" uk-grid>
@@ -23,7 +20,6 @@
                 </div>
             </div>
         </div>
-
         <div id="modal-profile" class="uk-flex-top uk-modal-container" uk-modal>
             <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
                 <button class="uk-modal-close-default icon-black" type="button" uk-close></button>
@@ -62,11 +58,13 @@
                             </div>
                         </div>
                     </div>
-
                     <div id="comments">
                         <h2>Comments</h2>
                         <div v-for="rating in ratings" :key="rating.user">
-                            <h4> <b> {{rating.user}} </b> <rate :length="5" :value="rating.rating" :disabled="true" /></h4>
+                            <h4>
+                                <b> {{rating.user}} </b>
+                                <rate :length="5" :value="rating.rating" :disabled="true" />
+                            </h4>
                             <h5>{{rating.comment}}</h5>
                             <hr>
                         </div>
@@ -74,7 +72,6 @@
                 </div>
             </div>
         </div>
-
         <div id="modal-subscribe" class="uk-flex-top uk-modal-container" uk-modal>
             <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
                 <button class="uk-modal-close-default icon-black" type="button" uk-close></button>
@@ -93,47 +90,45 @@
                 </div>
             </div>
         </div>
-
     </div>
 </template>
-
 <script>
-    import UIkit from "uikit";
+import UIkit from "uikit";
 
-    export default {
-        data(){
-            return {
-                query: '',
-                farmers: this.$store.state.allFarmers,
-                noFarmers: '',
-                currentFarmer: {},
-                farmersLoading: false,
-                currentProduct: {},
-                rating: 3,
-                average: 3,
-                ratings: [],
-                comment: '',
-                amount: "",
-                totalPrice: 0,
-                date: "",
-            }
+export default {
+    data(){
+        return {
+            query: '',
+            farmers: this.$store.state.allFarmers,
+            noFarmers: '',
+            currentFarmer: {},
+            farmersLoading: false,
+            currentProduct: {},
+            rating: 3,
+            average: 3,
+            ratings: [],
+            comment: '',
+            amount: "",
+            totalPrice: 0,
+            date: "",
+        }
+    },
+    methods: {
+        showDetails(farmer){
+            this.currentFarmer = farmer
+            this.axios.get(`/farmers/ratings/${farmer._id}`, this.$store.state.config)
+                .then(res => {
+                    this.ratings = res.data.ratings
+                    this.average = res.data.average
+                })
+                .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
         },
-        methods: {
-            showDetails(farmer){
-                this.currentFarmer = farmer
-                this.axios.get(`/farmers/ratings/${farmer._id}`, this.$store.state.config)
-                    .then(res => {
-                        this.ratings = res.data.ratings
-                        this.average = res.data.average
-                    })
-                    .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
-            },
-            submitRating(){
-                let data = {
-                    rating: this.rating,
-                    comment: this.comment
-                }
-                this.axios.post(`/farmers/rate/${this.currentFarmer._id}`, data, this.$store.state.config)
+        submitRating(){
+            let data = {
+                rating: this.rating,
+                comment: this.comment
+            }
+            this.axios.post(`/farmers/rate/${this.currentFarmer._id}`, data, this.$store.state.config)
                 .then(res => {
                     if (res.status === 200) {
                         this.ratings.unshift(data)
@@ -141,23 +136,23 @@
                     }
                 })
                 .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
-            },
-            subscribeForm(product){
-                this.currentProduct = product
-                UIkit.modal('#modal-profile').hide()
-                UIkit.modal('#modal-subscribe').show()
-            },
-            subscribe(){
-                let data = {
-                    email: this.currentFarmer.email,
-                    product: this.currentProduct,
-                    farmer_id: this.currentFarmer._id,
-                    farmName: this.currentFarmer.farmName,
-                    total: this.totalPrice,
-                    amount: parseInt(this.amount),
-                    date: parseInt(this.date)
-                }
-                this.axios.post('/subscriptions/new', data, this.$store.state.config)
+        },
+        subscribeForm(product){
+            this.currentProduct = product
+            UIkit.modal('#modal-profile').hide()
+            UIkit.modal('#modal-subscribe').show()
+        },
+        subscribe(){
+            let data = {
+                email: this.currentFarmer.email,
+                product: this.currentProduct,
+                farmer_id: this.currentFarmer._id,
+                farmName: this.currentFarmer.farmName,
+                total: this.totalPrice,
+                amount: parseInt(this.amount),
+                date: parseInt(this.date)
+            }
+            this.axios.post('/subscriptions/new', data, this.$store.state.config)
                 .then(res => {
                     if (res.status === 200) {
                         UIkit.notification({message: res.data.reason, status: 'success'})
@@ -165,48 +160,42 @@
                     }
                 })
                 .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
-            }
+        }
+    },
+    watch: {
+        amount(value){
+            this.totalPrice = parseInt(value) * this.currentProduct.price
         },
-        watch: {
-            amount(value){
-                this.totalPrice = parseInt(value) * this.currentProduct.price
-            },
-            query(value){
-                const data = this.$store.state.allFarmers
-                this.farmers = value === "" ? data : data.filter(farmer => farmer.name.toLowerCase().includes(value.toLowerCase()));
-                this.noFarmers = this.farmers.length === 0 ? `No farmers with the name ${value} found` : "";
-            }
+        query(value){
+            const data = this.$store.state.allFarmers
+            this.farmers = value === "" ? data : data.filter(farmer => farmer.name.toLowerCase().includes(value.toLowerCase()));
+            this.noFarmers = this.farmers.length === 0 ? `No farmers with the name ${value} found` : "";
         }
     }
+}
 </script>
-
 <style scoped>
-    @media (min-width: 1200px) {
-        .uk-grid > * {
-            padding-left: 0 !important;
-        }
-        .uk-card {
-            margin: 10px;
-        }
+@media (min-width: 1200px) {
+    .uk-grid > * {
+        padding-left: 0 !important;
     }
-
-    .uk-card:hover {
-        cursor: pointer;
+    .uk-card {
+        margin: 10px;
     }
-
-    .loaded {
-        display: none;
-    }
-
-    .profile {
-        width: 200px;
-        height: 200px;
-        background-position: center center;
-        background-repeat: no-repeat;
-    }
-
-    .hidden {
-        display: none;
-    }
-
+}
+.uk-card:hover {
+    cursor: pointer;
+}
+.loaded {
+    display: none;
+}
+.profile {
+    width: 200px;
+    height: 200px;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+.hidden {
+    display: none;
+}
 </style>
