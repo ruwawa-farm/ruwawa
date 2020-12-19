@@ -84,7 +84,9 @@
                     farmer_id: order.farmer._id,
                     email: order.farmer.email,
                     total: order.total,
-                    amount: order.amount
+                    amount: order.amount,
+                    roast: order.roast !== undefined ? order.roast : '',
+                    grade: order.grade !== undefined ? order.grade : ''
                 }
             }
         }

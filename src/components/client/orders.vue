@@ -20,7 +20,7 @@
             <div id="modal-order" class="uk-flex-top" uk-modal>
                 <div class="uk-modal-dialog uk-width-1-2@m uk-margin-auto-vertical">
                     <div class="uk-margin-left uk-margin-right uk-margin-top uk-margin">
-                        <h4>Product: {{ order.name }}</h4>
+                        <h4>Product: {{order.roast}} {{ order.name }} {{order.grade !== undefined ? ", "+ order.grade : ""}}</h4>
                         <h4>Total : Ksh.{{order.total}}</h4>
                         <h4>Order status</h4>
                     </div>
