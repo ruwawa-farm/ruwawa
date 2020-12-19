@@ -69,6 +69,7 @@
             },
             submit() {
                 const orders = this.orders.map(this.prepareOrder)
+                console.log(orders)
                 this.axios.post('/orders/new', {orders: orders}, this.$store.state.config)
                     .then(res => {
                         this.orders = []
