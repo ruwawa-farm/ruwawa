@@ -28,6 +28,7 @@ export default new Vuex.Store({
         config: {},
         token: '',
         userType: '',
+        step: '',
         googleApiKey: 'AIzaSyAF-NGOw1lcrVBEp81LPAbqxd3yzXC1l34',
         isBottomBar: false,
     },
@@ -59,6 +60,9 @@ export default new Vuex.Store({
         },
         clearCart(state){
             state.cart = []
+        },
+        setStep(state, payload){
+            state.step = payload
         },
         changeBottomBar(state, payload){
             state.isBottomBar = payload
@@ -93,6 +97,10 @@ export default new Vuex.Store({
         },
         subscriptionsChanged(state, payload){
             state.subscriptionsChanged = payload
+        },
+        logout(state){
+            state.userType = ""
+            state.token = ""
         }
     },
     plugins: [createPersistedState(), listener]
