@@ -69,6 +69,7 @@
             },
             submit() {
                 const orders = this.orders.map(this.prepareOrder)
+                console.log(orders)
                 this.axios.post('/orders/new', {orders: orders}, this.$store.state.config)
                     .then(res => {
                         this.orders = []
@@ -84,7 +85,9 @@
                     farmer_id: order.farmer._id,
                     email: order.farmer.email,
                     total: order.total,
-                    amount: order.amount
+                    amount: order.amount,
+                    roast: order.roast !== undefined ? order.roast : '',
+                    grade: order.grade !== undefined ? order.grade : ''
                 }
             }
         }
