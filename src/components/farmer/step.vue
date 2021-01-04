@@ -11,16 +11,16 @@ export default {
     mounted() {
         switch (this.step){
             case "processing":
-                this.description = "Your order has been received and is being processed. An email will be sent to you once your order has been confirmed"
+                this.description = "You have received an order, please confirm after packing."
                 break;
             case "packaged":
-                this.description = "Your order has been packaged and ready for transportation to the pickup location"
+                this.description = "You have successfully packaged the order. confirm when the order is on transit."
                 break;
             case "transit":
-                this.description = "The order is on the way to the pickup location. We will notify you once it is ready for pickup"
+                this.description = "You have successfully submitted the order to transit. Confirm when the order has arrived at the pickup location."
                 break;
             case "delivered":
-                this.description = "Your order has arrived at the pickup location. An email will be sent to you with a link to the pickup location."
+                this.description = "The order has been completed. Please check on other orders."
                 break;
         }
     },

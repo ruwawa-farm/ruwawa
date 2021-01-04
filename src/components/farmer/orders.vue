@@ -1,27 +1,33 @@
 <template>
     <div class="orders">
-        <h2 class="uk-text-center">My orders</h2>
         <div class="orders-list">
-            <h3 class="uk-text-center uk-text-danger">{{orders.length === 0 ? "You have no orders yet": ""}}</h3>
-            <div uk-grid>
-                <div class="uk-card uk-card-default w3-col w3-center m2 l2 s6" v-for="order in orders" :key="order._id">
+            <h2 class="uk-text-center">My orders</h2>
+            <h3 class="uk-text-center uk-text-danger">{{orders.length === 0 ? "You have not received any order yet": ""}}</h3>
+            <div class="uk-flex-center" uk-grid>
+                <div class="uk-card uk-card-default w3-col w3-center m2 l2 s6" v-for="order in orders" :key="order._id" @click="showOrder(order)">
                     <div class="uk-card-media-top">
-                        <div class="uk-card-badge uk-label" v-bind:class="[order.confirmed? 'uk-label-success' : 'uk-label-danger']">{{order.confirmed? "Confirmed" : order.declined ? "Declined" : "Not confirmed"}}</div>
-                        <img v-bind:src="order.product.image_url" class="profile uk-padding-small" alt="profile">
+                        <div class="uk-card-badge uk-label"
+                             :class="[getOrderStatus(order) === 0? 'uk-label-danger' : getOrderStatus(order) === 1 ?  'uk-label-warning': getOrderStatus(order) === 2 ?  'uk-label-primary' : 'uk-label-success']">
+                            {{getOrderStatus(order) === 0? 'Processing' : getOrderStatus(order) === 1 ?  'Packaged': getOrderStatus(order) === 2 ?  'In Transit' : 'Delivered'}}
+                        </div>
+                        <img :src="getImageUrl(order.product_id)" class="profile uk-padding-small" alt="profile">
                     </div>
                     <div class="uk-card-body">
-                        <p>Amount : {{order.amount}} {{order.product.unit}}s</p>
-                        <p>Total price : Ksh.{{order.sumTotal}}</p>
-                        <p>To be delivered : {{order.delivered ? "Yes" : "No"}}</p>
-                        <div class="uk-card-footer uk-flex uk-flex-around" v-bind:class="[order.confirmed || order.declined ? 'hidden' : 'uk-flex']">
-                            <a class="uk-button uk-text-primary" @click="confirmOrder(order)">Confirm</a>
-                            <a class="uk-button uk-text-danger" href="#modal-decline" @click="declineOrder(order)" uk-toggle>Decline</a>
-                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
+            <div id="modal-order" class="uk-flex-top" uk-modal>
+                <div class="uk-modal-dialog uk-width-1-2@m uk-margin-auto-vertical">
+                    <div class="uk-margin-left uk-margin-right uk-margin-top uk-margin">
+                        <h4 class="ruwawa-order-name">Product: {{order.roast}} {{ order.name }} <b>{{order.grade !== undefined ? ", Grade "+ order.grade : ""}} </b></h4>
+                        <h4>Total : Ksh.{{order.total}}</h4>
+                        <h4>Order status</h4>
+                    </div>
+                    <Stepper :steps="steps" @completed-step="completeStep" @active-step="isStepActive"></Stepper>
+                </div>
+            </div>
+        </div>
         <div class="subscriptions-list">
             <h2 class="uk-text-center">My Subscribers</h2>
             <h3 class="uk-text-center uk-text-danger">{{subscriptions.length === 0 ? "You have no subscribers yet" : ""}}</h3>
@@ -41,60 +47,67 @@
                 </div>
             </div>
         </div>
-
-        <div id="modal-decline" class="uk-flex-top" uk-modal>
-            <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
-                <button class="uk-modal-close-default icon-black" type="button" uk-close></button>
-                <div class="uk-margin uk-padding uk-text-center">
-                    <form v-on:submit.prevent="submitOrderDecline">
-                        <div class="uk-margin">
-                            <input class="uk-input" placeholder="Why have you declined?" type="text" v-model="reason" required>
-                        </div>
-                        <div>
-                            <button class="uk-button" type="submit">Submit</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
     </div>
 </template>
 
 <script>
-    import UiKit from 'uikit'
     import UIkit from "uikit";
+    import Stepper from "vue-stepper"
+    import Step from './step.vue';
+
     export default {
+        components: {
+        Stepper,
+        },
         mounted() {
             this.checkOrders()
         },
         data() {
             return{
-                noOrders: '',
-                reason: '',
+                noOrders: "",
+                reason: "",
                 currentOrder: {},
                 monthNames : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-                orders: this.$store.state.orders,
-                subscriptions: this.$store.state.subscriptions
+                steps: [
+                {
+                    icon: 'loop',
+                    name: 'confirmed',
+                    title: 'Processing',
+                    component: Step,
+                    completed: true
+                },
+                {
+                    icon: 'shopping_basket',
+                    name: 'package',
+                    title: 'Packaged',
+                    component: Step,
+                    completed: false
+                },
+                {
+                    icon: 'local_shipping',
+                    name: 'transit',
+                    title: 'In Transit',
+                    component: Step,
+                    completed: false
+                },
+                {
+                    icon: 'place',
+                    name: 'delivered',
+                    title: 'Delivered',
+                    component: Step,
+                    completed: false
+                }
+            ],
+            orders: this.$store.state.orders,
+            subscriptions: this.$store.state.subscriptions
             }
         },
         methods: {
-            checkOrders(){
-                if (this.orders.length === 0) this.noOrders = "No orders available"
+            getOrderStatus: function (order) {
+            return order.status[2].complete ? 3 : order.status[1].complete ? 2 : order.status[0].complete ? 1 : 0
             },
-            confirmOrder(order){
-                let data = {
-                    confirmed: true,
-                    order: order
-                }
-                this.axios.post('/orders/confirm', data, this.$store.state.config)
-                .then(res => {
-                    if (res.status === 200){
-                        UIkit.notification({message: "Updated order status", status: 'success'})
-                        this.$store.commit('confirmedOrder', {index: this.orders.indexOf(order), confirmed: true})
-                        order.confirmed = true
-                    }
-                })
-                .catch(err => { UIkit.notification({message: err.response.data.error, status: 'danger'})})
+            getImageUrl(id){
+                return this.$store.state.allProducts.find(product => product._id === id).image_url
             },
             declineOrder(order){
                 this.currentOrder = order
@@ -115,7 +128,7 @@
                         }
                     })
                     .catch(err => { UIkit.notification({message: err.response.data.error, status: 'danger'})})
-                UiKit.modal('#modal-decline').hide()
+                UIkit.modal('#modal-decline').hide()
             },
             confirmSubscription(sub){
                 const data = {subscription: sub}
@@ -133,12 +146,24 @@
 </script>
 
 <style scoped>
+
+    h4 {
+        margin: 10px !important;
+    }
+
+    .ruwawa-order-name {
+        text-transform: capitalize !important;
+    }
+
     @media (min-width: 1200px) {
         .uk-grid > * {
             padding-left: 0 !important;
         }
         .uk-card {
             margin: 10px;
+        }
+        .orders-list {
+        padding: 30px !important;
         }
     }
 

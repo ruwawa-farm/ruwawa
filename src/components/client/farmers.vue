@@ -45,7 +45,7 @@
                         </div>
                     </div>
                     <div uk-grid>
-                        <div class="uk-card uk-card-default uk-width-1-6@m uk-margin-left uk-margin-right" v-for="product in currentFarmer.products" :key="product._id">
+                        <div class="uk-card uk-card-default uk-width-1-6@m uk-margin-left uk-margin-right" v-for="product in farmerProducts" :key="product._id">
                             <div class="uk-card-media-top">
                                 <div class="uk-card-badge uk-label" v-bind:class="[product.inStock? 'uk-label-success' : 'uk-label-danger']">{{product.inStock? "In stock" : "Out of Stock"}}</div>
                                 <img v-bind:src="product.image_url" alt="product" height="auto">
@@ -102,6 +102,7 @@ export default {
             farmers: this.$store.state.allFarmers,
             noFarmers: '',
             currentFarmer: {},
+            farmerProducts: [],
             farmersLoading: false,
             currentProduct: {},
             rating: 3,
@@ -114,14 +115,17 @@ export default {
         }
     },
     methods: {
-        showDetails(farmer){
+        showDetails: function (farmer) {
             this.currentFarmer = farmer
+            this.farmerProducts = farmer.products.filter(product => product.price !== "")
             this.axios.get(`/farmers/ratings/${farmer._id}`, this.$store.state.config)
                 .then(res => {
                     this.ratings = res.data.ratings
                     this.average = res.data.average
                 })
-                .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
+                .catch(err => {
+                    UIkit.notification({message: err.response.data.error, status: 'danger'})
+                })
         },
         submitRating(){
             let data = {
