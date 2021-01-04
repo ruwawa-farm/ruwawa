@@ -150,14 +150,11 @@
                     .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
             },
             getProfile(){
-                let profile = this.$store.state.farmerProfile
-                if (Object.keys(profile).length === 0){
-                    this.axios.get('/farmers/profile', this.$store.state.config)
-                        .then(res => {
-                            this.$store.commit("addFarmerProfile", res.data.farmer)
-                        })
-                        .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
-                }
+                this.axios.get('/farmers/profile', this.$store.state.config)
+                    .then(res => {
+                        this.$store.commit("addFarmerProfile", res.data.farmer)
+                    })
+                    .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
             },
             getProducts(){
                 this.axios.get("products")
