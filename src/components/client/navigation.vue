@@ -43,145 +43,144 @@
         </footer>
     </div>
 </template>
-
 <script>
-    import homeComponent from './home.vue'
-    import productsComponent from './products.vue'
-    import farmersComponent from './farmers.vue'
-    import ordersComponent from './orders.vue'
-    import cartComponent from './cart.vue'
+import homeComponent from './home.vue'
+import productsComponent from './products.vue'
+import farmersComponent from './farmers.vue'
+import ordersComponent from './orders.vue'
+import cartComponent from './cart.vue'
 
-    import UIkit from 'uikit'
+import UIkit from 'uikit'
 
-    export default {
-        components: {
-            'home': homeComponent,
-            'products': productsComponent,
-            'farmers': farmersComponent,
-            'orders': ordersComponent,
-            'cart': cartComponent
-        },
-        created() {
-            if (this.$store.state.userType !== "client")
-                return this.$router.push('/dashboard')
-            this.checkConfirmed()
-            this.getFarmers()
-            this.getOrders()
-            this.getSubscriptions()
-            this.getProducts()
-            let audio = new Audio(require('../../assets/audio/ruwawa.mp3'))
-            audio.play()
-            audio.loop = true
-        },
-        data() {
-            return {
-                hideFooter: false,
-                view: 'home',
-                btn: 'Submit',
-                error_message: '',
-                error: false,
-                subject: '',
-                message: '',
-                navbarOptions: {
-                    mobileBreakpoint: 992,
-                    tooltipAnimationType: 'shift-away',
-                    collapseButtonImageOpen: require('../../assets/images/collapse-menu-light.png'),
-                    menuOptionsRight: [
-                        {
-                            type: 'button',
-                            text: 'Home',
-                            path: '',
-                            isLinkAction: true,
-                            class: 'nav-button'
-                        },
-                        {
-                            type: 'button',
-                            text: 'Products',
-                            path: '',
-                            isLinkAction: true,
-                            class: 'nav-button'
-                        },
-                        {
-                            type: 'button',
-                            text: 'Farmers',
-                            path: '',
-                            isLinkAction: true,
-                            class: 'nav-button'
-                        },
-                        {
-                            type: 'button',
-                            text: 'Orders',
-                            path: '',
-                            isLinkAction: true,
-                            class: 'nav-button'
-                        },
-                        {
-                            type: 'button',
-                            text: 'Cart',
-                            path: '',
-                            isLinkAction: true,
-                            class: 'nav-button',
-                        },
-                        {
-                            type: 'button',
-                            text: 'Logout',
-                            path: '',
-                            isLinkAction: true,
-                            class: 'nav-button',
-                        }
-                    ]
-                }
+export default {
+    components: {
+        'home': homeComponent,
+        'products': productsComponent,
+        'farmers': farmersComponent,
+        'orders': ordersComponent,
+        'cart': cartComponent
+    },
+    created() {
+        if (this.$store.state.userType !== "client")
+            return this.$router.push('/dashboard')
+        this.checkConfirmed()
+        this.getFarmers()
+        this.getOrders()
+        this.getSubscriptions()
+        this.getProducts()
+        let audio = new Audio(require('../../assets/audio/ruwawa.mp3'))
+        audio.play()
+        audio.loop = true
+    },
+    data() {
+        return {
+            hideFooter: false,
+            view: 'home',
+            btn: 'Submit',
+            error_message: '',
+            error: false,
+            subject: '',
+            message: '',
+            navbarOptions: {
+                mobileBreakpoint: 992,
+                tooltipAnimationType: 'shift-away',
+                collapseButtonImageOpen: require('../../assets/images/collapse-menu-light.png'),
+                menuOptionsRight: [
+                    {
+                        type: 'button',
+                        text: 'Home',
+                        path: '',
+                        isLinkAction: true,
+                        class: 'nav-button'
+                    },
+                    {
+                        type: 'button',
+                        text: 'Products',
+                        path: '',
+                        isLinkAction: true,
+                        class: 'nav-button'
+                    },
+                    {
+                        type: 'button',
+                        text: 'Farmers',
+                        path: '',
+                        isLinkAction: true,
+                        class: 'nav-button'
+                    },
+                    {
+                        type: 'button',
+                        text: 'Orders',
+                        path: '',
+                        isLinkAction: true,
+                        class: 'nav-button'
+                    },
+                    {
+                        type: 'button',
+                        text: 'Cart',
+                        path: '',
+                        isLinkAction: true,
+                        class: 'nav-button',
+                    },
+                    {
+                        type: 'button',
+                        text: 'Logout',
+                        path: '',
+                        isLinkAction: true,
+                        class: 'nav-button',
+                    }
+                ]
+            }
+        }
+    },
+    methods :{
+        vnbItemClicked(text) {
+            if (text.toLocaleLowerCase() === "logout"){
+                this.$store.commit('logout')
+                this.$router.push('/')
+            }
+            else {
+                this.view = text.toLocaleLowerCase()
+                this.hideFooter = this.view !== "home";
             }
         },
-        methods :{
-            vnbItemClicked(text) {
-                if (text.toLocaleLowerCase() === "logout"){
-                    this.$store.commit('logout')
-                    this.$router.push('/')
-                }
-                else {
-                    this.view = text.toLocaleLowerCase()
-                    this.hideFooter = this.view !== "home";
-                }
-            },
-            checkConfirmed(){
-                if (this.$store.state.userType !== ""){
-                    this.axios.get('/auth/client/confirmed', this.$store.state.config)
+        checkConfirmed(){
+            if (this.$store.state.userType !== ""){
+                this.axios.get('/auth/client/confirmed', this.$store.state.config)
                     .then(res => { console.log(res.status) })
                     .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
-                }
-                else {
-                    this.$router.push('/')
-                }
-            },
-            getOrders(){
-                this.axios.get('/orders/client', this.$store.state.config)
-                    .then(res => {
-                        this.$store.commit('clearOrders')
-                        this.$store.commit("addOrders", res.data.orders)
-                        this.$store.commit("ordersChanged", false)
-                    })
-                    .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
-            },
-            getProducts(){
-                this.axios.get("products")
-                    .then(res => {this.$store.commit("addProducts", res.data.products)})
-                    .catch(err => {
-                        if (err.message.contains("Network Error"))
-                            UIkit.notification({message: "Connection timeout", status: 'danger'})
-                        else UIkit.notification({message: err.response.data.error, status: 'danger'})
-                    })
-            },
-            getFarmers(){
-                this.axios.get(`/farmers/search/*`, this.$store.state.config)
-                    .then(res => {
-                        this.$store.commit('clearFarmers')
-                        this.$store.commit("addFarmers", res.data.farmers)
-                    })
-                    .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
-            },
-            getSubscriptions(){
-                this.axios.get('/subscriptions/client', this.$store.state.config)
+            }
+            else {
+                this.$router.push('/')
+            }
+        },
+        getOrders(){
+            this.axios.get('/orders/client', this.$store.state.config)
+                .then(res => {
+                    this.$store.commit('clearOrders')
+                    this.$store.commit("addOrders", res.data.orders)
+                    this.$store.commit("ordersChanged", false)
+                })
+                .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
+        },
+        getProducts(){
+            this.axios.get("products")
+                .then(res => {this.$store.commit("addProducts", res.data.products)})
+                .catch(err => {
+                    if (err.message.contains("Network Error"))
+                        UIkit.notification({message: "Connection timeout", status: 'danger'})
+                    else UIkit.notification({message: err.response.data.error, status: 'danger'})
+                })
+        },
+        getFarmers(){
+            this.axios.get(`/farmers/search/*`, this.$store.state.config)
+                .then(res => {
+                    this.$store.commit('clearFarmers')
+                    this.$store.commit("addFarmers", res.data.farmers)
+                })
+                .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
+        },
+        getSubscriptions(){
+            this.axios.get('/subscriptions/client', this.$store.state.config)
                 .then(res => {
                     if (res.status === 200){
                         this.$store.commit('subscriptionsChanged', false)
@@ -189,122 +188,105 @@
                     }
                 })
                 .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
-            },
-            sendFeedback(){
-                this.btn = 'sending...'
-                let tokenData = this.$jwt.decode(this.$store.state.token)
-                console.log(tokenData)
-                let user = Object.values(tokenData)[0]
-                let data = { subject: this.subject, message: this.message, name: user.name, email: user.email }
-                this.axios.post('/admin/feedback', data, this.$store.state.config)
-                    .then(res => {
-                        this.btn = 'Submit'
-                        UIkit.notification({message: res.data.reason, status: res.data.message})
-                    })
-                    .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
-            },
-            close(){
-                this.error = false
-            },
-        }
+        },
+        sendFeedback(){
+            this.btn = 'sending...'
+            let tokenData = this.$jwt.decode(this.$store.state.token)
+            console.log(tokenData)
+            let user = Object.values(tokenData)[0]
+            let data = { subject: this.subject, message: this.message, name: user.name, email: user.email }
+            this.axios.post('/admin/feedback', data, this.$store.state.config)
+                .then(res => {
+                    this.btn = 'Submit'
+                    UIkit.notification({message: res.data.reason, status: res.data.message})
+                })
+                .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
+        },
+        close(){
+            this.error = false
+        },
     }
+}
 </script>
-
 <style lang="scss">
-    .form-title {
-        color: white !important;
-    }
-
-    .vnb {
-        background: #0b6623;
-        .nav-button{
-            background: none;
-
-            &:hover {
-                background: darken(#0b6623, 10%);
-                cursor: pointer;
-            }
-        }
-        .vnb__collapse-button{
-            color: white;
+@import url("https://fonts.googleapis.com/css?family=Material+Icons");
+.form-title {
+    color: white !important;
+}
+.vnb {
+    background: #0b6623;
+    .nav-button{
+        background: none;
+        &:hover {
+            background: darken(#0b6623, 10%);
+            cursor: pointer;
         }
     }
-
-    input[type=text]{
-        -webkit-border-radius: 20px;
-        -moz-border-radius: 20px;
-        border-radius: 20px;
-        border: 1px solid #2d9fd9;
-        padding-left: 10px;
+    .vnb__collapse-button{
+        color: white;
     }
-
-    input[type=text]:focus {
-        outline: none;
-        border: 1px solid #a0d18c;
+}
+input[type=text]{
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    border: 1px solid #2d9fd9;
+    padding-left: 10px;
+}
+input[type=text]:focus {
+    outline: none;
+    border: 1px solid #a0d18c;
+}
+.round-btn {
+    border-radius: 20px;
+}
+.uk-textarea {
+    -webkit-border-radius: 15px !important;
+    -moz-border-radius: 15px !important;
+    border-radius: 15px !important;
+}
+.bottom_footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.ruwawa-footer {
+    background: #0b6623;
+    padding: 3rem 0.5rem;
+}
+.ruwawa-socials{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+@media (max-width: 768px) {
+    .ruwawa-contact-form {
+        margin: 5em 0 !important;
     }
-
-    .round-btn {
-        border-radius: 20px;
-    }
-
-    .uk-textarea {
-        -webkit-border-radius: 15px !important;
-        -moz-border-radius: 15px !important;
-        border-radius: 15px !important;
-    }
-
-    .bottom_footer {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
-    .ruwawa-footer {
-        background: #0b6623;
-        padding: 3rem 0.5rem;
-    }
-
-    .ruwawa-socials{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    @media (max-width: 768px) {
-        .ruwawa-contact-form {
-            margin: 5em 0 !important;
-        }
-        .ruwawa-contact {
-            margin-top: 0px !important;
-        }
-    }
-
     .ruwawa-contact {
-        margin-top: 20px !important;
+        margin-top: 0px !important;
+    }
+}
+.ruwawa-contact {
+    margin-top: 20px !important;
+    color: white !important;
+    a {
         color: white !important;
-
-        a {
-            color: white !important;
-        }
     }
-
-    .ruwawa-contact-footer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .ruwawa-footer-logo {
-        width: 150px !important;
-        height: auto;
-    }
-
-    .err{
-        display: none;
-    }
-
-    .social-footer-icons {
-        padding-top: 2rem;
-    }
-
+}
+.ruwawa-contact-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.ruwawa-footer-logo {
+    width: 150px !important;
+    height: auto;
+}
+.err{
+    display: none;
+}
+.social-footer-icons {
+    padding-top: 2rem;
+}
 </style>
