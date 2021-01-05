@@ -4,7 +4,7 @@
             <h2 class="uk-text-center">My orders</h2>
             <h3 class="uk-text-center uk-text-danger">{{orders.length === 0 ? "You have not received any order yet": ""}}</h3>
             <div class="uk-flex-center" uk-grid>
-                <div class="uk-card uk-card-default w3-col w3-center m2 l2 s6" v-for="(order, index) in orders" :key="order._id" @click="showOrder(order, index)">
+                <div class="uk-card uk-card-default w3-col w3-center m2 l2 s6" v-for="(order, index) in orders" :key="order._id" @click="[order.status !== 'complete' ? showOrder(order, index) : {}]">
                     <div class="uk-card-media-top">
                         <div class="uk-card-badge uk-label" :class="[getLabel(order)]">
                             {{order.status}}
@@ -22,7 +22,7 @@
                         <h4>Total : Ksh.{{order.total}}</h4>
                         <h4>Order status</h4>
                     </div>
-                    <Stepper :steps="steps" @completed-step="completeStep"></Stepper>
+                    <Stepper :order="order" :index="currentIndex" :editable="true" @onComplete="complete"></Stepper>
                 </div>
             </div>
         </div>
@@ -45,70 +45,19 @@
                 </div>
             </div>
         </div>
-        <div id="modal-order" class="uk-flex-top" uk-modal>
-            <div class="uk-modal-dialog uk-width-1-2@m uk-margin-auto-vertical">
-                <div class="uk-margin-left uk-margin-right uk-margin-top uk-margin">
-                    <h4 class="ruwawa-order-name">Product: {{order.roast}} {{ order.name }} <b>{{order.grade !== undefined ? ", Grade "+ order.grade : ""}} </b></h4>
-                    <h4>Total : Ksh.{{order.total}}</h4>
-                    <h4>Order status</h4>
-                </div>
-                <Stepper :steps="steps" @completed-step="completeStep" @active-step="isStepActive" @stepper-finished="alert"></Stepper>
-            </div>
-        </div>
     </div>
 </template>
 <script>
 import UIkit from "uikit";
-import Stepper from "vue-stepper"
-import Step from './step.vue';
-import $ from "jquery";
+import Stepper from '../stepper.vue'
 
 export default {
-    components: {
-        Stepper,
-    },
-    mounted() {
-        $('.material-icons').css('background-color', '#0b6623')
-        $('.stepper-button').css('background-color', '#0b6623')
-        $('.step-title>h4').css('color', '#0b6623')
-        $('.content').css('margin', 0)
-    },
+    components: {Stepper},
     data() {
         return{
             order: {},
             currentIndex: 0,
             monthNames : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-            steps: [
-                {
-                    icon: 'loop',
-                    name: 'processing',
-                    title: 'Processing',
-                    component: Step,
-                    completed: true
-                },
-                {
-                    icon: 'shopping_basket',
-                    name: 'packaged',
-                    title: 'Packaged',
-                    component: Step,
-                    completed: false
-                },
-                {
-                    icon: 'local_shipping',
-                    name: 'transit',
-                    title: 'In Transit',
-                    component: Step,
-                    completed: false
-                },
-                {
-                    icon: 'place',
-                    name: 'delivered',
-                    title: 'Delivered',
-                    component: Step,
-                    completed: false
-                }
-            ],
-            activateStep: 0,
             orders: this.$store.state.orders,
             subscriptions: this.$store.state.subscriptions
         }
@@ -116,14 +65,14 @@ export default {
     methods: {
         getLabel(order) {
             switch (order.status) {
+                case 'processing':
+                    return 'uk-label-danger'
                 case 'packaged':
                     return 'uk-label-warning'
                 case 'transit':
                     return 'uk-label-primary'
-                case 'delivered':
-                    return 'uk-label-success'
                 default:
-                    return 'uk-label-danger'
+                    return 'uk-label-success'
             }
         },
         getImageUrl(id){
@@ -147,33 +96,8 @@ export default {
             this.order.name = name !== "Coffee" ? this.$pluralize(name, order.amount) : name;
             UIkit.modal('#modal-order').show()
         },
-        // Executed when @completed-step event is triggered
-        completeStep(payload) {
-            const next = this.steps[payload.index + 1].name
-            this.$store.commit('setStep', next)
-            this.axios.post(`/orders/update/${this.order._id}/${next}`, {}, this.$store.state.config)
-                .then(res => {
-                    if (res.status === 200){
-                        this.$store.commit('updateOrderStatus', {})
-                        this.steps.forEach((step) => {
-                            if (step.name === payload.name) step.completed = true;
-                        })
-                    }
-                })
-                .catch(err => { UIkit.notification({message: err.response.data.error, status: 'danger'})})
-        },
-        // Executed when @active-step event is triggered
-        isStepActive(payload) {
-            this.steps.forEach((step) => {
-                if (step.name === payload.name) {
-                    if(step.completed === true) {
-                        step.completed = false;
-                    }
-                }
-            })
-        },
-        alert(payload) {
-            alert(payload)
+        complete(){
+            UIkit.modal('#modal-order').hide()
         }
     }
 }
