@@ -9,25 +9,28 @@
 <script>
 export default {
     mounted() {
-        switch (this.step){
-            case "processing":
-                this.description = "You have received an order, please confirm after packing."
-                break;
-            case "packaged":
-                this.description = "You have successfully packaged the order. confirm when the order is on transit."
-                break;
-            case "transit":
-                this.description = "You have successfully submitted the order to transit. Confirm when the order has arrived at the pickup location."
-                break;
-            case "delivered":
-                this.description = "The order has been completed. Please check on other orders."
-                break;
-        }
+        this.$emit('can-continue', {value: true});
     },
     data() {
         return {
             step: this.$store.state.step,
-            description: "Processing",
+            description: "Confirm the order by clicking the 'Next' button below",
+        }
+    },
+    watch: {
+        '$store.state.step'(value){
+            this.$emit('can-continue', {value: true});
+            switch (value){
+                case "packaged":
+                    this.description = "Proceed if you have safely packaged the product and it is ready for transport"
+                    break;
+                case "transit":
+                    this.description = "Please proceed to transport the order to the pickup location."
+                    break;
+                case "delivered":
+                    this.description = "Confirm that the order has arrived and click 'Finish' below"
+                    break;
+            }
         }
     }
 }

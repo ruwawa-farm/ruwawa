@@ -6,9 +6,8 @@
             <div class="uk-flex-center" uk-grid>
                 <div class="uk-card uk-card-default w3-col w3-center m2 l2 s6" v-for="order in orders" :key="order._id" @click="showOrder(order)">
                     <div class="uk-card-media-top">
-                        <div class="uk-card-badge uk-label"
-                             :class="[getOrderStatus(order) === 0? 'uk-label-danger' : getOrderStatus(order) === 1 ?  'uk-label-warning': getOrderStatus(order) === 2 ?  'uk-label-primary' : 'uk-label-success']">
-                            {{getOrderStatus(order) === 0? 'Processing' : getOrderStatus(order) === 1 ?  'Packaged': getOrderStatus(order) === 2 ?  'In Transit' : 'Delivered'}}
+                        <div class="uk-card-badge uk-label" :class="[getLabel(order)]">
+                            {{order.status}}
                         </div>
                         <img :src="getImageUrl(order.product_id)" class="profile uk-padding-small" alt="profile">
                     </div>
@@ -41,10 +40,6 @@ export default {
         Stepper,
     },
     mounted() {
-        this.axios.post("/orders/client/delete", {id: "5fde02f7bd80ad0017527c7f"}, this.$store.state.config)
-            .then(res => {console.log(res)})
-            .catch(err => {console.log(err)})
-
         $('.bottom').remove()
         $('.material-icons').css('background-color', '#0b6623')
         $('.step-title>h4').css('color', '#0b6623')
@@ -58,7 +53,7 @@ export default {
             steps: [
                 {
                     icon: 'loop',
-                    name: 'confirmed',
+                    name: 'processing',
                     title: 'Processing',
                     component: Step,
                     completed: true
@@ -66,7 +61,7 @@ export default {
                 },
                 {
                     icon: 'shopping_basket',
-                    name: 'package',
+                    name: 'packaged',
                     title: 'Packaged',
                     component: Step,
                     completed: false
@@ -90,8 +85,17 @@ export default {
         }
     },
     methods: {
-        getOrderStatus: function (order) {
-            return order.status[2].complete ? 3 : order.status[1].complete ? 2 : order.status[0].complete ? 1 : 0
+        getLabel(order) {
+            switch (order.status) {
+                case 'processing':
+                    return 'uk-label-danger'
+                case 'packaged':
+                    return 'uk-label-warning'
+                case 'transit':
+                    return 'uk-label-primary'
+                default:
+                    return 'uk-label-success'
+            }
         },
         getImageUrl(id){
             return this.$store.state.allProducts.find(product => product._id === id).image_url
