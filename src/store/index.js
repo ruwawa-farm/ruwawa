@@ -79,6 +79,9 @@ export default new Vuex.Store({
         clearOrders(state){
             state.orders = []
         },
+        updateOrderStatus(state, payload){
+            state.orders[payload.index] = payload.order
+        },
         removeOrder(state, payload){
             state.orders.splice(payload, 1)
         },
