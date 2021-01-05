@@ -4,7 +4,7 @@
             <h2 class="uk-text-center">My orders</h2>
             <h3 class="uk-text-center uk-text-danger">{{orders.length === 0 ? "You have not received any order yet": ""}}</h3>
             <div class="uk-flex-center" uk-grid>
-                <div class="uk-card uk-card-default w3-col w3-center m2 l2 s6" v-for="(order, index) in orders" :key="order._id" @click="[order.status !== 'complete' ? showOrder(order, index) : {}]">
+                <div class="uk-card uk-card-default w3-col w3-center m2 l2 s6" v-for="(order, index) in orders" :key="order._id" @click="showOrder(order, index)">
                     <div class="uk-card-media-top">
                         <div class="uk-card-badge uk-label" :class="[getLabel(order)]">
                             {{order.status}}
@@ -90,13 +90,15 @@ export default {
                 .catch(err => { UIkit.notification({message: err.response.data.error, status: 'danger'})})
         },
         showOrder(order, index){
+            if (order.status === "delivered") return;
             this.order = order
             this.currentIndex = index
             const name = this.$store.state.allProducts.find(product => product._id === order.product_id).name
             this.order.name = name !== "Coffee" ? this.$pluralize(name, order.amount) : name;
             UIkit.modal('#modal-order').show()
         },
-        complete(){
+        complete(value){
+            console.log(value)
             UIkit.modal('#modal-order').hide()
         }
     }

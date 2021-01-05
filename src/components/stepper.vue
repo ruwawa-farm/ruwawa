@@ -41,8 +41,12 @@ export default {
     },
     methods: {
         update(){
-            const next = this.steps[this.status]
-            this.axios.post(`/orders/update/${this.order._id}/${next === undefined ? 'complete' : next}`, {}, this.$store.state.config)
+            let next = this.steps[this.status]
+            if (next === undefined){
+                next = 'delivered'
+                this.$emit('onComplete', true)
+            }
+            this.axios.post(`/orders/update/${this.order._id}/${next}`, {}, this.$store.state.config)
                 .then(res => {
                     if (res.status === 200){
                         this.order.status = next
@@ -71,14 +75,14 @@ export default {
                     break;
                 case "transit":
                     if (this.editable)
-                        this.description = "Please proceed to transport the order to the pickup location."
+                        this.description = "Please transport the order to the pickup location. Once it arrives, click 'Next' to update the customer."
                     else
                         this.description = "The order is on the way to the pickup location. We will notify you once it is ready for pickup"
                     this.status = 3
                     break;
                 case "delivered":
                     if (this.editable)
-                        this.description = "Confirm that the order has arrived and click 'Complete' below"
+                        this.description = "You have delivered the product at the pickup location."
                     else
                         this.description = "Your order has arrived at the pickup location. An email will be sent to you with a link to the pickup location."
                     this.btn = 'Complete'
