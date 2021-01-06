@@ -6,7 +6,8 @@
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "deploy": "node scripts/deploy.js"
+    "deploy": "node scripts/deploy.js",
+    "publish": "npm run build && rm -rf docs; cp -r dist docs && sed -i -e 's/src=\\//src=/g' docs/index.html ; sed -i -e 's/href=\\//href=/g' docs/index.html"
   },
   "dependencies": {
     "aos": "^2.3.4",
