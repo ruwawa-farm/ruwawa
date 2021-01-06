@@ -147,7 +147,7 @@ export default {
             UIkit.modal('#modal-subscribe').show()
         },
         subscribe(){
-            let data = {
+            const data = {
                 email: this.currentFarmer.email,
                 product: this.currentProduct,
                 farmer_id: this.currentFarmer._id,
@@ -155,7 +155,7 @@ export default {
                 total: this.totalPrice,
                 amount: parseInt(this.amount),
                 date: parseInt(this.date)
-            }
+            };
             this.axios.post('/subscriptions/new', data, this.$store.state.config)
                 .then(res => {
                     if (res.status === 200) {
