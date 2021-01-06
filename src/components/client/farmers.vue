@@ -9,8 +9,10 @@
         </div>
         <div class="farmers-list">
             <h3 class="uk-text-center uk-text-danger">{{noFarmers}}</h3>
-            <div class="uk-flex-center" uk-grid>
-                <div class="uk-card uk-card-default w3-col w3-center m2 l2 s6" @click="showDetails(farmer)" v-for="farmer in farmers" :key="farmer._id" href="#modal-profile" uk-toggle>
+            <div class="uk-grid uk-flex uk-flex-center uk-grid-small center-horizontal">
+                <div class="uk-card uk-width-1-6@m uk-margin-bottom uk-width-1-2 center-horizontal uk-text-center"
+                     v-bind:class="[largeDevice ? 'uk-card-default uk-card-hover uk-margin-right uk-margin-left': '']"
+                     @click="showDetails(farmer)" v-for="farmer in farmers" :key="farmer._id" href="#modal-profile" uk-toggle>
                     <div class="uk-card-media-top">
                         <img v-bind:src="farmer.profilePicture" class="profile uk-padding-small" alt="profile">
                     </div>
@@ -112,6 +114,7 @@ export default {
             amount: "",
             totalPrice: 0,
             date: "",
+            largeDevice: !this.$store.state.small
         }
     },
     methods: {
@@ -195,7 +198,7 @@ export default {
 }
 .profile {
     width: 200px;
-    height: 200px;
+    height: auto;
     background-position: center center;
     background-repeat: no-repeat;
 }
