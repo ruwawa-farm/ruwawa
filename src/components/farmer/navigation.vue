@@ -58,6 +58,7 @@ export default {
         'profile': profileComponent
     },
     created() {
+        this.$store.commit("isSmall", window.matchMedia("(max-width: 700px)").matches)
         if (this.$store.state.userType !== "farmer")
             return this.$router.push('/home')
         this.checkConfirmed()

@@ -3,15 +3,18 @@
         <div class="orders-list">
             <h2 class="uk-text-center">My orders</h2>
             <h3 class="uk-text-center uk-text-danger">{{orders.length === 0 ? "You have not placed any order yet": ""}}</h3>
-            <div class="uk-flex-center" uk-grid>
-                <div class="uk-card uk-card-default w3-col w3-center m2 l2 s6" v-for="(order, index) in orders" :key="order._id" @click="[order.status !== 'complete' ? showOrder(order, index) : {}]">
+            <div class="uk-grid uk-flex uk-flex-center uk-grid-small center-horizontal">
+                <div class="uk-card uk-width-1-6@m uk-margin-bottom uk-width-1-2 center-horizontal"
+                     v-bind:class="[largeDevice ? 'uk-card-default uk-card-hover uk-margin-right uk-margin-left': '']"
+                     v-for="(order, index) in orders" :key="order._id" @click="[order.status !== 'complete' ? showOrder(order, index) : {}]">
                     <div class="uk-card-media-top">
                         <div class="uk-card-badge uk-label" :class="[getLabel(order)]">
                             {{order.status}}
                         </div>
                         <img :src="getImageUrl(order.product_id)" class="profile uk-padding-small" alt="profile">
                     </div>
-                    <div class="uk-card-body">
+                    <div class="uk-card-body uk-text-center">
+                        <h3>{{getProductName(order.product_id)}}</h3>
                     </div>
                 </div>
             </div>
@@ -40,7 +43,8 @@ export default {
             currentIndex: 0,
             monthNames : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
             orders: this.$store.state.orders,
-            subscriptions: this.$store.state.subscriptions
+            subscriptions: this.$store.state.subscriptions,
+            largeDevice: !this.$store.state.small
         }
     },
     methods: {
@@ -58,6 +62,9 @@ export default {
         },
         getImageUrl(id){
             return this.$store.state.allProducts.find(product => product._id === id).image_url
+        },
+        getProductName(id){
+            return this.$store.state.allProducts.find(product => product._id === id).name
         },
         showOrder(order, index){
             this.order = order

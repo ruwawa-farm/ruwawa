@@ -25,6 +25,7 @@ export default new Vuex.Store({
         ordersChanged: true,
         subscriptions: [],
         subscriptionsChanged: true,
+        small: false,
         config: {},
         token: '',
         userType: '',
@@ -100,6 +101,9 @@ export default new Vuex.Store({
         },
         subscriptionsChanged(state, payload){
             state.subscriptionsChanged = payload
+        },
+        isSmall(state, payload){
+            state.small = payload
         },
         logout(state){
             state.userType = ""

@@ -89,13 +89,12 @@
 <script>
 import UIkit from "uikit";
 
-const small = window.matchMedia("(max-width: 700px)")
 export default {
     created() {
         if (this.$store.state.allProducts.length === 0)
             return this.getProducts()
         this.products = this.$store.state.allProducts
-        this.largeDevice = !small.matches
+        this.largeDevice = !this.$store.state.small
     },
     mounted() {
         window.onpopstate = ev => {

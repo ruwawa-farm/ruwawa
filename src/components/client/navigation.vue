@@ -61,6 +61,7 @@ export default {
         'cart': cartComponent
     },
     created() {
+        this.$store.commit("isSmall", window.matchMedia("(max-width: 700px)").matches)
         if (this.$store.state.userType !== "client")
             return this.$router.push('/dashboard')
         this.checkConfirmed()

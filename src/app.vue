@@ -9,18 +9,9 @@
 <script>
     import Uikit from 'uikit'
     import Icons from 'uikit/dist/js/uikit-icons'
-
     Uikit.use(Icons);
+
     export default {
-      data(){
-        return {
-          config: {
-            headers: {
-              Authorization: `Bearer ${this.$jwt.getToken()}`
-            }
-          }
-        }
-      }
     }
 </script>
 

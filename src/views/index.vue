@@ -161,7 +161,7 @@ export default {
 </script>
 
 <style scoped>
-    
+
     #index{
         margin: 0;
         position: absolute;
