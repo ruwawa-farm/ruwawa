@@ -1,5 +1,6 @@
 // vue.config.js
 module.exports = {
-    publicPath: '/ruwawa/',
-    runtimeCompiler: true
-};
+    publicPath: process.env.NODE_ENV === 'production'
+        ? '/ruwawa/'
+        : '/'
+}

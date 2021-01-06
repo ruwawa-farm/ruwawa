@@ -214,7 +214,7 @@ export default {
     color: white !important;
 }
 .vnb {
-    background: #0b6623;
+    background: #0b6623 !important;
     .nav-button{
         background: none;
         &:hover {
