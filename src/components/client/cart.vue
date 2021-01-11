@@ -85,6 +85,7 @@
                     farmer_id: order.farmer._id,
                     email: order.farmer.email,
                     total: order.total,
+                    unit: order.product.unit,
                     amount: order.amount,
                     roast: order.roast !== undefined ? order.roast : '',
                     grade: order.grade !== undefined ? order.grade : ''
