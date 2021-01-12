@@ -69,9 +69,6 @@ export default {
         this.getOrders()
         this.getSubscriptions()
         this.getProducts()
-        let audio = new Audio(require('../../assets/audio/ruwawa.mp3'))
-        audio.play()
-        audio.loop = true
     },
     data() {
         return {
