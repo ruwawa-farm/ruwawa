@@ -39,7 +39,7 @@
                             <div class="uk-margin uk-width-2-3 uk-width-1-1@m center-horizontal">
                                 <input class="uk-input" v-model="productAmount" type="number" placeholder="Amount" required>
                             </div>
-                            <div class="uk-margin" :class="{hidden : currentProduct.name !== 'Coffee'}">
+                            <div class="uk-margin" :class="{hidden : !isRoasted}">
                                 <div class="uk-form-label">Select the type of roast</div>
                                 <div class="uk-form-controls uk-form-controls-text">
                                     <label><input class="uk-radio" type="radio" name="radio-roast" @click="setRoast('light')" checked>Light</label>
@@ -47,7 +47,7 @@
                                     <label><input class="uk-radio" type="radio" name="radio-roast" @click="setRoast('dark')">Dark</label>
                                 </div>
                             </div>
-                            <div class="uk-margin" :class="{hidden : currentProduct.name !== 'Coffee'}">
+                            <div class="uk-margin" :class="{hidden : !isCoffee}">
                                 <div class="uk-form-label">Select the coffee grade</div>
                                 <div class="uk-form-controls uk-form-controls-text">
                                     <label><input class="uk-radio" type="radio" name="radio-grade" @click="setGrade('E')" checked>E</label>
@@ -94,6 +94,7 @@ export default {
         if (this.$store.state.allProducts.length === 0)
             return this.getProducts()
         this.products = this.$store.state.allProducts
+        this.currentProduct = this.products[0]
         this.largeDevice = !this.$store.state.small
     },
     mounted() {
@@ -107,7 +108,7 @@ export default {
             products: [],
             availableFarmers: [],
             allFarmers: this.$store.state.allFarmers,
-            productTypes: ['berry', 'cereal', 'fruit', 'legume', 'nut', 'vegetable'],
+            productTypes: ['coffee', 'berry', 'cereal', 'fruit', 'legume', 'nut', 'vegetable', 'other'],
             selectedFarmer: {},
             currentProduct: {},
             roast: '',
@@ -115,6 +116,8 @@ export default {
             farmersListState: '',
             totalProductPrice: 0,
             productAmount: 0,
+            isRoasted: false,
+            isCoffee: false,
             disableButton: true,
             modalActive: false,
             largeDevice: true
@@ -134,6 +137,8 @@ export default {
             this.grade = "E"
             this.modalActive = true
             this.currentProduct = product
+            this.isCoffee = product.name.includes("Coffee")
+            this.isRoasted = this.isCoffee && !product.name.includes("Green")
             this.availableFarmers = []
             UIkit.modal('#modal-farmers').show()
 
