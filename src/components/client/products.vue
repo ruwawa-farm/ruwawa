@@ -105,7 +105,7 @@ export default {
     },
     data(){
         return {
-            products: [],
+            products: this.$store.state.allProducts,
             availableFarmers: [],
             allFarmers: this.$store.state.allFarmers,
             productTypes: ['coffee', 'berry', 'cereal', 'fruit', 'legume', 'nut', 'vegetable', 'other'],

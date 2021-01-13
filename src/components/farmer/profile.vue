@@ -100,57 +100,21 @@
                             <div class="products">
                                 <p>Products available in your farm</p>
                                 <div class="uk-margin">
-                                    <md-chip class="product" md-deletable v-for="(product, index) in newProducts" :key="product._id" @click="removeNewProduct(index)">{{product.name}}</md-chip>
+                                    <md-chip class="product" md-deletable v-for="(product, index) in newProducts" :key="product._id" @click="removeNewProduct(index)">
+                                        {{product.name}}
+                                    </md-chip>
                                 </div>
                                 <p>Select below</p>
                                 <div class="uk-margin">
                                     <ul uk-accordion>
-                                        <li class="uk-open">
+                                        <li class="uk-open" v-for="type in productTypes" :key="type">
                                             <div class="uk-accordion-title">
-                                                <h4 class="accordion-title uk-align-left">Berries</h4>
+                                                <h4 class="accordion-title uk-align-left">{{ type | pluralize(10) }}</h4>
                                             </div>
                                             <div class="uk-accordion-content">
-                                                <md-chip md-clickable v-for="(berry, index) in berries" :key="berry._id" @click="addProduct(index, berries)">{{berry.name}}</md-chip>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="uk-accordion-title">
-                                                <h4 class="accordion-title uk-align-left">Cereals</h4>
-                                            </div>
-                                            <div class="uk-accordion-content">
-                                                <md-chip md-clickable v-for="(crop, index) in cereals" :key="crop._id" @click="addProduct(index, cereals)">{{crop.name}}</md-chip>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="uk-accordion-title">
-                                                <h4 class="accordion-title uk-align-left">Fruits</h4>
-                                            </div>
-                                            <div class="uk-accordion-content">
-                                                <md-chip md-clickable v-for="(fruit, index) in fruits" :key="fruit._id" @click="addProduct(index, fruits)">{{fruit.name}}</md-chip>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="uk-accordion-title" >
-                                                <h4 class="accordion-title uk-align-left">Legumes</h4>
-                                            </div>
-                                            <div class="uk-accordion-content">
-                                                <md-chip md-clickable v-for="(crop, index) in legumes" :key="crop._id" @click="addProduct(index, legumes)">{{crop.name}}</md-chip>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="uk-accordion-title">
-                                                <h4 class="accordion-title uk-align-left">Nuts</h4>
-                                            </div>
-                                            <div class="uk-accordion-content">
-                                                <md-chip md-clickable v-for="(nut, index) in nuts" :key="nut._id" @click="addProduct(index, nuts)">{{nut.name}}</md-chip>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="uk-accordion-title">
-                                                <h4 class="accordion-title uk-align-left">Vegetables</h4>
-                                            </div>
-                                            <div class="uk-accordion-content">
-                                                <md-chip md-clickable v-for="(veg, index) in vegetables" :key="veg._id" @click="addProduct(index, vegetables)">{{veg.name}}</md-chip>
+                                                <md-chip v-for="product in allProducts.filter(e => {return e.type === type})" :key="product._id" @click="addProduct(product)">
+                                                    {{product.name}}
+                                                </md-chip>
                                             </div>
                                         </li>
                                     </ul>
@@ -184,30 +148,25 @@ import UIkit from 'uikit'
 export default {
     created() {
         this.getProfile()
-        this.getProducts()
     },
     data(){
         return {
             profile: {},
-            fruits: [],
-            nuts: [],
-            cereals: [],
-            legumes: [],
-            berries: [],
-            vegetables: [],
             newProducts: [],
             farmPhotos: [],
             incomingFiles: [],
+            allProducts: this.$store.state.allProducts,
             name: '',
             farmName: '',
             email: '',
             phone: '',
-            products: '',
+            products: [],
             productIndex: "",
             productPrice: "",
             productInStock: false,
             delivers: true,
             btn: 'Submit',
+            productTypes: ['coffee', 'berry', 'cereal', 'fruit', 'legume', 'nut', 'vegetable', 'other'],
             uploadStatus: 'Drag and drop your farm images here',
             profilePicture: require('../../assets/images/profile.png'),
             loadingPicture: require('../../assets/images/loading.gif'),
@@ -224,33 +183,6 @@ export default {
             this.products = profile.products
             this.profilePicture = profile.profilePicture
             this.farmPhotos = profile.farmPhotos
-        },
-        getProducts(){
-            let products = this.$store.state.allProducts
-            products.forEach(item => {
-                let contains = this.products.some(el => el.name === item.name)
-                if (contains) return;
-                switch (item.type) {
-                    case "nut":
-                        this.nuts.unshift(item);
-                        break;
-                    case "fruit":
-                        this.fruits.unshift(item);
-                        break;
-                    case "legume":
-                        this.legumes.unshift(item);
-                        break;
-                    case "cereal":
-                        this.cereals.unshift(item);
-                        break;
-                    case "berry":
-                        this.berries.unshift(item);
-                        break;
-                    case "vegetable":
-                        this.vegetables.unshift(item);
-                        break;
-                }
-            })
         },
         uploadImage(){
             document.getElementById("upload").click()
@@ -373,16 +305,15 @@ export default {
         },
         removeProduct(index){
             this.axios.delete(`/farmers/product/${this.products[index]._id}`,this.$store.state.config)
-                .then(res => {console.log(res.status)})
+                .then(() => {this.products.splice(index, 1)})
                 .catch(err => {UIkit.notification({message: err.response.data.error, status: 'danger'})})
-            this.products.splice(index, 1)
         },
         removeNewProduct(index){
             this.newProducts.splice(index, 1)
         },
-        addProduct(index, cropType){
-            if(!this.newProducts.includes(cropType[index]))
-                this.newProducts.push(cropType[index]);
+        addProduct(product){
+            if(!this.newProducts.includes(product))
+                this.newProducts.push(product);
         },
         addModal(){
             UIkit.modal('#modal-add').show()
@@ -410,7 +341,8 @@ a:hover {
     color: black;
     text-decoration: none;
 }
-.add-card:hover{
+.add-card:hover,
+.md-chip:hover{
     cursor: pointer;
 }
 .uk-modal-close-full {
@@ -419,7 +351,7 @@ a:hover {
     padding: 0 20px;
 }
 .product{
-    background-color: #0b6623;
+    background-color: #0b6623 !important;
     color: white !important;
 }
 #farm-photo {
@@ -438,7 +370,7 @@ a:hover {
         height: 250px;
     }
     .VueCarousel-inner{
-        flex-basis: 0px !important;
+        flex-basis: 0 !important;
     }
 }
 </style>
