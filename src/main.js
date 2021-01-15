@@ -7,6 +7,7 @@ import VuePageTransition from 'vue-page-transition'
 import VueTelInput from 'vue-tel-input'
 import Axios from "axios";
 import VueAxios from "vue-axios";
+import https from "https"
 import Toasted from 'vue-toasted';
 import VueGeolocation from "vue-browser-geolocation/src";
 import mdChips from "vue-material/dist/components/MdChips";
@@ -24,7 +25,10 @@ import VuePluralize from 'vue-pluralize'
 import {Datetime} from "vue-datetime";
 
 const axios = Axios.create({
-  baseURL: "https://ruwawa-db.herokuapp.com/"
+  httpsAgent: new https.Agent({
+    rejectUnauthorized: false
+  }),
+  baseURL: "http://api.ruwawa.farm/"
 })
 
 //Styles
